@@ -17,7 +17,7 @@
 <?rfc docmapping="yes"?>
 <?rfc toc_levels="4"?>
 
-<rfc ipr="trust200902" docName="draft-moran-suit-update-management-00" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-suit-update-management-00" category="std">
 
   <front>
     <title abbrev="SUIT Update Management Extensions">Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests</title>
@@ -29,7 +29,7 @@
       </address>
     </author>
 
-    <date year="2021" month="October" day="25"/>
+    <date year="2022" month="March" day="07"/>
 
     <area>Security</area>
     <workgroup>SUIT</workgroup>
@@ -80,9 +80,16 @@ appear in all capitals, as shown here.</t>
 </section>
 <section anchor="extension-metadata" title="Extension Metadata">
 
-<t>Some additional metadata makes management of SUIT updates easier: a CoSWID can enable a</t>
+<t>Some additional metadata makes management of SUIT updates easier:</t>
+
+<t><list style="symbols">
+  <t>CoSWID, CoMID, CoRIM</t>
+  <t>Text descriptions of requirements</t>
+</list></t>
 
 <section anchor="manifest-digest-coswid" title="suit-coswid">
+
+<t>a CoSWID can enable Software Bill-of-Materials use-cases. A CoMID can enable monitoring of expected hardware. A CoRIM (which may contain both CoSWID and CoMID) can enable both of these use-cases, but can also act as the transport for expected values to an attestation Verifier. Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.</t>
 
 <t>suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in <xref target="I-D.ietf-sacm-coswid"/>. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.</t>
 
@@ -90,9 +97,9 @@ appear in all capitals, as shown here.</t>
 
 <t>suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests.</t>
 
-<t>TODO: CoRIM might be a preferable alternative to CoSWID.
-TODO: Should CoMID be offered as an alternative to Vendor ID/Class ID?
-TODO: Should there be a CoMID namespace identifier for UUIDs?</t>
+<t>NOTE: CoRIM comprises a list of CoSWID and a list of CoMID, so it may be preferable to a CoSWID.</t>
+
+<t>NOTE: CoMID may be a preferable alternative to Vendor ID/Class ID, however it consumes more bandwidth, so a UUID based on CoMID may be appropriate.</t>
 
 </section>
 <section anchor="text-version-required" title="text-version-required">
@@ -111,7 +118,7 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?</t>
 </section>
 <section anchor="extension-parameters" title="Extension Parameters">
 
-<t>Several parameters are needed to define the behaviour of the commands specified in <xref target="extension-commands"/>. These parameters follow the same considerations as defined in SUIT_Parameters, Section 8.4.8 of <xref target="I-D.ietf-suit-manifest"/></t>
+<t>Several parameters are needed to define the behaviour of the commands specified in <xref target="extension-commands"/>. These parameters follow the same considerations as defined in Section 8.4.8 of <xref target="I-D.ietf-suit-manifest"/>.</t>
 
 <texttable>
       <ttcol align='left'>Name</ttcol>
@@ -399,7 +406,7 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?</t>
       <author fullname='David Waltermire'>
 	 <organization>National Institute of Standards and Technology</organization>
       </author>
-      <date day='20' month='October' year='2021'/>
+      <date day='26' month='January' year='2022'/>
       <abstract>
 	 <t>   ISO/IEC 19770-2:2015 Software Identification (SWID) tags provide an
    extensible XML-based structure to identify and describe individual
@@ -414,8 +421,8 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?</t>
 	 </t>
       </abstract>
    </front>
-   <seriesInfo name='Internet-Draft' value='draft-ietf-sacm-coswid-19'/>
-   <format target='https://www.ietf.org/archive/id/draft-ietf-sacm-coswid-19.txt' type='TXT'/>
+   <seriesInfo name='Internet-Draft' value='draft-ietf-sacm-coswid-20'/>
+   <format target='https://www.ietf.org/archive/id/draft-ietf-sacm-coswid-20.txt' type='TXT'/>
 </reference>
 
 
@@ -434,7 +441,7 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?</t>
       <author fullname='Koen Zandberg'>
 	 <organization>Inria</organization>
       </author>
-      <date day='12' month='July' year='2021'/>
+      <date day='25' month='October' year='2021'/>
       <abstract>
 	 <t>   This specification describes the format of a manifest.  A manifest is
    a bundle of metadata about code/data obtained by a recipient (chiefly
@@ -448,8 +455,8 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?</t>
 	 </t>
       </abstract>
    </front>
-   <seriesInfo name='Internet-Draft' value='draft-ietf-suit-manifest-14'/>
-   <format target='https://www.ietf.org/archive/id/draft-ietf-suit-manifest-14.txt' type='TXT'/>
+   <seriesInfo name='Internet-Draft' value='draft-ietf-suit-manifest-16'/>
+   <format target='https://www.ietf.org/archive/id/draft-ietf-suit-manifest-16.txt' type='TXT'/>
 </reference>
 
 
@@ -508,7 +515,7 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?</t>
 
 <reference anchor='I-D.ietf-suit-information-model'>
    <front>
-      <title>A Manifest Information Model for Firmware Updates in IoT Devices</title>
+      <title>A Manifest Information Model for Firmware Updates in Internet of Things (IoT) Devices</title>
       <author fullname='Brendan Moran'>
 	 <organization>Arm Limited</organization>
       </author>
@@ -520,18 +527,9 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?</t>
       </author>
       <date day='8' month='July' year='2021'/>
       <abstract>
-	 <t>   Vulnerabilities with Internet of Things (IoT) devices have raised the
-   need for a reliable and secure firmware update mechanism that is also
-   suitable for constrained devices.  Ensuring that devices function and
-   remain secure over their service life requires such an update
-   mechanism to fix vulnerabilities, to update configuration settings,
-   as well as adding new functionality.
+	 <t>Vulnerabilities with Internet of Things (IoT) devices have raised the need for a reliable and secure firmware update mechanism that is also suitable for constrained devices. Ensuring that devices function and remain secure over their service lifetime requires such an update mechanism to fix vulnerabilities, update configuration settings, and add new functionality.
 
-   One component of such a firmware update is a concise and machine-
-   processable meta-data document, or manifest, that describes the
-   firmware image(s) and offers appropriate protection.  This document
-   describes the information that must be present in the manifest.
-
+ One component of such a firmware update is a concise and machine-processable metadata document, or manifest, that describes the firmware image(s) and offers appropriate protection. This document describes the information that must be present in the manifest.
 	 </t>
       </abstract>
    </front>
@@ -550,181 +548,26 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?</t>
 <t>To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of <xref target="I-D.ietf-suit-manifest"/></t>
 
 <figure><artwork type="CDDL"><![CDATA[
-SUIT_Envelope_Tagged = #6.107(SUIT_Envelope)
-SUIT_Envelope = {
-  ? suit-delegation => bstr .cbor SUIT_Delegation,
-  suit-authentication-wrapper => bstr .cbor SUIT_Authentication,
-  suit-manifest  => bstr .cbor SUIT_Manifest,
-  SUIT_Severable_Manifest_Members,
-  * SUIT_Integrated_Payload,
-  * SUIT_Integrated_Dependency,
-  * $$SUIT_Envelope_Extensions,
-  * (int => bstr)
-}
+$$SUIT_severable-members-extensions //= (
+    suit-coswid => bstr .cbor concise-software-identity)
 
-SUIT_Delegation = [ + [ + bstr .cbor CWT ] ]
-
-CWT = SUIT_Authentication_Block
-
-SUIT_Authentication = [
-    bstr .cbor SUIT_Digest,
-    * bstr .cbor SUIT_Authentication_Block
-]
-
-SUIT_Digest = [
-  suit-digest-algorithm-id : suit-cose-hash-algs,
-  suit-digest-bytes : bstr,
-  * $$SUIT_Digest-extensions
-]
-
-SUIT_Authentication_Block /= COSE_Mac_Tagged
-SUIT_Authentication_Block /= COSE_Sign_Tagged
-SUIT_Authentication_Block /= COSE_Mac0_Tagged
-SUIT_Authentication_Block /= COSE_Sign1_Tagged
-
-SUIT_Severable_Manifest_Members = (
-  ? suit-dependency-resolution => bstr .cbor SUIT_Command_Sequence,
-  ? suit-payload-fetch => bstr .cbor SUIT_Command_Sequence,
-  ? suit-install => bstr .cbor SUIT_Command_Sequence,
-  ? suit-text => bstr .cbor SUIT_Text_Map,
-  ? suit-coswid => bstr .cbor concise-software-identity,
-  * $$SUIT_severable-members-extensions,
+$$severable-manifest-members-choice-extensions //= (
+    suit-coswid => bstr .cbor SUIT_Command_Sequence / SUIT_Digest
 )
 
-SUIT_Integrated_Payload = (suit-integrated-payload-key => bstr)
-SUIT_Integrated_Dependency = (
-    suit-integrated-dependency-key => bstr .cbor SUIT_Envelope
-)
-suit-integrated-payload-key = nint / uint .ge 24
-suit-integrated-dependency-key = suit-integrated-payload-key
+SUIT_Condition //= (
+    suit-condition-image-not-match,   SUIT_Rep_Policy)
+SUIT_Condition //= (
+    suit-condition-use-before,        SUIT_Rep_Policy)
+SUIT_Condition //= (
+    suit-condition-minimum-battery,   SUIT_Rep_Policy)
+SUIT_Condition //= (
+    suit-condition-update-authorized, SUIT_Rep_Policy)
+SUIT_Condition //= (
+    suit-condition-version,           SUIT_Rep_Policy)
 
-SUIT_Manifest_Tagged = #6.1070(SUIT_Manifest)
-
-SUIT_Manifest = {
-    suit-manifest-version         => 1,
-    suit-manifest-sequence-number => uint,
-    suit-common                   => bstr .cbor SUIT_Common,
-    ? suit-reference-uri          => tstr,
-    SUIT_Severable_Members_Choice,
-    SUIT_Unseverable_Members,
-    * $$SUIT_Manifest_Extensions,
-}
-
-SUIT_Unseverable_Members = (
-  ? suit-validate => bstr .cbor SUIT_Command_Sequence,
-  ? suit-load => bstr .cbor SUIT_Command_Sequence,
-  ? suit-run => bstr .cbor SUIT_Command_Sequence,
-  * $$unseverable-manifest-member-extensions,
-)
-
-SUIT_Severable_Members_Choice = (
-  ? suit-dependency-resolution => \
-    bstr .cbor SUIT_Command_Sequence / SUIT_Digest,
-  ? suit-payload-fetch => \
-    bstr .cbor SUIT_Command_Sequence / SUIT_Digest,
-  ? suit-install => bstr .cbor SUIT_Command_Sequence / SUIT_Digest,
-  ? suit-text => bstr .cbor SUIT_Command_Sequence / SUIT_Digest,
-  ? suit-coswid => bstr .cbor SUIT_Command_Sequence / SUIT_Digest,
-  * $$severable-manifest-members-choice-extensions
-)
-
-SUIT_Common = {
-    ? suit-dependencies           => SUIT_Dependencies,
-    ? suit-components             => SUIT_Components,
-    ? suit-common-sequence        => bstr .cbor SUIT_Common_Sequence,
-    * $$SUIT_Common-extensions,
-}
-
-SUIT_Dependencies         = [ + SUIT_Dependency ]
-SUIT_Components           = [ + SUIT_Component_Identifier ]
-
-concise-software-identity = any
-
-SUIT_Dependency = {
-    suit-dependency-digest => SUIT_Digest,
-    ? suit-dependency-prefix => SUIT_Component_Identifier,
-    * $$SUIT_Dependency-extensions,
-}
-
-;REQUIRED to implement:
-suit-cose-hash-algs /= cose-alg-sha-256
-
-;OPTIONAL to implement:
-suit-cose-hash-algs /= cose-alg-shake128
-suit-cose-hash-algs /= cose-alg-sha-384
-suit-cose-hash-algs /= cose-alg-sha-512
-suit-cose-hash-algs /= cose-alg-shake256
-
-SUIT_Component_Identifier =  [* bstr]
-
-SUIT_Common_Sequence = [
-    + ( SUIT_Condition // SUIT_Common_Commands )
-]
-
-SUIT_Common_Commands //= (suit-directive-set-component-index,  IndexArg)
-SUIT_Common_Commands //= (suit-directive-set-dependency-index, IndexArg)
-SUIT_Common_Commands //= (suit-directive-run-sequence,
-    bstr .cbor SUIT_Command_Sequence)
-SUIT_Common_Commands //= (suit-directive-try-each,
-    SUIT_Directive_Try_Each_Argument)
-SUIT_Common_Commands //= (suit-directive-set-parameters,
-    {+ SUIT_Parameters})
-SUIT_Common_Commands //= (suit-directive-override-parameters,
-    {+ SUIT_Parameters})
-
-IndexArg /= uint
-IndexArg /= bool
-IndexArg /= [+uint]
-
-SUIT_Command_Sequence = [ + (
-    SUIT_Condition // SUIT_Directive // SUIT_Command_Custom
-) ]
-
-SUIT_Command_Custom = (suit-command-custom, bstr/tstr/int/nil)
-SUIT_Condition //= (suit-condition-vendor-identifier, SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-class-identifier,  SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-device-identifier, SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-image-match,       SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-image-not-match,   SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-use-before,        SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-minimum-battery,   SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-update-authorized, SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-version,           SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-component-slot,    SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-abort,             SUIT_Rep_Policy)
-
-SUIT_Directive //= (suit-directive-set-component-index,  IndexArg)
-SUIT_Directive //= (suit-directive-set-dependency-index, IndexArg)
-SUIT_Directive //= (suit-directive-run-sequence,
-    bstr .cbor SUIT_Command_Sequence)
-SUIT_Directive //= (suit-directive-try-each,
-    SUIT_Directive_Try_Each_Argument)
-SUIT_Directive //= (suit-directive-process-dependency, SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-set-parameters,
-    {+ SUIT_Parameters})
-SUIT_Directive //= (suit-directive-override-parameters,
-    {+ SUIT_Parameters})
-SUIT_Directive //= (suit-directive-fetch,             SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-copy,              SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-swap,              SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-run,               SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-wait,              SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-fetch-uri-list,    SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-unlink,            SUIT_Rep_Policy)
-
-SUIT_Directive_Try_Each_Argument = [
-    2* bstr .cbor SUIT_Command_Sequence,
-    ?nil
-]
-
-SUIT_Rep_Policy = uint .bits suit-reporting-bits
-
-suit-reporting-bits = &(
-    suit-send-record-success : 0,
-    suit-send-record-failure : 1,
-    suit-send-sysinfo-success : 2,
-    suit-send-sysinfo-failure : 3
-)
+SUIT_Directive //= (
+    suit-directive-wait,              SUIT_Rep_Policy)
 
 SUIT_Wait_Event = { + SUIT_Wait_Events }
 
@@ -744,45 +587,13 @@ SUIT_Wait_Event_Argument_Other_Device_Version = [
     other-device-version: [ + SUIT_Parameter_Version_Match ]
 ]
 
-SUIT_Parameters //= (suit-parameter-vendor-identifier =>
-    (RFC4122_UUID / cbor-pen))
-cbor-pen = #6.112(bstr)
-
-SUIT_Parameters //= (suit-parameter-class-identifier => RFC4122_UUID)
-SUIT_Parameters //= (suit-parameter-image-digest
-    => bstr .cbor SUIT_Digest)
-SUIT_Parameters //= (suit-parameter-image-size => uint)
 SUIT_Parameters //= (suit-parameter-use-before => uint)
-SUIT_Parameters //= (suit-parameter-component-slot => uint)
-
-SUIT_Parameters //= (suit-parameter-encryption-info
-    => bstr .cbor SUIT_Encryption_Info)
-SUIT_Parameters //= (suit-parameter-compression-info
-    => bstr .cbor SUIT_Compression_Info)
-SUIT_Parameters //= (suit-parameter-unpack-info
-    => bstr .cbor SUIT_Unpack_Info)
-
-SUIT_Parameters //= (suit-parameter-uri => tstr)
-SUIT_Parameters //= (suit-parameter-source-component => uint)
-SUIT_Parameters //= (suit-parameter-run-args => bstr)
-
-SUIT_Parameters //= (suit-parameter-device-identifier => RFC4122_UUID)
 SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
 SUIT_Parameters //= (suit-parameter-update-priority => uint)
 SUIT_Parameters //= (suit-parameter-version =>
     SUIT_Parameter_Version_Match)
 SUIT_Parameters //= (suit-parameter-wait-info =>
     bstr .cbor SUIT_Wait_Event)
-
-SUIT_Parameters //= (suit-parameter-custom => int/bool/tstr/bstr)
-
-SUIT_Parameters //= (suit-parameter-strict-order => bool)
-SUIT_Parameters //= (suit-parameter-soft-failure => bool)
-
-SUIT_Parameters //= (suit-parameter-uri-list =>
-    bstr .cbor SUIT_URI_List)
-
-RFC4122_UUID = bstr .size 16
 
 SUIT_Parameter_Version_Match = [
     suit-condition-version-comparison-type:
@@ -809,127 +620,17 @@ suit-condition-version-comparison-lesser = 5
 
 SUIT_Condition_Version_Comparison_Value = [+int]
 
-SUIT_Encryption_Info = COSE_Encrypt_Tagged/COSE_Encrypt0_Tagged
-SUIT_Compression_Info = {
-    suit-compression-algorithm => SUIT_Compression_Algorithms,
-    * $$SUIT_Compression_Info-extensions,
-}
+$$suit-text-component-key-extensions //= (
+    suit-text-version-required => tstr)
 
-SUIT_Compression_Algorithms /= SUIT_Compression_Algorithm_zlib
-SUIT_Compression_Algorithms /= SUIT_Compression_Algorithm_brotli
-SUIT_Compression_Algorithms /= SUIT_Compression_Algorithm_zstd
-
-SUIT_Compression_Algorithm_zlib = 1
-SUIT_Compression_Algorithm_brotli = 2
-SUIT_Compression_Algorithm_zstd = 3
-
-SUIT_Unpack_Info = {
-    suit-unpack-algorithm => SUIT_Unpack_Algorithms,
-    * $$SUIT_Unpack_Info-extensions,
-
-}
-
-SUIT_Unpack_Algorithms /= SUIT_Unpack_Algorithm_Hex
-SUIT_Unpack_Algorithms /= SUIT_Unpack_Algorithm_Elf
-SUIT_Unpack_Algorithms /= SUIT_Unpack_Algorithm_Coff
-SUIT_Unpack_Algorithms /= SUIT_Unpack_Algorithm_Srec
-
-SUIT_Unpack_Algorithm_Hex = 1
-SUIT_Unpack_Algorithm_Elf = 2
-SUIT_Unpack_Algorithm_Coff = 3
-SUIT_Unpack_Algorithm_Srec = 4
-
-SUIT_URI_List = [+ tstr ]
-
-SUIT_Text_Map = {
-    SUIT_Text_Keys,
-    * SUIT_Component_Identifier => {
-        SUIT_Text_Component_Keys
-    }
-}
-
-SUIT_Text_Component_Keys = (
-    ? suit-text-vendor-name           => tstr,
-    ? suit-text-model-name            => tstr,
-    ? suit-text-vendor-domain         => tstr,
-    ? suit-text-model-info            => tstr,
-    ? suit-text-component-description => tstr,
-    ? suit-text-component-version     => tstr,
-    ? suit-text-version-required      => tstr,
-    * $$suit-text-component-key-extensions
-)
-
-SUIT_Text_Keys = (
-    ? suit-text-manifest-description => tstr,
-    ? suit-text-update-description   => tstr,
-    ? suit-text-manifest-json-source => tstr,
-    ? suit-text-manifest-yaml-source => tstr,
-    * $$suit-text-key-extensions
-)
-
-suit-delegation = 1
-suit-authentication-wrapper = 2
-suit-manifest = 3
-
-;REQUIRED to implement:
-cose-alg-sha-256 = -16
-
-;OPTIONAL to implement:
-cose-alg-shake128 = -18
-cose-alg-sha-384 = -43
-cose-alg-sha-512 = -44
-cose-alg-shake256 = -45
-
-suit-manifest-version = 1
-suit-manifest-sequence-number = 2
-suit-common = 3
-suit-reference-uri = 4
-suit-dependency-resolution = 7
-suit-payload-fetch = 8
-suit-install = 9
-suit-validate = 10
-suit-load = 11
-suit-run = 12
-suit-text = 13
 suit-coswid = 14
-
-suit-dependencies = 1
-suit-components = 2
-suit-common-sequence = 4
-
-suit-dependency-digest = 1
-suit-dependency-prefix = 2
-
-suit-command-custom = nint
-
-suit-condition-vendor-identifier = 1
-suit-condition-class-identifier  = 2
-suit-condition-image-match       = 3
 suit-condition-use-before        = 4
-suit-condition-component-slot    = 5
-
-suit-condition-abort                    = 14
-suit-condition-device-identifier        = 24
 suit-condition-image-not-match          = 25
 suit-condition-minimum-battery          = 26
 suit-condition-update-authorized        = 27
 suit-condition-version                  = 28
 
-suit-directive-set-component-index      = 12
-suit-directive-set-dependency-index     = 13
-suit-directive-try-each                 = 15
-suit-directive-process-dependency       = 18
-suit-directive-set-parameters           = 19
-suit-directive-override-parameters      = 20
-suit-directive-fetch                    = 21
-suit-directive-copy                     = 22
-suit-directive-run                      = 23
-
 suit-directive-wait                     = 29
-suit-directive-fetch-uri-list           = 30
-suit-directive-swap                     = 31
-suit-directive-run-sequence             = 32
-suit-directive-unlink                   = 33
 
 suit-wait-event-authorization        = 1
 suit-wait-event-power                = 2
@@ -939,47 +640,12 @@ suit-wait-event-time                 = 5
 suit-wait-event-time-of-day          = 6
 suit-wait-event-day-of-week          = 7
 
-suit-parameter-vendor-identifier = 1
-suit-parameter-class-identifier  = 2
-suit-parameter-image-digest      = 3
 suit-parameter-use-before        = 4
-suit-parameter-component-slot    = 5
-
-suit-parameter-strict-order      = 12
-suit-parameter-soft-failure      = 13
-suit-parameter-image-size        = 14
-
-suit-parameter-encryption-info   = 18
-suit-parameter-compression-info  = 19
-suit-parameter-unpack-info       = 20
-suit-parameter-uri               = 21
-suit-parameter-source-component  = 22
-suit-parameter-run-args          = 23
-
-suit-parameter-device-identifier = 24
 suit-parameter-minimum-battery   = 26
 suit-parameter-update-priority   = 27
 suit-parameter-version           = 28
 suit-parameter-wait-info         = 29
-suit-parameter-uri-list          = 30
 
-suit-parameter-custom = nint
-
-suit-compression-algorithm = 1
-
-suit-unpack-algorithm  = 1
-
-suit-text-manifest-description  = 1
-suit-text-update-description    = 2
-suit-text-manifest-json-source  = 3
-suit-text-manifest-yaml-source  = 4
-
-suit-text-vendor-name           = 1
-suit-text-model-name            = 2
-suit-text-vendor-domain         = 3
-suit-text-model-info            = 4
-suit-text-component-description = 5
-suit-text-component-version     = 6
 suit-text-version-required      = 7
 ]]></artwork></figure>
 
@@ -989,182 +655,141 @@ suit-text-version-required      = 7
   </back>
 
 <!-- ##markdown-source:
-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
-cj1t41YleGDe6H+P8f+LvDu7NHQAAA==
+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
+a5fXOsme3e23Db9EfgHx/wFR6yIzj0sAAA==
 
 -->
 

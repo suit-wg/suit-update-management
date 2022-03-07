@@ -1,7 +1,7 @@
 ---
 title: Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests
 abbrev: SUIT Update Management Extensions
-docname: draft-moran-suit-update-management-00
+docname: draft-ietf-suit-update-management-00
 category: std
 
 ipr: trust200902
@@ -65,9 +65,14 @@ Additionally, the following terminology is used throughout this document:
 
 # Extension Metadata
 
-Some additional metadata makes management of SUIT updates easier: a CoSWID can enable a 
+Some additional metadata makes management of SUIT updates easier:
+
+* CoSWID, CoMID, CoRIM
+* Text descriptions of requirements
 
 ## suit-coswid {#manifest-digest-coswid}
+
+a CoSWID can enable Software Bill-of-Materials use-cases. A CoMID can enable monitoring of expected hardware. A CoRIM (which may contain both CoSWID and CoMID) can enable both of these use-cases, but can also act as the transport for expected values to an attestation Verifier. Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.
 
 suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{I-D.ietf-sacm-coswid}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.
 
@@ -75,9 +80,9 @@ suit-coswid typically requires no processing by the Recipient. However all Recip
 
 suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests.
 
-TODO: CoRIM might be a preferable alternative to CoSWID.
-TODO: Should CoMID be offered as an alternative to Vendor ID/Class ID?
-TODO: Should there be a CoMID namespace identifier for UUIDs?
+NOTE: CoRIM comprises a list of CoSWID and a list of CoMID, so it may be preferable to a CoSWID.
+
+NOTE: CoMID may be a preferable alternative to Vendor ID/Class ID, however it consumes more bandwidth, so a UUID based on CoMID may be appropriate.
 
 ## text-version-required {#text-version-required}
 
@@ -93,7 +98,7 @@ By way of example only, to express a dependency on a component "\['x', 'y'\]", w
 
 # Extension Parameters {#extension-parameters}
 
-Several parameters are needed to define the behaviour of the commands specified in {{extension-commands}}. These parameters follow the same considerations as defined in SUIT_Parameters, Section 8.4.8 of {{I-D.ietf-suit-manifest}}
+Several parameters are needed to define the behaviour of the commands specified in {{extension-commands}}. These parameters follow the same considerations as defined in Section 8.4.8 of {{I-D.ietf-suit-manifest}}.
 
 Name | CDDL Structure | Reference
 ---|---|---
@@ -262,6 +267,6 @@ This document extends the SUIT manifest specification. A detailed security treat
 To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of {{I-D.ietf-suit-manifest}}
 
 ~~~ CDDL
-{::include draft-moran-suit-update-management.cddl}
+{::include draft-ietf-suit-update-management.cddl}
 ~~~
 

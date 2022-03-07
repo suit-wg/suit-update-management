@@ -15,11 +15,11 @@ extensions also provide a mechanism to inform a management system of
 Software Identifier and Software Bill Of Materials information about an
 updated device. 
     " name="description">
-<meta content="xml2rfc 3.10.0" name="generator">
+<meta content="xml2rfc 3.12.3" name="generator">
 <meta content="Internet-Draft" name="keyword">
-<meta content="draft-moran-suit-update-management-00" name="ietf.draft">
+<meta content="draft-ietf-suit-update-management-00" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.10.0
+  xml2rfc 3.12.3
     Python 3.8.9
     appdirs 1.4.4
     ConfigArgParse 1.5.3
@@ -29,6 +29,7 @@ updated device.
     Jinja2 2.11.3
     kitchen 1.2.6
     lxml 4.6.3
+    MarkupSafe 2.0.1
     pycountry 20.7.3
     pyflakes 2.4.0
     PyYAML 6.0
@@ -36,7 +37,7 @@ updated device.
     setuptools 49.2.1
     six 1.15.0
 -->
-<link href="draft-moran-suit-update-management.xml" rel="alternate" type="application/rfc+xml">
+<link href="./draft-ietf-suit-update-management.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -1183,7 +1184,6 @@ li > p:last-of-type {
 }
 </style>
 <link href="rfc-local.css" rel="stylesheet" type="text/css">
-<script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
 </head>
 <body>
 <script src="metadata.min.js"></script>
@@ -1191,11 +1191,11 @@ li > p:last-of-type {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">SUIT Update Management Extensions</td>
-<td class="right">October 2021</td>
+<td class="right">March 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Moran</td>
-<td class="center">Expires 28 April 2022</td>
+<td class="center">Expires 8 September 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1205,15 +1205,15 @@ li > p:last-of-type {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">SUIT</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-moran-suit-update-management-00</dd>
+<dd class="internet-draft">draft-ietf-suit-update-management-00</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-10-25" class="published">25 October 2021</time>
+<time datetime="2022-03-07" class="published">7 March 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-04-28">28 April 2022</time></dd>
+<dd class="expires"><time datetime="2022-09-08">8 September 2022</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1253,7 +1253,7 @@ updated device.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 28 April 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 8 September 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1262,7 +1262,7 @@ updated device.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <a href="#name-copyright-notice-2" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2021 IETF Trust and the persons identified as the
+            Copyright (c) 2022 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1271,9 +1271,9 @@ updated device.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
             publication of this document. Please review these documents
             carefully, as they describe your rights and restrictions with
             respect to this document. Code Components extracted from this
-            document must include Simplified BSD License text as described in
+            document must include Revised BSD License text as described in
             Section 4.e of the Trust Legal Provisions and are provided without
-            warranty as described in the Simplified BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="toc">
@@ -1408,18 +1408,24 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-extension-metadata-2">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-extension-metadata-2" class="section-name selfRef">Extension Metadata</a>
       </h2>
-<p id="section-3-1">Some additional metadata makes management of SUIT updates easier: a CoSWID can enable a<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">Some additional metadata makes management of SUIT updates easier:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-2.1">CoSWID, CoMID, CoRIM<a href="#section-3-2.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-3-2.2">Text descriptions of requirements<a href="#section-3-2.2" class="pilcrow">¶</a>
+</li>
+      </ul>
 <div id="manifest-digest-coswid">
 <section id="section-3.1">
         <h3 id="name-suit-coswid-2">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-suit-coswid-2" class="section-name selfRef">suit-coswid</a>
         </h3>
-<p id="section-3.1-1">suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in <span>[<a href="#I-D.ietf-sacm-coswid" class="xref">I-D.ietf-sacm-coswid</a>]</span>. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">suit-coswid typically requires no processing by the Recipient. However all Recipients MUST NOT fail if a suit-coswid is present.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1-4">TODO: CoRIM might be a preferable alternative to CoSWID.
-TODO: Should CoMID be offered as an alternative to Vendor ID/Class ID?
-TODO: Should there be a CoMID namespace identifier for UUIDs?<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">a CoSWID can enable Software Bill-of-Materials use-cases. A CoMID can enable monitoring of expected hardware. A CoRIM (which may contain both CoSWID and CoMID) can enable both of these use-cases, but can also act as the transport for expected values to an attestation Verifier. Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in <span>[<a href="#I-D.ietf-sacm-coswid" class="xref">I-D.ietf-sacm-coswid</a>]</span>. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">suit-coswid typically requires no processing by the Recipient. However all Recipients MUST NOT fail if a suit-coswid is present.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">NOTE: CoRIM comprises a list of CoSWID and a list of CoMID, so it may be preferable to a CoSWID.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.1-6">NOTE: CoMID may be a preferable alternative to Vendor ID/Class ID, however it consumes more bandwidth, so a UUID based on CoMID may be appropriate.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="text-version-required">
@@ -1445,7 +1451,7 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?<a href="#section-3
       <h2 id="name-extension-parameters-2">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-extension-parameters-2" class="section-name selfRef">Extension Parameters</a>
       </h2>
-<p id="section-4-1">Several parameters are needed to define the behaviour of the commands specified in <a href="#extension-commands" class="xref">Section 5</a>. These parameters follow the same considerations as defined in SUIT_Parameters, Section 8.4.8 of <span>[<a href="#I-D.ietf-suit-manifest" class="xref">I-D.ietf-suit-manifest</a>]</span><a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-1">Several parameters are needed to define the behaviour of the commands specified in <a href="#extension-commands" class="xref">Section 5</a>. These parameters follow the same considerations as defined in Section 8.4.8 of <span>[<a href="#I-D.ietf-suit-manifest" class="xref">I-D.ietf-suit-manifest</a>]</span>.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <table class="center" id="table-1">
         <caption><a href="#table-1" class="selfRef">Table 1</a></caption>
 <thead>
@@ -1902,11 +1908,11 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?<a href="#section-3
 <dl class="references">
 <dt id="I-D.ietf-sacm-coswid">[I-D.ietf-sacm-coswid]</dt>
         <dd>
-<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Fitzgerald-McKay, J.</span>, <span class="refAuthor">Schmidt, C.</span>, and <span class="refAuthor">D. Waltermire</span>, <span class="refTitle">"Concise Software Identification Tags"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-sacm-coswid-19</span>, <time datetime="2021-10-20" class="refDate">20 October 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-sacm-coswid-19.txt">https://www.ietf.org/archive/id/draft-ietf-sacm-coswid-19.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Fitzgerald-McKay, J.</span>, <span class="refAuthor">Schmidt, C.</span>, and <span class="refAuthor">D. Waltermire</span>, <span class="refTitle">"Concise Software Identification Tags"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-sacm-coswid-20</span>, <time datetime="2022-01-26" class="refDate">26 January 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-sacm-coswid-20.txt">https://www.ietf.org/archive/id/draft-ietf-sacm-coswid-20.txt</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-suit-manifest">[I-D.ietf-suit-manifest]</dt>
         <dd>
-<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Birkholz, H.</span>, and <span class="refAuthor">K. Zandberg</span>, <span class="refTitle">"A Concise Binary Object Representation (CBOR)-based Serialization Format for the Software Updates for Internet of Things (SUIT) Manifest"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-suit-manifest-14</span>, <time datetime="2021-07-12" class="refDate">12 July 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-suit-manifest-14.txt">https://www.ietf.org/archive/id/draft-ietf-suit-manifest-14.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Birkholz, H.</span>, and <span class="refAuthor">K. Zandberg</span>, <span class="refTitle">"A Concise Binary Object Representation (CBOR)-based Serialization Format for the Software Updates for Internet of Things (SUIT) Manifest"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-suit-manifest-16</span>, <time datetime="2021-10-25" class="refDate">25 October 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-suit-manifest-16.txt">https://www.ietf.org/archive/id/draft-ietf-suit-manifest-16.txt</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -1929,7 +1935,7 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?<a href="#section-3
 <dl class="references">
 <dt id="I-D.ietf-suit-information-model">[I-D.ietf-suit-information-model]</dt>
       <dd>
-<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">H. Birkholz</span>, <span class="refTitle">"A Manifest Information Model for Firmware Updates in IoT Devices"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-suit-information-model-13</span>, <time datetime="2021-07-08" class="refDate">8 July 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-suit-information-model-13.txt">https://www.ietf.org/archive/id/draft-ietf-suit-information-model-13.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">H. Birkholz</span>, <span class="refTitle">"A Manifest Information Model for Firmware Updates in Internet of Things (IoT) Devices"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-suit-information-model-13</span>, <time datetime="2021-07-08" class="refDate">8 July 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-suit-information-model-13.txt">https://www.ietf.org/archive/id/draft-ietf-suit-information-model-13.txt</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1942,181 +1948,26 @@ TODO: Should there be a CoMID namespace identifier for UUIDs?<a href="#section-3
 <p id="appendix-A-1">To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of <span>[<a href="#I-D.ietf-suit-manifest" class="xref">I-D.ietf-suit-manifest</a>]</span><a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-CDDL art-text artwork" id="appendix-A-2">
 <pre>
-SUIT_Envelope_Tagged = #6.107(SUIT_Envelope)
-SUIT_Envelope = {
-  ? suit-delegation =&gt; bstr .cbor SUIT_Delegation,
-  suit-authentication-wrapper =&gt; bstr .cbor SUIT_Authentication,
-  suit-manifest  =&gt; bstr .cbor SUIT_Manifest,
-  SUIT_Severable_Manifest_Members,
-  * SUIT_Integrated_Payload,
-  * SUIT_Integrated_Dependency,
-  * $$SUIT_Envelope_Extensions,
-  * (int =&gt; bstr)
-}
+$$SUIT_severable-members-extensions //= (
+    suit-coswid =&gt; bstr .cbor concise-software-identity)
 
-SUIT_Delegation = [ + [ + bstr .cbor CWT ] ]
-
-CWT = SUIT_Authentication_Block
-
-SUIT_Authentication = [
-    bstr .cbor SUIT_Digest,
-    * bstr .cbor SUIT_Authentication_Block
-]
-
-SUIT_Digest = [
-  suit-digest-algorithm-id : suit-cose-hash-algs,
-  suit-digest-bytes : bstr,
-  * $$SUIT_Digest-extensions
-]
-
-SUIT_Authentication_Block /= COSE_Mac_Tagged
-SUIT_Authentication_Block /= COSE_Sign_Tagged
-SUIT_Authentication_Block /= COSE_Mac0_Tagged
-SUIT_Authentication_Block /= COSE_Sign1_Tagged
-
-SUIT_Severable_Manifest_Members = (
-  ? suit-dependency-resolution =&gt; bstr .cbor SUIT_Command_Sequence,
-  ? suit-payload-fetch =&gt; bstr .cbor SUIT_Command_Sequence,
-  ? suit-install =&gt; bstr .cbor SUIT_Command_Sequence,
-  ? suit-text =&gt; bstr .cbor SUIT_Text_Map,
-  ? suit-coswid =&gt; bstr .cbor concise-software-identity,
-  * $$SUIT_severable-members-extensions,
+$$severable-manifest-members-choice-extensions //= (
+    suit-coswid =&gt; bstr .cbor SUIT_Command_Sequence / SUIT_Digest
 )
 
-SUIT_Integrated_Payload = (suit-integrated-payload-key =&gt; bstr)
-SUIT_Integrated_Dependency = (
-    suit-integrated-dependency-key =&gt; bstr .cbor SUIT_Envelope
-)
-suit-integrated-payload-key = nint / uint .ge 24
-suit-integrated-dependency-key = suit-integrated-payload-key
+SUIT_Condition //= (
+    suit-condition-image-not-match,   SUIT_Rep_Policy)
+SUIT_Condition //= (
+    suit-condition-use-before,        SUIT_Rep_Policy)
+SUIT_Condition //= (
+    suit-condition-minimum-battery,   SUIT_Rep_Policy)
+SUIT_Condition //= (
+    suit-condition-update-authorized, SUIT_Rep_Policy)
+SUIT_Condition //= (
+    suit-condition-version,           SUIT_Rep_Policy)
 
-SUIT_Manifest_Tagged = #6.1070(SUIT_Manifest)
-
-SUIT_Manifest = {
-    suit-manifest-version         =&gt; 1,
-    suit-manifest-sequence-number =&gt; uint,
-    suit-common                   =&gt; bstr .cbor SUIT_Common,
-    ? suit-reference-uri          =&gt; tstr,
-    SUIT_Severable_Members_Choice,
-    SUIT_Unseverable_Members,
-    * $$SUIT_Manifest_Extensions,
-}
-
-SUIT_Unseverable_Members = (
-  ? suit-validate =&gt; bstr .cbor SUIT_Command_Sequence,
-  ? suit-load =&gt; bstr .cbor SUIT_Command_Sequence,
-  ? suit-run =&gt; bstr .cbor SUIT_Command_Sequence,
-  * $$unseverable-manifest-member-extensions,
-)
-
-SUIT_Severable_Members_Choice = (
-  ? suit-dependency-resolution =&gt; \
-    bstr .cbor SUIT_Command_Sequence / SUIT_Digest,
-  ? suit-payload-fetch =&gt; \
-    bstr .cbor SUIT_Command_Sequence / SUIT_Digest,
-  ? suit-install =&gt; bstr .cbor SUIT_Command_Sequence / SUIT_Digest,
-  ? suit-text =&gt; bstr .cbor SUIT_Command_Sequence / SUIT_Digest,
-  ? suit-coswid =&gt; bstr .cbor SUIT_Command_Sequence / SUIT_Digest,
-  * $$severable-manifest-members-choice-extensions
-)
-
-SUIT_Common = {
-    ? suit-dependencies           =&gt; SUIT_Dependencies,
-    ? suit-components             =&gt; SUIT_Components,
-    ? suit-common-sequence        =&gt; bstr .cbor SUIT_Common_Sequence,
-    * $$SUIT_Common-extensions,
-}
-
-SUIT_Dependencies         = [ + SUIT_Dependency ]
-SUIT_Components           = [ + SUIT_Component_Identifier ]
-
-concise-software-identity = any
-
-SUIT_Dependency = {
-    suit-dependency-digest =&gt; SUIT_Digest,
-    ? suit-dependency-prefix =&gt; SUIT_Component_Identifier,
-    * $$SUIT_Dependency-extensions,
-}
-
-;REQUIRED to implement:
-suit-cose-hash-algs /= cose-alg-sha-256
-
-;OPTIONAL to implement:
-suit-cose-hash-algs /= cose-alg-shake128
-suit-cose-hash-algs /= cose-alg-sha-384
-suit-cose-hash-algs /= cose-alg-sha-512
-suit-cose-hash-algs /= cose-alg-shake256
-
-SUIT_Component_Identifier =  [* bstr]
-
-SUIT_Common_Sequence = [
-    + ( SUIT_Condition // SUIT_Common_Commands )
-]
-
-SUIT_Common_Commands //= (suit-directive-set-component-index,  IndexArg)
-SUIT_Common_Commands //= (suit-directive-set-dependency-index, IndexArg)
-SUIT_Common_Commands //= (suit-directive-run-sequence,
-    bstr .cbor SUIT_Command_Sequence)
-SUIT_Common_Commands //= (suit-directive-try-each,
-    SUIT_Directive_Try_Each_Argument)
-SUIT_Common_Commands //= (suit-directive-set-parameters,
-    {+ SUIT_Parameters})
-SUIT_Common_Commands //= (suit-directive-override-parameters,
-    {+ SUIT_Parameters})
-
-IndexArg /= uint
-IndexArg /= bool
-IndexArg /= [+uint]
-
-SUIT_Command_Sequence = [ + (
-    SUIT_Condition // SUIT_Directive // SUIT_Command_Custom
-) ]
-
-SUIT_Command_Custom = (suit-command-custom, bstr/tstr/int/nil)
-SUIT_Condition //= (suit-condition-vendor-identifier, SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-class-identifier,  SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-device-identifier, SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-image-match,       SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-image-not-match,   SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-use-before,        SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-minimum-battery,   SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-update-authorized, SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-version,           SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-component-slot,    SUIT_Rep_Policy)
-SUIT_Condition //= (suit-condition-abort,             SUIT_Rep_Policy)
-
-SUIT_Directive //= (suit-directive-set-component-index,  IndexArg)
-SUIT_Directive //= (suit-directive-set-dependency-index, IndexArg)
-SUIT_Directive //= (suit-directive-run-sequence,
-    bstr .cbor SUIT_Command_Sequence)
-SUIT_Directive //= (suit-directive-try-each,
-    SUIT_Directive_Try_Each_Argument)
-SUIT_Directive //= (suit-directive-process-dependency, SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-set-parameters,
-    {+ SUIT_Parameters})
-SUIT_Directive //= (suit-directive-override-parameters,
-    {+ SUIT_Parameters})
-SUIT_Directive //= (suit-directive-fetch,             SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-copy,              SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-swap,              SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-run,               SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-wait,              SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-fetch-uri-list,    SUIT_Rep_Policy)
-SUIT_Directive //= (suit-directive-unlink,            SUIT_Rep_Policy)
-
-SUIT_Directive_Try_Each_Argument = [
-    2* bstr .cbor SUIT_Command_Sequence,
-    ?nil
-]
-
-SUIT_Rep_Policy = uint .bits suit-reporting-bits
-
-suit-reporting-bits = &amp;(
-    suit-send-record-success : 0,
-    suit-send-record-failure : 1,
-    suit-send-sysinfo-success : 2,
-    suit-send-sysinfo-failure : 3
-)
+SUIT_Directive //= (
+    suit-directive-wait,              SUIT_Rep_Policy)
 
 SUIT_Wait_Event = { + SUIT_Wait_Events }
 
@@ -2136,45 +1987,13 @@ SUIT_Wait_Event_Argument_Other_Device_Version = [
     other-device-version: [ + SUIT_Parameter_Version_Match ]
 ]
 
-SUIT_Parameters //= (suit-parameter-vendor-identifier =&gt;
-    (RFC4122_UUID / cbor-pen))
-cbor-pen = #6.112(bstr)
-
-SUIT_Parameters //= (suit-parameter-class-identifier =&gt; RFC4122_UUID)
-SUIT_Parameters //= (suit-parameter-image-digest
-    =&gt; bstr .cbor SUIT_Digest)
-SUIT_Parameters //= (suit-parameter-image-size =&gt; uint)
 SUIT_Parameters //= (suit-parameter-use-before =&gt; uint)
-SUIT_Parameters //= (suit-parameter-component-slot =&gt; uint)
-
-SUIT_Parameters //= (suit-parameter-encryption-info
-    =&gt; bstr .cbor SUIT_Encryption_Info)
-SUIT_Parameters //= (suit-parameter-compression-info
-    =&gt; bstr .cbor SUIT_Compression_Info)
-SUIT_Parameters //= (suit-parameter-unpack-info
-    =&gt; bstr .cbor SUIT_Unpack_Info)
-
-SUIT_Parameters //= (suit-parameter-uri =&gt; tstr)
-SUIT_Parameters //= (suit-parameter-source-component =&gt; uint)
-SUIT_Parameters //= (suit-parameter-run-args =&gt; bstr)
-
-SUIT_Parameters //= (suit-parameter-device-identifier =&gt; RFC4122_UUID)
 SUIT_Parameters //= (suit-parameter-minimum-battery =&gt; uint)
 SUIT_Parameters //= (suit-parameter-update-priority =&gt; uint)
 SUIT_Parameters //= (suit-parameter-version =&gt;
     SUIT_Parameter_Version_Match)
 SUIT_Parameters //= (suit-parameter-wait-info =&gt;
     bstr .cbor SUIT_Wait_Event)
-
-SUIT_Parameters //= (suit-parameter-custom =&gt; int/bool/tstr/bstr)
-
-SUIT_Parameters //= (suit-parameter-strict-order =&gt; bool)
-SUIT_Parameters //= (suit-parameter-soft-failure =&gt; bool)
-
-SUIT_Parameters //= (suit-parameter-uri-list =&gt;
-    bstr .cbor SUIT_URI_List)
-
-RFC4122_UUID = bstr .size 16
 
 SUIT_Parameter_Version_Match = [
     suit-condition-version-comparison-type:
@@ -2201,127 +2020,17 @@ suit-condition-version-comparison-lesser = 5
 
 SUIT_Condition_Version_Comparison_Value = [+int]
 
-SUIT_Encryption_Info = COSE_Encrypt_Tagged/COSE_Encrypt0_Tagged
-SUIT_Compression_Info = {
-    suit-compression-algorithm =&gt; SUIT_Compression_Algorithms,
-    * $$SUIT_Compression_Info-extensions,
-}
+$$suit-text-component-key-extensions //= (
+    suit-text-version-required =&gt; tstr)
 
-SUIT_Compression_Algorithms /= SUIT_Compression_Algorithm_zlib
-SUIT_Compression_Algorithms /= SUIT_Compression_Algorithm_brotli
-SUIT_Compression_Algorithms /= SUIT_Compression_Algorithm_zstd
-
-SUIT_Compression_Algorithm_zlib = 1
-SUIT_Compression_Algorithm_brotli = 2
-SUIT_Compression_Algorithm_zstd = 3
-
-SUIT_Unpack_Info = {
-    suit-unpack-algorithm =&gt; SUIT_Unpack_Algorithms,
-    * $$SUIT_Unpack_Info-extensions,
-
-}
-
-SUIT_Unpack_Algorithms /= SUIT_Unpack_Algorithm_Hex
-SUIT_Unpack_Algorithms /= SUIT_Unpack_Algorithm_Elf
-SUIT_Unpack_Algorithms /= SUIT_Unpack_Algorithm_Coff
-SUIT_Unpack_Algorithms /= SUIT_Unpack_Algorithm_Srec
-
-SUIT_Unpack_Algorithm_Hex = 1
-SUIT_Unpack_Algorithm_Elf = 2
-SUIT_Unpack_Algorithm_Coff = 3
-SUIT_Unpack_Algorithm_Srec = 4
-
-SUIT_URI_List = [+ tstr ]
-
-SUIT_Text_Map = {
-    SUIT_Text_Keys,
-    * SUIT_Component_Identifier =&gt; {
-        SUIT_Text_Component_Keys
-    }
-}
-
-SUIT_Text_Component_Keys = (
-    ? suit-text-vendor-name           =&gt; tstr,
-    ? suit-text-model-name            =&gt; tstr,
-    ? suit-text-vendor-domain         =&gt; tstr,
-    ? suit-text-model-info            =&gt; tstr,
-    ? suit-text-component-description =&gt; tstr,
-    ? suit-text-component-version     =&gt; tstr,
-    ? suit-text-version-required      =&gt; tstr,
-    * $$suit-text-component-key-extensions
-)
-
-SUIT_Text_Keys = (
-    ? suit-text-manifest-description =&gt; tstr,
-    ? suit-text-update-description   =&gt; tstr,
-    ? suit-text-manifest-json-source =&gt; tstr,
-    ? suit-text-manifest-yaml-source =&gt; tstr,
-    * $$suit-text-key-extensions
-)
-
-suit-delegation = 1
-suit-authentication-wrapper = 2
-suit-manifest = 3
-
-;REQUIRED to implement:
-cose-alg-sha-256 = -16
-
-;OPTIONAL to implement:
-cose-alg-shake128 = -18
-cose-alg-sha-384 = -43
-cose-alg-sha-512 = -44
-cose-alg-shake256 = -45
-
-suit-manifest-version = 1
-suit-manifest-sequence-number = 2
-suit-common = 3
-suit-reference-uri = 4
-suit-dependency-resolution = 7
-suit-payload-fetch = 8
-suit-install = 9
-suit-validate = 10
-suit-load = 11
-suit-run = 12
-suit-text = 13
 suit-coswid = 14
-
-suit-dependencies = 1
-suit-components = 2
-suit-common-sequence = 4
-
-suit-dependency-digest = 1
-suit-dependency-prefix = 2
-
-suit-command-custom = nint
-
-suit-condition-vendor-identifier = 1
-suit-condition-class-identifier  = 2
-suit-condition-image-match       = 3
 suit-condition-use-before        = 4
-suit-condition-component-slot    = 5
-
-suit-condition-abort                    = 14
-suit-condition-device-identifier        = 24
 suit-condition-image-not-match          = 25
 suit-condition-minimum-battery          = 26
 suit-condition-update-authorized        = 27
 suit-condition-version                  = 28
 
-suit-directive-set-component-index      = 12
-suit-directive-set-dependency-index     = 13
-suit-directive-try-each                 = 15
-suit-directive-process-dependency       = 18
-suit-directive-set-parameters           = 19
-suit-directive-override-parameters      = 20
-suit-directive-fetch                    = 21
-suit-directive-copy                     = 22
-suit-directive-run                      = 23
-
 suit-directive-wait                     = 29
-suit-directive-fetch-uri-list           = 30
-suit-directive-swap                     = 31
-suit-directive-run-sequence             = 32
-suit-directive-unlink                   = 33
 
 suit-wait-event-authorization        = 1
 suit-wait-event-power                = 2
@@ -2331,47 +2040,12 @@ suit-wait-event-time                 = 5
 suit-wait-event-time-of-day          = 6
 suit-wait-event-day-of-week          = 7
 
-suit-parameter-vendor-identifier = 1
-suit-parameter-class-identifier  = 2
-suit-parameter-image-digest      = 3
 suit-parameter-use-before        = 4
-suit-parameter-component-slot    = 5
-
-suit-parameter-strict-order      = 12
-suit-parameter-soft-failure      = 13
-suit-parameter-image-size        = 14
-
-suit-parameter-encryption-info   = 18
-suit-parameter-compression-info  = 19
-suit-parameter-unpack-info       = 20
-suit-parameter-uri               = 21
-suit-parameter-source-component  = 22
-suit-parameter-run-args          = 23
-
-suit-parameter-device-identifier = 24
 suit-parameter-minimum-battery   = 26
 suit-parameter-update-priority   = 27
 suit-parameter-version           = 28
 suit-parameter-wait-info         = 29
-suit-parameter-uri-list          = 30
 
-suit-parameter-custom = nint
-
-suit-compression-algorithm = 1
-
-suit-unpack-algorithm  = 1
-
-suit-text-manifest-description  = 1
-suit-text-update-description    = 2
-suit-text-manifest-json-source  = 3
-suit-text-manifest-yaml-source  = 4
-
-suit-text-vendor-name           = 1
-suit-text-model-name            = 2
-suit-text-vendor-domain         = 3
-suit-text-model-info            = 4
-suit-text-component-description = 5
-suit-text-component-version     = 6
 suit-text-version-required      = 7
 </pre><a href="#appendix-A-2" class="pilcrow">¶</a>
 </div>
