@@ -4,13 +4,13 @@
 
 SUIT                                                            B. Moran
 Internet-Draft                                               Arm Limited
-Intended status: Standards Track                            7 March 2022
-Expires: 8 September 2022
+Intended status: Standards Track                         24 October 2022
+Expires: 27 April 2023
 
 
 Update Management Extensions for Software Updates for Internet of Things
                             (SUIT) Manifests
-                  draft-ietf-suit-update-management-00
+                  draft-ietf-suit-update-management-01
 
 Abstract
 
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 September 2022.
+   This Internet-Draft will expire on 27 April 2023.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Moran                   Expires 8 September 2022                [Page 1]
+Moran                     Expires 27 April 2023                 [Page 1]
 
-Internet-Draft      SUIT Update Management Extensions         March 2022
+Internet-Draft      SUIT Update Management Extensions       October 2022
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -69,7 +69,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Conventions and Terminology . . . . . . . . . . . . . . . . .   3
    3.  Extension Metadata  . . . . . . . . . . . . . . . . . . . . .   3
      3.1.  suit-coswid . . . . . . . . . . . . . . . . . . . . . . .   3
@@ -82,20 +82,37 @@ Table of Contents
      4.5.  suit-parameter-wait-info  . . . . . . . . . . . . . . . .   7
    5.  Extension Commands  . . . . . . . . . . . . . . . . . . . . .   8
      5.1.  suit-condition-use-before . . . . . . . . . . . . . . . .   9
-     5.2.  suit-condition-image-not-match  . . . . . . . . . . . . .   9
+     5.2.  suit-condition-image-not-match  . . . . . . . . . . . . .  10
      5.3.  suit-condition-minimum-battery  . . . . . . . . . . . . .  10
      5.4.  suit-condition-update-authorized  . . . . . . . . . . . .  10
      5.5.  suit-condition-version  . . . . . . . . . . . . . . . . .  10
      5.6.  suit-directive-wait . . . . . . . . . . . . . . . . . . .  10
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  11
-     6.1.  SUIT Commands . . . . . . . . . . . . . . . . . . . . . .  11
-     6.2.  SUIT Parameters . . . . . . . . . . . . . . . . . . . . .  11
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  12
-   Appendix A.  A.  Full CDDL  . . . . . . . . . . . . . . . . . . .  13
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  15
+     5.7.  suit-directive-override-multiple  . . . . . . . . . . . .  11
+     5.8.  suit-directive-copy-params  . . . . . . . . . . . . . . .  12
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
+     6.1.  SUIT Commands . . . . . . . . . . . . . . . . . . . . . .  12
+     6.2.  SUIT Parameters . . . . . . . . . . . . . . . . . . . . .  13
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  14
+   Appendix A.  A.  Full CDDL  . . . . . . . . . . . . . . . . . . .  14
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  17
+
+
+
+
+
+
+
+
+
+
+
+Moran                     Expires 27 April 2023                 [Page 2]
+
+Internet-Draft      SUIT Update Management Extensions       October 2022
+
 
 1.  Introduction
 
@@ -106,14 +123,6 @@ Table of Contents
    extensions to the SUIT manifest ([I-D.ietf-suit-manifest]) that
    enable an author to coordinate with these other systems.  These
    extensions enable authors to instruct devices to examine update
-
-
-
-Moran                   Expires 8 September 2022                [Page 2]
-
-Internet-Draft      SUIT Update Management Extensions         March 2022
-
-
    priority, local update authorisation, update lifetime, and system
    properties.  They also enable devices to report and distributors to
    collect Software Bill of Materials information.
@@ -153,6 +162,14 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
    ensures that verification infrastructure always knows what software
    to expect on each device.
 
+
+
+
+Moran                     Expires 27 April 2023                 [Page 3]
+
+Internet-Draft      SUIT Update Management Extensions       October 2022
+
+
    suit-coswid is a member of the suit-manifest.  It contains a Concise
    Software Identifier (CoSWID) as defined in [I-D.ietf-sacm-coswid].
    This element SHOULD be made severable so that it can be discarded by
@@ -161,14 +178,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
 
    suit-coswid typically requires no processing by the Recipient.
    However all Recipients MUST NOT fail if a suit-coswid is present.
-
-
-
-
-Moran                   Expires 8 September 2022                [Page 3]
-
-Internet-Draft      SUIT Update Management Extensions         March 2022
-
 
    suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in
    manifests.
@@ -212,18 +221,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
 
 
 
-
-
-
-
-
-
-
-
-
-Moran                   Expires 8 September 2022                [Page 4]
+Moran                     Expires 27 April 2023                 [Page 4]
 
-Internet-Draft      SUIT Update Management Extensions         March 2022
+Internet-Draft      SUIT Update Management Extensions       October 2022
 
 
     +=================+================================+=============+
@@ -277,9 +277,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
 
 
 
-Moran                   Expires 8 September 2022                [Page 5]
+Moran                     Expires 27 April 2023                 [Page 5]
 
-Internet-Draft      SUIT Update Management Extensions         March 2022
+Internet-Draft      SUIT Update Management Extensions       October 2022
 
 
 4.4.  suit-parameter-version
@@ -333,9 +333,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
 
 
 
-Moran                   Expires 8 September 2022                [Page 6]
+Moran                     Expires 27 April 2023                 [Page 6]
 
-Internet-Draft      SUIT Update Management Extensions         March 2022
+Internet-Draft      SUIT Update Management Extensions       October 2022
 
 
    1.  The first integer represents the major number.  This indicates
@@ -389,9 +389,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
 
 
 
-Moran                   Expires 8 September 2022                [Page 7]
+Moran                     Expires 27 April 2023                 [Page 7]
 
-Internet-Draft      SUIT Update Management Extensions         March 2022
+Internet-Draft      SUIT Update Management Extensions       October 2022
 
 
       +======================+==========+==========================+
@@ -445,9 +445,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
 
 
 
-Moran                   Expires 8 September 2022                [Page 8]
+Moran                     Expires 27 April 2023                 [Page 8]
 
-Internet-Draft      SUIT Update Management Extensions         March 2022
+Internet-Draft      SUIT Update Management Extensions       October 2022
 
 
      +=============+=================+===============================+
@@ -475,6 +475,14 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
      | Wait For    | suit-directive- | until event(arg), wait        |
      | Event       | wait            |                               |
      +-------------+-----------------+-------------------------------+
+     | Override    | suit-directive- | components[i].params[k] := v  |
+     | Multiple    | override-       | for-each k,v in d for-each    |
+     |             | multiple        | i,d in arg                    |
+     +-------------+-----------------+-------------------------------+
+     | Copy Params | suit-directive- | current.params[k] =           |
+     |             | copy-params     | components[i].params[k] for k |
+     |             |                 | in l for i,l in arg           |
+     +-------------+-----------------+-------------------------------+
 
                                   Table 3
 
@@ -489,22 +497,21 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
    64 bits, regardless of encoded CBOR size. suit-condition-use-before
    is OPTIONAL to implement.
 
+
+
+
+
+Moran                     Expires 27 April 2023                 [Page 9]
+
+Internet-Draft      SUIT Update Management Extensions       October 2022
+
+
 5.2.  suit-condition-image-not-match
 
    Verify that the current component does not match the suit-parameter-
    image-digest (Section 8.4.8.6 of [I-D.ietf-suit-manifest]).  If no
    digest is specified, the condition fails. suit-condition-image-not-
    match is OPTIONAL to implement.
-
-
-
-
-
-
-Moran                   Expires 8 September 2022                [Page 9]
-
-Internet-Draft      SUIT Update Management Extensions         March 2022
-
 
 5.3.  suit-condition-minimum-battery
 
@@ -548,19 +555,90 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
 
    4.  Other Device Firmware Version
 
+
+
+Moran                     Expires 27 April 2023                [Page 10]
+
+Internet-Draft      SUIT Update Management Extensions       October 2022
+
+
    5.  Time
 
    6.  Time of Day
 
    7.  Day of Week
 
+5.7.  suit-directive-override-multiple
+
+   This directive enables setting parameters for multiple components at
+   the same time.  This allows a small reduction in encoding overhead:
+
+   *  without override-multiple, the encoding for each component
+      consists of:
+
+      -  set-component-index (2 bytes)
+
+      -  override-parameters (1 byte + parameter map)
+
+   *  with override-multiple, the encoding for each component consists
+      of:
+
+      -  the component index key (1 byte)
+
+      -  the parameter map
+
+   Override-multiple requires the command (1-2 bytes) and one additional
+   map to hold the parameter sets (1 byte).  For one component, there is
+   no savings.  For multiple components, there is an encoding savings of
+   2 bytes per component.
+
+   Proper structuring of code should ensure that override-multiple
+   follows a code-path nearly identical to set-component-index +
+   override-parameters.
+
+   This command is purely an encoding alias for set-component-index and
+   override-parameters.  The component index is set to the last
+   component listed in the override-multiple argument when override-
+   multiple completes.
+
+   The following CDDL defines the argument for suit-directive-override-
+   multiple:
+
+   CDDL SUIT_Override_Mult_Arg = { uint => {+ $$SUIT_Parameters} }
 
 
 
-Moran                   Expires 8 September 2022               [Page 10]
+
+
+
+
+
+Moran                     Expires 27 April 2023                [Page 11]
 
-Internet-Draft      SUIT Update Management Extensions         March 2022
+Internet-Draft      SUIT Update Management Extensions       October 2022
 
+
+5.8.  suit-directive-copy-params
+
+   suit-directive-copy-params enables a manifest author to specify one
+   or more components to copy parameters from, and a list of parameters
+   to copy from each specified source component.
+
+   The behaviour is exactly the same as override parameters, but with
+   parameter values defined in existing components.  Parameters are only
+   copied between identical keys (no copying from URI to digest, for
+   example).
+
+   For each entry in the map, the manifest processor sets the source
+   component to be the component identified by the index contained in
+   the map key.  For each parameter identified in the copy list, the
+   manifest processor copies the parameter from the source component to
+   the current component.
+
+   The following CDDL defines the argument for suit-directive-copy-
+   params:
+
+   CDDL SUIT_Directive_Copy_Params = { uint => [+ int] }
 
 6.  IANA Considerations
 
@@ -588,6 +666,14 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
                 | 26    | Minimum Battery   | Section 5.3 |
                 +-------+-------------------+-------------+
                 | 27    | Update Authorized | Section 5.4 |
+
+
+
+Moran                     Expires 27 April 2023                [Page 12]
+
+Internet-Draft      SUIT Update Management Extensions       October 2022
+
+
                 +-------+-------------------+-------------+
                 | 28    | Version           | Section 5.5 |
                 +-------+-------------------+-------------+
@@ -610,14 +696,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
                  | 28    | Version         | Section 4.4 |
                  +-------+-----------------+-------------+
                  | 29    | Wait Info       | Section 4.5 |
-
-
-
-Moran                   Expires 8 September 2022               [Page 11]
-
-Internet-Draft      SUIT Update Management Extensions         March 2022
-
-
                  +-------+-----------------+-------------+
 
                                   Table 5
@@ -635,18 +713,26 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
    [I-D.ietf-sacm-coswid]
               Birkholz, H., Fitzgerald-McKay, J., Schmidt, C., and D.
               Waltermire, "Concise Software Identification Tags", Work
-              in Progress, Internet-Draft, draft-ietf-sacm-coswid-20, 26
-              January 2022, <https://www.ietf.org/archive/id/draft-ietf-
-              sacm-coswid-20.txt>.
+              in Progress, Internet-Draft, draft-ietf-sacm-coswid-22, 20
+              July 2022, <https://www.ietf.org/archive/id/draft-ietf-
+              sacm-coswid-22.txt>.
 
    [I-D.ietf-suit-manifest]
-              Moran, B., Tschofenig, H., Birkholz, H., and K. Zandberg,
-              "A Concise Binary Object Representation (CBOR)-based
-              Serialization Format for the Software Updates for Internet
-              of Things (SUIT) Manifest", Work in Progress, Internet-
-              Draft, draft-ietf-suit-manifest-16, 25 October 2021,
-              <https://www.ietf.org/archive/id/draft-ietf-suit-manifest-
-              16.txt>.
+              Moran, B., Tschofenig, H., Birkholz, H., Zandberg, K., and
+              O. Rønningstad, "A Concise Binary Object Representation
+              (CBOR)-based Serialization Format for the Software Updates
+              for Internet of Things (SUIT) Manifest", Work in Progress,
+
+
+
+Moran                     Expires 27 April 2023                [Page 13]
+
+Internet-Draft      SUIT Update Management Extensions       October 2022
+
+
+              Internet-Draft, draft-ietf-suit-manifest-20, 7 October
+              2022, <https://www.ietf.org/archive/id/draft-ietf-suit-
+              manifest-20.txt>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -663,16 +749,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
               <https://www.rfc-editor.org/info/rfc9019>.
 
 8.2.  Informative References
-
-
-
-
-
-
-Moran                   Expires 8 September 2022               [Page 12]
-
-Internet-Draft      SUIT Update Management Extensions         March 2022
-
 
    [I-D.ietf-suit-information-model]
               Moran, B., Tschofenig, H., and H. Birkholz, "A Manifest
@@ -702,12 +778,33 @@ Appendix A.  A.  Full CDDL
    SUIT_Condition //= (
        suit-condition-minimum-battery,   SUIT_Rep_Policy)
    SUIT_Condition //= (
+
+
+
+Moran                     Expires 27 April 2023                [Page 14]
+
+Internet-Draft      SUIT Update Management Extensions       October 2022
+
+
        suit-condition-update-authorized, SUIT_Rep_Policy)
    SUIT_Condition //= (
        suit-condition-version,           SUIT_Rep_Policy)
 
    SUIT_Directive //= (
        suit-directive-wait,              SUIT_Rep_Policy)
+
+   SUIT_Directive //= (
+       suit-directive-override-multiple, SUIT_Override_Mult_Arg)
+   SUIT_Directive //=(
+       suit-directive-copy-params,       SUIT_Directive_Copy_Params)
+
+
+   SUIT_Override_Mult_Arg = {
+       uint => {+ $$SUIT_Parameters}
+   }
+   SUIT_Directive_Copy_Params = {
+       uint => [+ int]
+   }
 
    SUIT_Wait_Event = { + SUIT_Wait_Events }
 
@@ -721,14 +818,6 @@ Appendix A.  A.  Full CDDL
        => uint); Time of Day (seconds since 00:00:00)
    SUIT_Wait_Events //= (suit-wait-event-day-of-week
        => uint); Days since Sunday
-
-
-
-
-Moran                   Expires 8 September 2022               [Page 13]
-
-Internet-Draft      SUIT Update Management Extensions         March 2022
-
 
    SUIT_Wait_Event_Argument_Other_Device_Version = [
        other-device: bstr,
@@ -745,6 +834,14 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
 
    SUIT_Parameter_Version_Match = [
        suit-condition-version-comparison-type:
+
+
+
+Moran                     Expires 27 April 2023                [Page 15]
+
+Internet-Draft      SUIT Update Management Extensions       October 2022
+
+
            SUIT_Condition_Version_Comparison_Types,
        suit-condition-version-comparison-value:
            SUIT_Condition_Version_Comparison_Value
@@ -778,14 +875,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
    suit-condition-update-authorized        = 27
    suit-condition-version                  = 28
 
-
-
-
-Moran                   Expires 8 September 2022               [Page 14]
-
-Internet-Draft      SUIT Update Management Extensions         March 2022
-
-
    suit-directive-wait                     = 29
 
    suit-wait-event-authorization        = 1
@@ -802,13 +891,20 @@ Internet-Draft      SUIT Update Management Extensions         March 2022
    suit-parameter-version           = 28
    suit-parameter-wait-info         = 29
 
+
+
+Moran                     Expires 27 April 2023                [Page 16]
+
+Internet-Draft      SUIT Update Management Extensions       October 2022
+
+
    suit-text-version-required      = 7
 
 Author's Address
 
    Brendan Moran
    Arm Limited
-   Email: Brendan.Moran@arm.com
+   Email: Brendan.Moran.ietf@gmail.com
 
 
 
@@ -837,4 +933,20 @@ Author's Address
 
 
 
-Moran                   Expires 8 September 2022               [Page 15]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Moran                     Expires 27 April 2023                [Page 17]

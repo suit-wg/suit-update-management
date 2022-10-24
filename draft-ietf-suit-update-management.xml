@@ -17,7 +17,7 @@
 <?rfc docmapping="yes"?>
 <?rfc toc_levels="4"?>
 
-<rfc ipr="trust200902" docName="draft-ietf-suit-update-management-00" category="std">
+<rfc ipr="trust200902" docName="draft-ietf-suit-update-management-01" category="std">
 
   <front>
     <title abbrev="SUIT Update Management Extensions">Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests</title>
@@ -25,11 +25,11 @@
     <author initials="B." surname="Moran" fullname="Brendan Moran">
       <organization>Arm Limited</organization>
       <address>
-        <email>Brendan.Moran@arm.com</email>
+        <email>Brendan.Moran.ietf@gmail.com</email>
       </address>
     </author>
 
-    <date year="2022" month="March" day="07"/>
+    <date year="2022" month="October" day="24"/>
 
     <area>Security</area>
     <workgroup>SUIT</workgroup>
@@ -56,18 +56,18 @@ updated device.</t>
   <middle>
 
 
-<section anchor="introduction" title="Introduction">
+<section anchor="introduction"><name>Introduction</name>
 
 <t>Full management of software updates for unattended, connected devices, such as Internet of Things devices requires a cooperation between the update author(s) and management, distribution, policy enforcement, and auditing systems. This specification provides the extensions to the SUIT manifest (<xref target="I-D.ietf-suit-manifest"/>) that enable an author to coordinate with these other systems. These extensions enable authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials information.</t>
 
 <t>Extensions in this specification are OPTIONAL to implment and OPTIONAL to include in manifests unless otherwise designated.</t>
 
 </section>
-<section anchor="conventions-and-terminology" title="Conventions and Terminology">
+<section anchor="conventions-and-terminology"><name>Conventions and Terminology</name>
 
-<t>The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL
-NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “NOT RECOMMENDED”,
-“MAY”, and “OPTIONAL” in this document are to be interpreted as
+<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
 described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they
 appear in all capitals, as shown here.</t>
 
@@ -78,7 +78,7 @@ appear in all capitals, as shown here.</t>
 </list></t>
 
 </section>
-<section anchor="extension-metadata" title="Extension Metadata">
+<section anchor="extension-metadata"><name>Extension Metadata</name>
 
 <t>Some additional metadata makes management of SUIT updates easier:</t>
 
@@ -87,7 +87,7 @@ appear in all capitals, as shown here.</t>
   <t>Text descriptions of requirements</t>
 </list></t>
 
-<section anchor="manifest-digest-coswid" title="suit-coswid">
+<section anchor="manifest-digest-coswid"><name>suit-coswid</name>
 
 <t>a CoSWID can enable Software Bill-of-Materials use-cases. A CoMID can enable monitoring of expected hardware. A CoRIM (which may contain both CoSWID and CoMID) can enable both of these use-cases, but can also act as the transport for expected values to an attestation Verifier. Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.</t>
 
@@ -102,11 +102,11 @@ appear in all capitals, as shown here.</t>
 <t>NOTE: CoMID may be a preferable alternative to Vendor ID/Class ID, however it consumes more bandwidth, so a UUID based on CoMID may be appropriate.</t>
 
 </section>
-<section anchor="text-version-required" title="text-version-required">
+<section anchor="text-version-required"><name>text-version-required</name>
 
 <t>suit-text-version-required is used to represent a version-based dependency on suit-parameter-version as described in <xref target="suit-parameter-version"/> and <xref target="suit-condition-version"/>. To describe a version dependency, a Manifest Author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-version-required key with a free text expression that is representative of the version constraints placed on the dependency. This text SHOULD be expressive enough that a device operator can be expected to understand the dependency. This is a free text field and there are no specific formatting rules.</t>
 
-<t>By way of example only, to express a dependency on a component “[‘x’, ‘y’]”, where the version should be any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.</t>
+<t>By way of example only, to express a dependency on a component "['x', 'y']", where the version should be any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.</t>
 
 <figure><artwork><![CDATA[
 [h'78',h'79'] : {
@@ -116,7 +116,7 @@ appear in all capitals, as shown here.</t>
 
 </section>
 </section>
-<section anchor="extension-parameters" title="Extension Parameters">
+<section anchor="extension-parameters"><name>Extension Parameters</name>
 
 <t>Several parameters are needed to define the behaviour of the commands specified in <xref target="extension-commands"/>. These parameters follow the same considerations as defined in Section 8.4.8 of <xref target="I-D.ietf-suit-manifest"/>.</t>
 
@@ -141,24 +141,24 @@ appear in all capitals, as shown here.</t>
       <c><xref target="suit-parameter-wait-info"/></c>
 </texttable>
 
-<section anchor="suit-parameter-use-before" title="suit-parameter-use-before">
+<section anchor="suit-parameter-use-before"><name>suit-parameter-use-before</name>
 
 <t>An expiry date for the use of the manifest encoded as the positive integer number of seconds since 1970-01-01. Implementations that use this parameter MUST use a 64-bit internal representation of the integer. Used with <xref target="suit-condition-use-before"/></t>
 
 </section>
-<section anchor="suit-parameter-minimum-battery" title="suit-parameter-minimum-battery">
+<section anchor="suit-parameter-minimum-battery"><name>suit-parameter-minimum-battery</name>
 
 <t>This parameter sets the minimum battery level in mWh. This parameter is encoded as a positive integer. Used with suit-condition-minimum-battery (<xref target="suit-condition-minimum-battery"/>).</t>
 
 </section>
-<section anchor="suit-parameter-update-priority" title="suit-parameter-update-priority">
+<section anchor="suit-parameter-update-priority"><name>suit-parameter-update-priority</name>
 
 <t>This parameter sets the priority of the update. This parameter is encoded as an integer. It is used along with suit-condition-update-authorized (<xref target="suit-condition-update-authorized"/>) to ask an application for permission to initiate an update. This does not constitute a privilege inversion because an explicit request for authorization has been provided by the Update Authority in the form of the suit-condition-update-authorized command.</t>
 
 <t>Applications MAY define their own meanings for the update priority. For example, critical reliability &amp; vulnerability fixes MAY be given negative numbers, while bug fixes MAY be given small positive numbers, and feature additions MAY be given larger positive numbers, which allows an application to make an informed decision about whether and when to allow an update to proceed.</t>
 
 </section>
-<section anchor="suit-parameter-version" title="suit-parameter-version">
+<section anchor="suit-parameter-version"><name>suit-parameter-version</name>
 
 <t>Indicates allowable versions for the specified component. Allowable versions can be specified, either with a list or with range matching. This parameter is compared with version asserted by the current component when suit-condition-version (<xref target="suit-condition-version"/>) is invoked. The current component may assert the current version in many ways, including storage in a parameter storage database, in a metadata object, or in a known location within the component itself.</t>
 
@@ -172,7 +172,7 @@ appear in all capitals, as shown here.</t>
   <t>Lesser.</t>
 </list></t>
 
-<t>Versions are encoded as a CBOR list of integers. Comparisons are done on each integer in sequence. Comparison stops after all integers in the list defined by the manifest have been consumed OR after a non-equal match has occurred. For example, if the manifest defines a comparison, “Equal [1]”, then this will match all version sequences starting with 1. If a manifest defines both “Greater or Equal [1,0]” and “Lesser [1,10]”, then it will match versions 1.0.x up to, but not including 1.10.</t>
+<t>Versions are encoded as a CBOR list of integers. Comparisons are done on each integer in sequence. Comparison stops after all integers in the list defined by the manifest have been consumed OR after a non-equal match has occurred. For example, if the manifest defines a comparison, "Equal [1]", then this will match all version sequences starting with 1. If a manifest defines both "Greater or Equal [1,0]" and "Lesser [1,10]", then it will match versions 1.0.x up to, but not including 1.10.</t>
 
 <t>While the exact encoding of versions is application-defined, semantic versions map conveniently. For example,</t>
 
@@ -198,7 +198,7 @@ appear in all capitals, as shown here.</t>
 <t>Where Alpha (-3), Beta (-2), and Release Candidate (-1) are used, they are inserted as a negative number between Minor and Patch numbers. This allows these releases to compare correctly with final releases. For example, Version 2.0, RC1 should be lower than Version 2.0.0 and higher than any Version 1.x. By encoding RC as -1, this works correctly: [2,0,-1,1] compares as lower than [2,0,0]. Similarly, beta (-2) is lower than RC and alpha (-3) is lower than RC.</t>
 
 </section>
-<section anchor="suit-parameter-wait-info" title="suit-parameter-wait-info">
+<section anchor="suit-parameter-wait-info"><name>suit-parameter-wait-info</name>
 
 <t>suit-directive-wait (<xref target="suit-directive-wait"/>) directs the manifest processor to pause until a specified event occurs. The suit-parameter-wait-info encodes the parameters needed for the directive.</t>
 
@@ -243,7 +243,7 @@ appear in all capitals, as shown here.</t>
 
 </section>
 </section>
-<section anchor="extension-commands" title="Extension Commands">
+<section anchor="extension-commands"><name>Extension Commands</name>
 
 <t>The following table defines the semantics of the commands defined in this specification in the same way as in the Abstract Machine Description, Section 6.4, of <xref target="I-D.ietf-suit-manifest"/>.</t>
 
@@ -269,34 +269,40 @@ appear in all capitals, as shown here.</t>
       <c>Wait For Event</c>
       <c>suit-directive-wait</c>
       <c>until event(arg), wait</c>
+      <c>Override Multiple</c>
+      <c>suit-directive-override-multiple</c>
+      <c>components[i].params[k] := v for-each k,v in d for-each i,d in arg</c>
+      <c>Copy Params</c>
+      <c>suit-directive-copy-params</c>
+      <c>current.params[k] = components[i].params[k] for k in l for i,l in arg</c>
 </texttable>
 
-<section anchor="suit-condition-use-before" title="suit-condition-use-before">
+<section anchor="suit-condition-use-before"><name>suit-condition-use-before</name>
 
 <t>Verify that the current time is BEFORE the specified time. suit-condition-use-before is used to specify the last time at which an update should be installed. The recipient evaluates the current time against the suit-parameter-use-before parameter (<xref target="suit-parameter-use-before"/>), which must have already been set as a parameter, encoded as seconds after 1970-01-01 00:00:00 UTC. Timestamp conditions MUST be evaluated in 64 bits, regardless of encoded CBOR size. suit-condition-use-before is OPTIONAL to implement.</t>
 
 </section>
-<section anchor="suit-condition-image-not-match" title="suit-condition-image-not-match">
+<section anchor="suit-condition-image-not-match"><name>suit-condition-image-not-match</name>
 
 <t>Verify that the current component does not match the suit-parameter-image-digest (Section 8.4.8.6 of <xref target="I-D.ietf-suit-manifest"/>). If no digest is specified, the condition fails. suit-condition-image-not-match is OPTIONAL to implement.</t>
 
 </section>
-<section anchor="suit-condition-minimum-battery" title="suit-condition-minimum-battery">
+<section anchor="suit-condition-minimum-battery"><name>suit-condition-minimum-battery</name>
 
-<t>suit-condition-minimum-battery provides a mechanism to test a Recipient’s battery level before installing an update. This condition is primarily for use in primary-cell applications, where the battery is only ever discharged. For batteries that are charged, suit-directive-wait is more appropriate, since it defines a “wait” until the battery level is sufficient to install the update. suit-condition-minimum-battery is specified in mWh. suit-condition-minimum-battery is OPTIONAL to implement. suit-condition-minimum-battery consumes suit-parameter-minimum-battery (<xref target="suit-parameter-minimum-battery"/>).</t>
+<t>suit-condition-minimum-battery provides a mechanism to test a Recipient's battery level before installing an update. This condition is primarily for use in primary-cell applications, where the battery is only ever discharged. For batteries that are charged, suit-directive-wait is more appropriate, since it defines a "wait" until the battery level is sufficient to install the update. suit-condition-minimum-battery is specified in mWh. suit-condition-minimum-battery is OPTIONAL to implement. suit-condition-minimum-battery consumes suit-parameter-minimum-battery (<xref target="suit-parameter-minimum-battery"/>).</t>
 
 </section>
-<section anchor="suit-condition-update-authorized" title="suit-condition-update-authorized">
+<section anchor="suit-condition-update-authorized"><name>suit-condition-update-authorized</name>
 
 <t>Request Authorization from the application and fail if not authorized. This can allow a user to decline an update. suit-parameter-update-priority (<xref target="suit-parameter-update-priority"/>) provides an integer priority level that the application can use to determine whether or not to authorize the update. Priorities are application defined. suit-condition-update-authorized is OPTIONAL to implement.</t>
 
 </section>
-<section anchor="suit-condition-version" title="suit-condition-version">
+<section anchor="suit-condition-version"><name>suit-condition-version</name>
 
-<t>suit-condition-version allows comparing versions of firmware. Verifying image digests is preferred to version checks because digests are more precise. suit-condition-version examines a component’s version against the version info specified in suit-parameter-version (<xref target="suit-parameter-version"/>)</t>
+<t>suit-condition-version allows comparing versions of firmware. Verifying image digests is preferred to version checks because digests are more precise. suit-condition-version examines a component's version against the version info specified in suit-parameter-version (<xref target="suit-parameter-version"/>)</t>
 
 </section>
-<section anchor="suit-directive-wait" title="suit-directive-wait">
+<section anchor="suit-directive-wait"><name>suit-directive-wait</name>
 
 <t>suit-directive-wait directs the manifest processor to pause until a specified event occurs. Some possible events include:</t>
 
@@ -311,8 +317,55 @@ appear in all capitals, as shown here.</t>
 </list></t>
 
 </section>
+<section anchor="suit-directive-override-multiple"><name>suit-directive-override-multiple</name>
+
+<t>This directive enables setting parameters for multiple components at the same time. This allows a small reduction in encoding overhead:</t>
+
+<t><list style="symbols">
+  <t>without override-multiple, the encoding for each component consists of:  <list style="symbols">
+      <t>set-component-index (2 bytes)</t>
+      <t>override-parameters (1 byte + parameter map)</t>
+    </list></t>
+  <t>with override-multiple, the encoding for each component consists of:  <list style="symbols">
+      <t>the component index key (1 byte)</t>
+      <t>the parameter map</t>
+    </list></t>
+</list></t>
+
+<t>Override-multiple requires the command (1-2 bytes) and one additional map to hold the parameter sets (1 byte). For one component, there is no savings. For multiple components, there is an encoding savings of 2 bytes per component.</t>
+
+<t>Proper structuring of code should ensure that override-multiple follows a code-path nearly identical to set-component-index + override-parameters.</t>
+
+<t>This command is purely an encoding alias for set-component-index and override-parameters. The component index is set to the last component listed in the override-multiple argument when override-multiple completes.</t>
+
+<t>The following CDDL defines the argument for suit-directive-override-multiple:</t>
+
+<t><spanx style="verb">CDDL
+SUIT_Override_Mult_Arg = {
+    uint =&gt; {+ $$SUIT_Parameters}
+}
+</spanx></t>
+
 </section>
-<section anchor="iana" title="IANA Considerations">
+<section anchor="suit-directive-copy-params"><name>suit-directive-copy-params</name>
+
+<t>suit-directive-copy-params enables a manifest author to specify one or more components to copy parameters from, and a list of parameters to copy from each specified source component.</t>
+
+<t>The behaviour is exactly the same as override parameters, but with parameter values defined in existing components. Parameters are only copied between identical keys (no copying from URI to digest, for example).</t>
+
+<t>For each entry in the map, the manifest processor sets the source component to be the component identified by the index contained in the map key. For each parameter identified in the copy list, the manifest processor copies the parameter from the source component to the current component.</t>
+
+<t>The following CDDL defines the argument for suit-directive-copy-params:</t>
+
+<t><spanx style="verb">CDDL
+SUIT_Directive_Copy_Params = {
+    uint =&gt; [+ int]
+}
+</spanx></t>
+
+</section>
+</section>
+<section anchor="iana"><name>IANA Considerations</name>
 
 <t>IANA is requested to:</t>
 
@@ -323,7 +376,7 @@ appear in all capitals, as shown here.</t>
   <t>allocate the commands and parameters as shown in the following tables</t>
 </list></t>
 
-<section anchor="suit-commands" title="SUIT Commands">
+<section anchor="suit-commands"><name>SUIT Commands</name>
 
 <texttable>
       <ttcol align='left'>Label</ttcol>
@@ -350,7 +403,7 @@ appear in all capitals, as shown here.</t>
 </texttable>
 
 </section>
-<section anchor="suit-parameters" title="SUIT Parameters">
+<section anchor="suit-parameters"><name>SUIT Parameters</name>
 
 <texttable>
       <ttcol align='left'>Label</ttcol>
@@ -375,7 +428,7 @@ appear in all capitals, as shown here.</t>
 
 </section>
 </section>
-<section anchor="security-considerations" title="Security Considerations">
+<section anchor="security-considerations"><name>Security Considerations</name>
 
 <t>This document extends the SUIT manifest specification. A detailed security treatment can be found in the architecture <xref target="RFC9019"/> and in the information model <xref target="I-D.ietf-suit-information-model"/> documents.</t>
 
@@ -394,19 +447,19 @@ appear in all capitals, as shown here.</t>
 <reference anchor='I-D.ietf-sacm-coswid'>
    <front>
       <title>Concise Software Identification Tags</title>
-      <author fullname='Henk Birkholz'>
-	 <organization>Fraunhofer SIT</organization>
+      <author fullname='Henk Birkholz' initials='H.' surname='Birkholz'>
+         <organization>Fraunhofer SIT</organization>
       </author>
-      <author fullname='Jessica Fitzgerald-McKay'>
-	 <organization>National Security Agency</organization>
+      <author fullname='Jessica Fitzgerald-McKay' initials='J.' surname='Fitzgerald-McKay'>
+         <organization>National Security Agency</organization>
       </author>
-      <author fullname='Charles Schmidt'>
-	 <organization>The MITRE Corporation</organization>
+      <author fullname='Charles Schmidt' initials='C.' surname='Schmidt'>
+         <organization>The MITRE Corporation</organization>
       </author>
-      <author fullname='David Waltermire'>
-	 <organization>National Institute of Standards and Technology</organization>
+      <author fullname='David Waltermire' initials='D.' surname='Waltermire'>
+         <organization>National Institute of Standards and Technology</organization>
       </author>
-      <date day='26' month='January' year='2022'/>
+      <date day='20' month='July' year='2022'/>
       <abstract>
 	 <t>   ISO/IEC 19770-2:2015 Software Identification (SWID) tags provide an
    extensible XML-based structure to identify and describe individual
@@ -421,27 +474,30 @@ appear in all capitals, as shown here.</t>
 	 </t>
       </abstract>
    </front>
-   <seriesInfo name='Internet-Draft' value='draft-ietf-sacm-coswid-20'/>
-   <format target='https://www.ietf.org/archive/id/draft-ietf-sacm-coswid-20.txt' type='TXT'/>
+   <seriesInfo name='Internet-Draft' value='draft-ietf-sacm-coswid-22'/>
+   <format target='https://www.ietf.org/archive/id/draft-ietf-sacm-coswid-22.txt' type='TXT'/>
 </reference>
 
 
 <reference anchor='I-D.ietf-suit-manifest'>
    <front>
       <title>A Concise Binary Object Representation (CBOR)-based Serialization Format for the Software Updates for Internet of Things (SUIT) Manifest</title>
-      <author fullname='Brendan Moran'>
-	 <organization>Arm Limited</organization>
+      <author fullname='Brendan Moran' initials='B.' surname='Moran'>
+         <organization>Arm Limited</organization>
       </author>
-      <author fullname='Hannes Tschofenig'>
-	 <organization>Arm Limited</organization>
+      <author fullname='Hannes Tschofenig' initials='H.' surname='Tschofenig'>
+         <organization>Arm Limited</organization>
       </author>
-      <author fullname='Henk Birkholz'>
-	 <organization>Fraunhofer SIT</organization>
+      <author fullname='Henk Birkholz' initials='H.' surname='Birkholz'>
+         <organization>Fraunhofer SIT</organization>
       </author>
-      <author fullname='Koen Zandberg'>
-	 <organization>Inria</organization>
+      <author fullname='Koen Zandberg' initials='K.' surname='Zandberg'>
+         <organization>Inria</organization>
       </author>
-      <date day='25' month='October' year='2021'/>
+      <author fullname='Øyvind Rønningstad' initials='O.' surname='Rønningstad'>
+         <organization>Nordic Semiconductor</organization>
+      </author>
+      <date day='7' month='October' year='2022'/>
       <abstract>
 	 <t>   This specification describes the format of a manifest.  A manifest is
    a bundle of metadata about code/data obtained by a recipient (chiefly
@@ -455,8 +511,8 @@ appear in all capitals, as shown here.</t>
 	 </t>
       </abstract>
    </front>
-   <seriesInfo name='Internet-Draft' value='draft-ietf-suit-manifest-16'/>
-   <format target='https://www.ietf.org/archive/id/draft-ietf-suit-manifest-16.txt' type='TXT'/>
+   <seriesInfo name='Internet-Draft' value='draft-ietf-suit-manifest-20'/>
+   <format target='https://www.ietf.org/archive/id/draft-ietf-suit-manifest-20.txt' type='TXT'/>
 </reference>
 
 
@@ -516,14 +572,14 @@ appear in all capitals, as shown here.</t>
 <reference anchor='I-D.ietf-suit-information-model'>
    <front>
       <title>A Manifest Information Model for Firmware Updates in Internet of Things (IoT) Devices</title>
-      <author fullname='Brendan Moran'>
-	 <organization>Arm Limited</organization>
+      <author fullname='Brendan Moran' initials='B.' surname='Moran'>
+         <organization>Arm Limited</organization>
       </author>
-      <author fullname='Hannes Tschofenig'>
-	 <organization>Arm Limited</organization>
+      <author fullname='Hannes Tschofenig' initials='H.' surname='Tschofenig'>
+         <organization>Arm Limited</organization>
       </author>
-      <author fullname='Henk Birkholz'>
-	 <organization>Fraunhofer SIT</organization>
+      <author fullname='Henk Birkholz' initials='H.' surname='Birkholz'>
+         <organization>Fraunhofer SIT</organization>
       </author>
       <date day='8' month='July' year='2021'/>
       <abstract>
@@ -543,11 +599,11 @@ appear in all capitals, as shown here.</t>
     </references>
 
 
-<section anchor="full-cddl" title="A. Full CDDL">
+<section anchor="full-cddl"><name>A. Full CDDL</name>
 
 <t>To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of <xref target="I-D.ietf-suit-manifest"/></t>
 
-<figure><artwork type="CDDL"><![CDATA[
+<figure><sourcecode type="CDDL"><![CDATA[
 $$SUIT_severable-members-extensions //= (
     suit-coswid => bstr .cbor concise-software-identity)
 
@@ -568,6 +624,19 @@ SUIT_Condition //= (
 
 SUIT_Directive //= (
     suit-directive-wait,              SUIT_Rep_Policy)
+
+SUIT_Directive //= (
+    suit-directive-override-multiple, SUIT_Override_Mult_Arg)
+SUIT_Directive //=(
+    suit-directive-copy-params,       SUIT_Directive_Copy_Params)
+
+
+SUIT_Override_Mult_Arg = {
+    uint => {+ $$SUIT_Parameters}
+}
+SUIT_Directive_Copy_Params = {
+    uint => [+ int]
+}
 
 SUIT_Wait_Event = { + SUIT_Wait_Events }
 
@@ -647,7 +716,7 @@ suit-parameter-version           = 28
 suit-parameter-wait-info         = 29
 
 suit-text-version-required      = 7
-]]></artwork></figure>
+]]></sourcecode></figure>
 
 </section>
 
@@ -655,141 +724,157 @@ suit-text-version-required      = 7
   </back>
 
 <!-- ##markdown-source:
-H4sIAKNgJmIAA7Vce3PbOJL/n58C50xd7B1RYzvOy7eZWsd2blwVJzk7mdRW
-JuWiREjCmiK1BGVH62Q+y32W+2T368aD4EO2s7vjSmKJABqNRvevHwATx3FU
-qSqT++LDIk0qKU6TPJnKucwrcfylkrlWRa7FpCjFeTGprpNS2p7m4UleyTKX
-lSgm4v1M5VMtNs8/nLzfIkJqInWlo2Q0KuXVvqDnt04TpcU4T+ZgJi2TSRUr
-WU1ivVRVvORR8dyPire3ozEeTYtytS90lUaRWpT7oiqXutrd3n6+vRuB1wSz
-yvGyVNUqui7Ky2lZLBeGk+hSrvAo3fdriI9o1ijSVZKnF0lW5OBkJXW0UPuR
-EOVkLFNdrTL7VIiqGAcfVZ6CMfdAF2VVyon231fzxteqVGPfeVzMaVG+VeWZ
-yutp5JcqzpSuYhAZFRm6xcWffkQL5DVPFguIPeDjIpNXkjrtRVGyrGZFCe5j
-tNGPytHwcihOizLJ7TMj8pelzNMkb7QU5RS7+I+kwu7si4NyLl6ruapkatvl
-PFGZHzrkoX9JyvkQC4qivCjnGHolSXon8dHQ7GcynsfjQl+rtPmc9nlulYZa
-zl4dPt/eeb6Pnc0n/aRoiG8s8nhepDLDgDiORTKCjJNxFUEttdALOVYTNeZ+
-IpV6XKoRdFjWOl4VoppJo6WOD2FoR6mcYENSiE/c3PSz/O3bEBYgtQxpJllW
-XAtI1Siw3Y+B/SpSRXowWlawJPxJ5ZUaS1EsZJnQI3A0L2BwixLMa5mtoCh5
-VRZZRIz6wbQiaCztbYUJzRJhj0trpyBzUry31LXlMmpwqQtMUlypVIpEzOV4
-hkXpOY004qWntcXqla7kHFNEHhNOSPchYFkyK/75S5Vl4u0E9g4bU5hIBPuF
-PSqWFQZEhtXU8jg0OzhXaZrJKHogyETLIl2OaVQUvVqCaMAP1qrdhMsAnJZ5
-UmGRqUwHJLlcjus59EDo5XgmEt2HYbaPKOXfl6rEhwQEzL4Q3yNZXUuZs77Y
-rTQ7u6m3eP01c4PGPg3EosjUeCUkSWFse9CIZJmqCnNb4fI2dfTW7pHmie9S
-3c31mrqF7kkFJpJRJkk9DfdEB8ssU5XTkq5VNSO6UOkCv8qQtZaeO0pMRhu9
-waqxYV6UeCa/JHOYkRPZolQFIfNAZMU4yZqSVDoxArNPM7Beqbk00rIaCHlg
-TypltXplNNkyE0xcygXgmEcGJqfNerMMetHS2GKNxkIzA6+oSAM6m0RE3r57
-f/L2zcFrlsR8kbGa0vSNhnycLWFxIOO2RkNnM6m1Efg1jJ6wSk1pP9Ihm8Jh
-kV+RrbHhguJ7WUKoRVZMVxGwTgr4NUGOTYuN0w/n7zcG5rd485Y/nx3/z4eT
-s+Mj+nz+y8Hr1/5DZHuc//L2w+uj+lM98vDt6enxmyMzGE9F41G0cXrw1w2z
-QRtuoRteSnBWSyMHCAjLH9HKIWOgG5llAvdvYZlx9uXhu//735094O1/wBPs
-7uw8//bNfnm283QPX65nMjezFTmw0XyF3FYRfKJMSqICPBTjZKEAjLB4GLue
-Fde5gHAJZaKDlKyuyNFtxWOBGwTZZIhVLVgB9pcafFUzBBDTGaFWY03wOX9i
-89tvh0kMRES4izIDo67cePz+FW3aJU3MQYodR9pF4UhSmu332idOZZVggiQC
-CM9hNX4lwG/TAq26hP43gZIxwoGkTDQQm5k/LM4/nhwN8PvU/Do7OcXj9zBy
-6y4XRudAw6Iihyxg6oFgeDE+Xdw8cMocp2pKv0zDN0QjdhbsSO6stGF3cTGJ
-a7uDxONxosm4Dwxf4cB5kSsYMQkMLMkvC4PuM0iK6JkxWITYvJ4pAP08Me4z
-gVaMYF6OF9IfJr4VUuceoGvgz3MyEEAO7sdbh/CCdIp2ELFGrhllaOM8O1dJ
-tjQYRGPgjbCbjBK/YpHkLgFcajqr2LcvFxktx+EgeYVgBPZ9WTL2A7qveLhF
-HABUmRi4RQ+wdp2stLjMi2sNq0Bv7x0ZhIk1QQQTiMV73HAPleYwYD4C6Bsh
-iIYHGYqTygmTugKTKEARfeHAppHzFglqTRhVR4QmiML0MjMaaxEIWDFPAJUa
-oW3JG8SGg6Upsx0jjofG2HyQH62Y5TOg8kKx3lNUYtBmLlOVlLDoCQ3FTHlR
-OYXujmzJpVotIHNgRR0Y5Bw5wc9o2rrOePFLcU08MxD5x1o4RBYTRNDETCJa
-GwBY1F0O0BBgrnMv0vuXdmOPiwFFTHy8b80DoTocseYYh5IM2vDANMKHjAwQ
-PARH1jTiyHRiN4RU3A4MZiCjtX2TsHeSERpySE8jf0WURtnk0U+HWQL3RxPN
-rOQUq5oGzmoTDo/AF2RRzZiZRHz4gElGCeEztLo554JCBMBJRSoOpOJcClQJ
-QmO/7TcPep9/s7LvH+R9AscXZrfAjetnGErlggLQHCEfeGNqi6REwoXlO5LG
-MgLXd3PT3xE+j7bENkMoBvLrZhhP4UnVvARcwOf4zFwcmKjP2tiiWCwzAh5v
-7rRuSHJhIsGEfcfFIfQFmXFeXQRGTjGHc3TBkseur3HTiywZSxMPSLSVkNmC
-FgHDoVkScYu0OaoxbExKKXkjCctKsrwit2Cg660wumXRywmCFAlIrcgEmRtW
-mSbXFoF4ghp+3FSgKXOKAcyMSSdps2jkPQDUYwnCJbvx/qkYbutVQaJZKmxv
-wnP8Bcy4KNPmpJwslEtEi9DslxAONJ4dYUKAwCHRwOI9Mc6chrqY1LsjNn77
-9PDLw4F4uHr422dEcNc8byg4hE1LMEVala/E1c7wiyBdoR3HevF9d/jYOEfC
-06vd4TaD7qi4kiaushnGNZNBsNIKtmrvZXOZWgGtKxiKNwUrZ2JjL25UHIWP
-R0WJaCOZ0uwuUP/999+jT7OHT589HODf5w8/i31xw4WLp/i08fMLw/Sfdzei
-b9y5EV69c8angQ4+06ltUgMcztkbZaJ+aPZKytRsvPF3vJ6RnCVXqlh6h0o1
-H+yxzx6c6ddzuR51ZSGYyIjOiArPWLORGpoEVbec7bnkzFk8G+4NnxEDtxQx
-gN1E76s4PDp6Lc79vnyF+wJ6Q30kZedf7d/oA/h6KScFd2nhFsVNI9fWQbW6
-9du36FTlar6ci5cU8sA/d2jNTQfgquvQIdjqAqo2Bn9nM80eDk1hcVF36LLZ
-7AKqv1qj6FC78g3rITz6mMCjnSCn7I6/TmxBq4+CbwQNH3T3yvrmwXpJI+fJ
-CRMURNjIT5bao6UvIWCzi5RzM36+KLRiVKVIagrjz5cuRNSS3BGUGRGHFDvP
-n27H2zv4g0jRxSdWM9mAaTI2Ys+jiYjoeSKe7MUjCs44Y4J9hZhuSlvEjWVi
-KD6Qo2Xf0PGMDRXrEVpLYyJTLKyZ0rIyS7cdhdM+rrFyWPVxZlG8HkXxay25
-pCO3kOUWw20t3+wsqaPkW8NedWhq7fqVedW3YjUD71pTXq/lpPKhENXMp73r
-suzY2s4/0Le7sk4fLlQhwtOXnD0tkB7ZjIeUdkH5uXX+FOmCiEmbmktIC2mC
-fPb9qlpWJhRVVyrDAjDQWe1IjhNWQDYQzKVMZmDrwK4wZcrhSDQ1RkhflPPJ
-g8UcE1yRYG3Aw3XUMJu6TToW+7G1B/WykTYc/DVwKgqmdw0VlLBXqlp6U27W
-14biFaekHBgMBILDirIYrC1TyUhlxON/iqtlllNwbr5P1BdppoPLn0J3c7i1
-qYmpjNVrChMUpcrLaV93PaeUx6u+H0RxzUQmJlO1RYvW0CwpCV26Y00mz0V1
-3VYJKpYnl9KoJsmao2+kpXWhGWEN1zGJBaoWsXI1K/T0iPM5U27rmJXTlQ7E
-OnyPohPs6pjLK0yb0x3bWm9R7fR9FDYUB93+Npr03QdCKl6DjYVNcma/lkk+
-JfSuxlRf6jNhmiwpHfbU+YeWZVVr8HiJ0DyvggCRpdWfdfQYsvd1WyY+uyou
-IU6KYXpIU6ZmGGjM7aibzJXDWyiAyWdNwFiUCZsvWXMNa/Yx1b8oAxuYDr4k
-Voz+hlhoQCLjBiqS5Fx/ZiUisfj8xHGoKi2zydBUV+vHPqcwW+RFm2guqP13
-KSlAHtYfadLjvy+TjJ75D68lLb7RZh5hwl+dGlBY2XAphy/fnvnM3EKxHopD
-ZkJpNyYFq77U47w2FqgJ1uCpwxEkuwWGTSpbrnBkHYDxdC6qtKriQwVEt9Lg
-oU3WUwEOLTHgbx5LWp7RTgbPYsx7nbbgSbViEDOhtvmKYXUgNlhY4rdPO5yw
-VGzNpO7XKnOT0Bp8/mIXzOXUknMnNgEKUCbmdKs5HRcAN9o7RxMOtjGlKXLb
-vaOHO9s1I/AbARvelneG20iblgtgTJ0q1Rq9M9zZxp5/ZFA1BzxUX+Rtt1VO
-T4oyxhr7YrspAywTCwG61z0psR7zkQEVnrKWMyBFpTTokXjBq9gdPPrt89A8
-jMtx/TjeCVtGMKe6abduSLLFLGh51GrZC5oGe9QYrQEVLLB9hmKywMAo6uTc
-u+DEJUZkgzsGciYKubdXfh9L2rgu+Vvh4liXjXv8HmH3uSJP56FT6c/ZasiO
-ds0cJvxdO4nKO5PoRjERWnQF9sk75PLa+UdNesfOcMAW1OZnGD0y00Pzy3p2
-ZQO7UPvunNZ78WG0Z+WGZLWatamOlgoJvF0LaStVCg542zfjR1sD5IIVfdzd
-Mq7+DOk7cFgc4otiD7sZ72wxOFHIaA5s+KvKrRdigGtFG/7I9ZRlSZTf8fps
-bGDXZ0MDU7UvzdT2mI/R2VSdxlRuZ/OH2ZhASJpzhgYSuTRvd7g9EGeHO0ER
-BLO42kfQa7jNjM3UdOZayXW5HjvDL0PxclVb9NkhrRWmZaGrKC91zeE+TGV3
-sE2mB5BzK+DUPpje9AH4DMW5mitoC9V9Rm4TaNuC3jQjFXX9fnXae6Men3pa
-e00VsYjd4RYfATQfk/s3T3QT0W293Jw3LzjkXgK0MioA+rBIXnHhnnyEtja2
-Llc2jtEpva+Q2DKML0s65qwjN+iqGtmpC88NU2QvjWaHsy094c0bO9Vglwvv
-OEJQwcbKtTYC5gWCe3Qv5RSOVPLJFaUavFAIP81saKqXmgp1fAbZKze+RcBH
-RZyWkB/xh0EDW3czPi7IBqhWC0VfWR9VytoR0vcmFVNJHUuIK3Ug3Sf6dqZL
-3gYyZK3ghWHvPhL5g9evw6ds8HTCr01QS3z6svQ7rx90xKTypT3ebxCwcSIM
-2UUkHO+EZfTWcS4F1nV169gZ4VdxVB9vNipbvGpeK88ZN/O/r4SM+Pec6NHB
-8u35d5vYgo3OEeGakDEC00CHfrIzKAcIAiT6hrmm/oF8nSA2peqgSnUuKWaj
-BMjSIn0ydz1sWZuzqsCPdCjTnQyMXnYY4obNdXWhrV5CdP6bJqteek1K29v7
-/Oc2MvGyGn8HKfHh/WGHHJEBNbiey15SKZ20GjrnyxzfbqOwlqEOFeblfrtY
-yqV2N4KCULE/PY15M13NpmG6LkI2Bbr6cDdfA4KC7tcJVZ8BOaAN9WfQOkPk
-dKQ0x3h8muTL7BfWS16cModRsxp/aEvhBrpbRu1jdk6sbQSsO3X2oB7ec2vH
-4gXX0q85JXWPDuxFQgAU5dUyxIuBL60/Ge4N7qysf3ULEWGNPThHI5O0Ebxl
-/627dBYRJgXwFINaUHt3xeS+2ifaTIa9iWx3c0v82aHnkBVE//ap7vvb5y1i
-cybHl+JkTqn0m4KWThjQmUJRhxiOw+hVOE8lRoitypVp2TRXQTbtvIgN2xyY
-Dpi9nn7NkcD6Yqmf3j34+UVnntaYcLnNwh1V4boy7RTq/JwwqHrkZmde5wga
-K2wdJHTTIE/dPrgY0zgnxq4UbTc7CSMMhSrHHGN87YvdvloIYoTZRK6BvaGG
-KLzY01UpTsPUZOXO4+rCDeM+zOvl8au3Z8etYhc1Dm9R1OBM3QwyVYYs0ZZw
-UrkioK/Y1VG5vQDrak2lv/8h6RqOuQvb5jSZEsxVdVW290SlLjBt3nqMteVq
-lPOlq4kkGbK2dGVqI1pW9kjADR+EKOwckymb1N6y4aPoxtCcorc5Z/a+gkrn
-J3TwbNfKQPdkD2ZYaQ46kzI1VwsnfkquImko7B17si4V72pICxHWq0ldR/MF
-eoMhPRthiBqEEJuNw8zhk9tBd4vrO3kh7Gilw1qq8Q+Wd76KozuSaGPcd4mj
-c750B4L5C76tW9h0CwzP/AWih7p1EuX2yliATS0a5yD1OvlyEZZVqszc2uBk
-J7cPV/FYZllYXtLhhQA3LYjwrUu+okNXr2ZUp7Cpkemk3GU1TrxN+0D0gZCy
-N3uC6zoDGw+psAK4Qb03XIAZcGOP4ygKn8Cls9HbS8hUBQzPte7YAdU6kOfz
-vbvH9KvEXQP9vaY7zrq7oHPrKeAt/iqKzuyJ1kEjm5mUxdzc0wiOVPioxt5P
-IwOtyTid4ouQfIBCSlSaOw9jenkl1L87ztx7ILV95L4VWIY/eqyPLs32e4wJ
-10As8mkzcWau9Ep/EETltoI1xS+toSv23gApclI26fpSwJ0RwncBhkuz1tVF
-bYHLlsJh5r7QCxicqHJu7r4a1KV2hi+LftreK5xIqrsTM/4Mg8IK7U9AXXda
-dPgGSme1bry92a/DW0XAKM914GTrg51J0TS1NUdtXfWoz5dqEbYQxZ7PtSpS
-/eWrf1eRiu9hLwqtFSUltk5hb2CacnTD5qh2TBkOX3F4R1k/lXPf2Dw+uYLh
-2dNYqsi+ZYU9Mln5K7vRLoCMHpugIHpifpMyHCEXfTqkX/TtI9LPyLxKc/CG
-bkY3bgvdPFBJntDZJTUq7Y69WUn4NIv0jorifA9vZ8/lRnyb/DiH9RULaStb
-pXEqwa3VO8b7ws99xz9tDPcXEs1l9S6R3guFIc1GmsgXFYMLXe6Vgf6Ckrn/
-7viwOerrZAQ4+uqSvP57U3uikb99vePyyu5jdOkmZJ1BrXCFRj5Bv24udffF
-kmj3KfHYkxXd5+pGtPsMPesMZ/0pcbT7XHSTFbGmqFwLvL6i9y+KfM2VtNsF
-d9u1s1Bw777ralm/0PqukdVCO7nXhTHh34RtWb+9GuRfz+ELiKnueaOsUTGh
-FyzgUYFSUAntSFd0YMpk7LH4pFjmvhqblOOZqqS5UHhzY9/wtNeabZ/w/UB+
-n7MT3Xfe+AQBxz1dhuWXB0fJ+JJWfYCIlF4X5ErLzYMJPsfjNM0gkvf8DhLS
-JZW23/3h3i6joreJcnujswta1NXkmwYFaKRqVJsOeLz6AoHdmqvwlVUmEP3w
-A1fH/OsOsXkZQ8fBO3c//fRCbPJ91vAFgRc/m8LckO7EUoBJfjt2L4DEpl5X
-reA5f/ghIO9e2XHzjGcFFRm/czp3QZxw8OLcFRR/Ms+POKiIMLPt5vKRDuU1
-WDZADx56JhcX7/g9yq1706oteyDszz9Nq2Xw/xpfbeQc/PO0LDj4BfbxFdm9
-sKDaJtZE25DSemIEQhcGtV+IG/GjaD3V4lunp9Wn249YoFwI9bfuOdYcnHzf
-GHdq8n2j+urwLEKQaVG4OCinDEwXHMBdmADOFbvvOyFXqkCcTg62/quu/3zH
-cHsm4tgMKNlgsX1W40pO9+UxOOdoTXLUOSNpk7xdStCqT0wylPs+486g89zt
-x7745DRxzRmD+Bx9tpwEl/3rtfUWAt2q7jWuncZ/1+B2lvxdg13u9OLnyBvu
-GjHcj2B95GtJtlG/3syttlBbYne72Q9ecX3LK65WC/4PHwL08SjoidYX2C7e
-o78e3JM4v5n5PdR/pQFQmXvyIX56cU9OpuaS2R9G2Ny8+/eT/4PIZnyp7o+l
-vq6+0iM96OvO/XvbW44vxO49xri+j+7RN5QKhuzdewg6P26HXGvVm4zzR6DM
-Zw4PffLsazox0u9bgsL+V/eAXBXQYqv5JivE2llEALT2p2el7YK8qPvuPr6r
-wB52ftKZvlO7qzs/XVeR6/yg87P+QlPfD3o/7570N+Mg33VnzTWSLs21V0da
-HR/d75KB34Z2UNKd+vGtNzuCjk9uvWwRdHzauYB0i56s977hnq93s+Fmd/1p
-a5fXOsme3e23Db9EfgHx/wFR6yIzj0sAAA==
+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
+qwdkL8TIMxrE6PW6RcD0jwYm/5TPZVaRkj43Vg1TEWe2nmrRnWnl7famHOyF
+jbbuuda02nzdGtdn83Wr+jo3mEIA04JAd8CK+5wTX+cm8eXaI+67IVf4AJxu
+YOu/Qt3sK5bbLhqHZgTJJtna3T2uVHdfHKPOmNYmR52umjbI26kErvrAIGO6
+77NeHnSeu/vYFx8cJ67pShEfk48WkyiKDGfrLaC6U91rXbv88VWL29WFr1rs
+cs7Pfkq85lhDhvsBDE2CFmTbKobL3GoTtUV2d5v9yn0Y3gsY1qsFf0VYpP68
+lfBAwysP5+8wXw/uCZwTDF8D/RdaAJa5Jx7i+2f3xOTCvJbwbwNs3tX414P/
+N4HN+TWMfy/0dXWpHuqBX3fuP9u+F/NM7N5jjZv76B5zY6pgyd69l2DyD22X
+dC17k3B+x8ad3GefXAgZ30u5usVp7v+yB2iuGtpiq/ndJyBr5xCRorU/PSdt
+NzKIMHf3h7saE+LJjzvbd2qeYfKTdZXMzg8m/9hfoOv7weyn3d7Qph/kp+6s
+aTzuwlzbbNya+Oh+ban+GtpOSXfrH27tBY4mPr61PTea+KTTsn4Ln6y3vvGd
+rzez8WV37WnrltcayZ7b7ZcNf0T6yor/B7lFE5/HVQAA
 
 -->
 

@@ -1,7 +1,7 @@
 ---
 title: Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests
 abbrev: SUIT Update Management Extensions
-docname: draft-ietf-suit-update-management-00
+docname: draft-ietf-suit-update-management-01
 category: std
 
 ipr: trust200902
@@ -28,7 +28,7 @@ author:
       ins: B. Moran
       name: Brendan Moran
       organization: Arm Limited
-      email: Brendan.Moran@arm.com
+      email: Brendan.Moran.ietf@gmail.com
 
 normative:
   I-D.ietf-sacm-coswid:
@@ -189,7 +189,9 @@ The following table defines the semantics of the commands defined in this specif
 | Check Minimum Battery | suit-condition-minimum-battery | assert(battery >= current.params\[minimum-battery\])
 | Check Update Authorized | suit-condition-update-authorized | assert( isAuthorized( current.params\[priority\]))
 | Check Version | suit-condition-version | assert(version_check(current, current.params\[version\]))
-| Wait For Event |suit-directive-wait | until event(arg), wait
+| Wait For Event | suit-directive-wait | until event(arg), wait
+| Override Multiple | suit-directive-override-multiple | components\[i\].params\[k\] := v for-each k,v in d for-each i,d in arg
+| Copy Params | suit-directive-copy-params | current.params\[k\] = components\[i\].params\[k\] for k in l for i,l in arg
 
 
 ## suit-condition-use-before
@@ -224,6 +226,49 @@ suit-directive-wait directs the manifest processor to pause until a specified ev
 6. Time of Day
 7. Day of Week
 
+## suit-directive-override-multiple
+
+This directive enables setting parameters for multiple components at the same time. This allows a small reduction in encoding overhead:
+
+* without override-multiple, the encoding for each component consists of:
+
+  * set-component-index (2 bytes)
+  * override-parameters (1 byte + parameter map)
+
+* with override-multiple, the encoding for each component consists of:
+
+  * the component index key (1 byte)
+  * the parameter map
+
+Override-multiple requires the command (1-2 bytes) and one additional map to hold the parameter sets (1 byte). For one component, there is no savings. For multiple components, there is an encoding savings of 2 bytes per component.
+
+Proper structuring of code should ensure that override-multiple follows a code-path nearly identical to set-component-index + override-parameters.
+
+This command is purely an encoding alias for set-component-index and override-parameters. The component index is set to the last component listed in the override-multiple argument when override-multiple completes.
+
+The following CDDL defines the argument for suit-directive-override-multiple:
+
+```CDDL
+SUIT_Override_Mult_Arg = {
+    uint => {+ $$SUIT_Parameters}
+}
+```
+
+## suit-directive-copy-params
+
+suit-directive-copy-params enables a manifest author to specify one or more components to copy parameters from, and a list of parameters to copy from each specified source component.
+
+The behaviour is exactly the same as override parameters, but with parameter values defined in existing components. Parameters are only copied between identical keys (no copying from URI to digest, for example).
+
+For each entry in the map, the manifest processor sets the source component to be the component identified by the index contained in the map key. For each parameter identified in the copy list, the manifest processor copies the parameter from the source component to the current component.
+
+The following CDDL defines the argument for suit-directive-copy-params:
+
+```CDDL
+SUIT_Directive_Copy_Params = {
+    uint => [+ int]
+}
+```
 
 #  IANA Considerations {#iana}
 
@@ -269,4 +314,3 @@ To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The 
 ~~~ CDDL
 {::include draft-ietf-suit-update-management.cddl}
 ~~~
-
