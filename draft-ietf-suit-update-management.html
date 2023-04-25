@@ -15,26 +15,24 @@ extensions also provide a mechanism to inform a management system of
 Software Identifier and Software Bill Of Materials information about an
 updated device. 
     " name="description">
-<meta content="xml2rfc 3.15.0" name="generator">
+<meta content="xml2rfc 3.17.1" name="generator">
 <meta content="Internet-Draft" name="keyword">
-<meta content="draft-ietf-suit-update-management-01" name="ietf.draft">
+<meta content="draft-ietf-suit-update-management-02" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.15.0
-    Python 3.9.6
+  xml2rfc 3.17.1
+    Python 3.11.3
     appdirs 1.4.4
     ConfigArgParse 1.5.3
     google-i18n-address 2.5.2
-    html5lib 1.1
     intervaltree 3.1.0
     Jinja2 3.1.2
-    kitchen 1.2.6
-    lxml 4.9.1
-    MarkupSafe 2.1.1
+    lxml 4.9.2
     pycountry 22.3.5
     PyYAML 6.0
-    requests 2.28.1
-    setuptools 58.0.4
-    six 1.15.0
+    requests 2.28.2
+    setuptools 67.6.1
+    six 1.16.0
+    wcwidth 0.2.6
 -->
 <link href="draft-ietf-suit-update-management.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -46,7 +44,7 @@ updated device.
   this can be consolidated so that style settings occur only in one place, but
   for now the contents of this file consists first of the initial CSS work as
   provided to the RFC Formatter (xml2rfc) work, followed by itemized and
-  commented changes found necssary during the development of the v3
+  commented changes found necessary during the development of the v3
   formatters.
 
 */
@@ -56,9 +54,14 @@ updated device.
 @import url('https://fonts.googleapis.com/css?family=Noto+Serif'); /* Serif (print) */
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); /* Monospace */
 
+:root {
+  --font-sans: 'Noto Sans', Arial, Helvetica, sans-serif;
+  --font-serif: 'Noto Serif', 'Times', 'Times New Roman', serif;
+  --font-mono: 'Roboto Mono', Courier, 'Courier New', monospace;
+}
+
 @viewport {
   zoom: 1.0;
-  width: extend-to-zoom;
 }
 @-ms-viewport {
   width: extend-to-zoom;
@@ -73,7 +76,7 @@ body {
   color: #222;
   background-color: #fff;
   font-size: 14px;
-  font-family: 'Noto Sans', Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.6;
   scroll-behavior: smooth;
 }
@@ -162,6 +165,15 @@ div {
 svg {
   display: block;
 }
+svg[font-family~="serif" i], svg [font-family~="serif" i] {
+  font-family: var(--font-serif);
+}
+svg[font-family~="sans-serif" i], svg [font-family~="sans-serif" i] {
+  font-family: var(--font-sans);
+}
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
 .alignCenter.art-text {
   background-color: #f9f9f9;
   border: 1px solid #eee;
@@ -245,7 +257,8 @@ a[href]:hover {
   background-color: #f2f2f2;
 }
 figcaption a[href],
-a[href].selfRef {
+a[href].selfRef,
+.iref + a[href].internal {
   color: #222;
 }
 /* XXX probably not this:
@@ -255,9 +268,9 @@ a.selfRef:hover {
 } */
 
 /* Figures */
-tt, code, pre, code {
+tt, code, pre {
   background-color: #f9f9f9;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
 }
 pre {
   border: 1px solid #eee;
@@ -494,7 +507,7 @@ address.vcard .nameRole {
   margin-left: 0;
 }
 address.vcard .label {
-  font-family: "Noto Sans",Arial,Helvetica,sans-serif;
+  font-family: var(--font-sans);
   margin: 0.5em 0;
 }
 address.vcard .type {
@@ -657,7 +670,7 @@ hr.addr {
   figure {
     overflow: scroll;
   }
-  pre.breakable {
+  .breakable pre {
     break-inside: auto;
   }
   h1, h2, h3, h4, h5, h6 {
@@ -727,7 +740,7 @@ hr.addr {
   size: A4;
   margin-bottom: 45mm;
   padding-top: 20px;
-  /* The follwing is commented out here, but set appropriately by in code, as
+  /* The following is commented out here, but set appropriately by in code, as
      the content depends on the document */
   /*
   @top-left {
@@ -827,12 +840,12 @@ section {
 }
 
 /* prevent monospace from becoming overly large */
-tt, code, pre, code {
+tt, code, pre {
   font-size: 95%;
 }
 
 /* Fix the height/width aspect for ascii art*/
-pre.sourcecode,
+.sourcecode pre,
 .art-text pre {
   line-height: 1.12;
 }
@@ -868,7 +881,7 @@ table th.text-right {
   text-align: right;
 }
 
-/* Make the alternative author contact informatio look less like just another
+/* Make the alternative author contact information look less like just another
    author, and group it closer with the primary author contact information */
 .alternative-contact {
   margin: 0.5em 0 0.25em 0;
@@ -1050,6 +1063,7 @@ aside > p {
 /* Sourcecode margin in print, when there's no pilcrow */
 @media print {
   .artwork,
+  .artwork > pre,
   .sourcecode {
     margin-bottom: 1em;
   }
@@ -1064,7 +1078,7 @@ ol.type-A { list-style-type: upper-alpha; }
 ol.type-i { list-style-type: lower-roman; }
 ol.type-I { list-style-type: lower-roman; }
 /* Apply the print table and row borders in general, on request from the RPC,
-and increase the contrast between border and odd row background sligthtly */
+and increase the contrast between border and odd row background slightly */
 table {
   border: 1px solid #ddd;
 }
@@ -1124,7 +1138,7 @@ span.break, dd.break {
     break-before: auto;
   }
 }
-/* Text in compact lists should not get extra bottim margin space,
+/* Text in compact lists should not get extra bottom margin space,
    since that would makes the list not compact */
 ul.compact p, .ulCompact p,
 ol.compact p, .olCompact p {
@@ -1149,7 +1163,7 @@ p tt, p code, li tt, li code {
 pre {
    margin-top: 0.5px;
 }
-/* Tweak the comact list text */
+/* Tweak the compact list text */
 ul.compact, .ulCompact,
 ol.compact, .olCompact,
 dl.compact, .dlCompact {
@@ -1167,7 +1181,7 @@ dd > div.artwork:first-child,
 dd > aside:first-child,
 dd > figure:first-child,
 dd > ol:first-child,
-dd > div:first-child > pre.sourcecode,
+dd > div.sourcecode:first-child,
 dd > table:first-child,
 dd > ul:first-child {
   clear: left;
@@ -1181,7 +1195,7 @@ li > p {
   margin-bottom: 0.5em
 }
 /* Don't let p margin spill out from inside list items */
-li > p:last-of-type {
+li > p:last-of-type:only-child {
   margin-bottom: 0;
 }
 </style>
@@ -1194,11 +1208,11 @@ li > p:last-of-type {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">SUIT Update Management Extensions</td>
-<td class="right">October 2022</td>
+<td class="right">April 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Moran</td>
-<td class="center">Expires 27 April 2023</td>
+<td class="center">Expires 27 October 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1208,15 +1222,15 @@ li > p:last-of-type {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">SUIT</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ietf-suit-update-management-01</dd>
+<dd class="internet-draft">draft-ietf-suit-update-management-02</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-10-24" class="published">24 October 2022</time>
+<time datetime="2023-04-25" class="published">25 April 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-04-27">27 April 2023</time></dd>
+<dd class="expires"><time datetime="2023-10-27">27 October 2023</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1256,7 +1270,7 @@ updated device.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 27 April 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 27 October 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1265,7 +1279,7 @@ updated device.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2022 IETF Trust and the persons identified as the
+            Copyright (c) 2023 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1319,6 +1333,26 @@ updated device.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
                 <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="auto internal xref">4.5</a>.  <a href="#name-suit-parameter-wait-info" class="internal xref">suit-parameter-wait-info</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
+                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="auto internal xref">4.6</a>.  <a href="#name-suit-parameter-component-me" class="internal xref">suit-parameter-component-metadata</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6.2.1">
+                    <p id="section-toc.1-1.4.2.6.2.1.1"><a href="#section-4.6.1" class="auto internal xref">4.6.1</a>.  <a href="#name-creator" class="internal xref">Creator</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6.2.2">
+                    <p id="section-toc.1-1.4.2.6.2.2.1"><a href="#section-4.6.2" class="auto internal xref">4.6.2</a>.  <a href="#name-creation-modification-time" class="internal xref">Creation &amp; Modification Time</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6.2.3">
+                    <p id="section-toc.1-1.4.2.6.2.3.1"><a href="#section-4.6.3" class="auto internal xref">4.6.3</a>.  <a href="#name-component-default-permissio" class="internal xref">Component Default Permissions</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6.2.4">
+                    <p id="section-toc.1-1.4.2.6.2.4.1"><a href="#section-4.6.4" class="auto internal xref">4.6.4</a>.  <a href="#name-user-role-group-permissions" class="internal xref">User, Role, Group permissions</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6.2.5">
+                    <p id="section-toc.1-1.4.2.6.2.5.1"><a href="#section-4.6.5" class="auto internal xref">4.6.5</a>.  <a href="#name-file-type" class="internal xref">File Type</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
@@ -1506,6 +1540,13 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
               <a href="#suit-parameter-wait-info" class="auto internal xref">Section 4.5</a>
 </td>
           </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">Component Metadata</td>
+            <td class="text-left" rowspan="1" colspan="1">suit-parameter-component-metadata</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <a href="#suit-parameter-component-metadata" class="auto internal xref">Section 4.6</a>
+</td>
+          </tr>
         </tbody>
       </table>
 <div id="suit-parameter-use-before">
@@ -1647,6 +1688,191 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
           </tbody>
         </table>
 <p id="section-4.5-5">suit-wait-event-other-device-version reuses the encoding of suit-parameter-version-match. It is encoded as a sequence that contains an implementation-defined bstr identifier for the other device, and a list of one or more SUIT_Parameter_Version_Match.<a href="#section-4.5-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="suit-parameter-component-metadata">
+<section id="section-4.6">
+        <h3 id="name-suit-parameter-component-me">
+<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-suit-parameter-component-me" class="section-name selfRef">suit-parameter-component-metadata</a>
+        </h3>
+<p id="section-4.6-1">In some instances, a system may need to know the file metadata for a component. This metadata can include:<a href="#section-4.6-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6-2.1">creator<a href="#section-4.6-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.6-2.2">creation time<a href="#section-4.6-2.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.6-2.3">modification time<a href="#section-4.6-2.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.6-2.4">default permissions (rwx)<a href="#section-4.6-2.4" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.6-2.5">a map of user/permission pairs<a href="#section-4.6-2.5" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.6-2.6">a map of role/permission pairs<a href="#section-4.6-2.6" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.6-2.7">a map of group/permission pairs<a href="#section-4.6-2.7" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-4.6-2.8">file type<a href="#section-4.6-2.8" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-4.6-3">Component metadata is applied at time of fetch, copy, or write; see <span>[<a href="#I-D.ietf-suit-manifest" class="cite xref">I-D.ietf-suit-manifest</a>]</span>, sections 8.4.10.4, 8.4.10.5, 8.4.10.6. Therefore, the component metadata parameter must be set in advance of the component being fetched, copied into, or written.<a href="#section-4.6-3" class="pilcrow">¶</a></p>
+<div id="suit-meta-creator">
+<section id="section-4.6.1">
+          <h4 id="name-creator">
+<a href="#section-4.6.1" class="section-number selfRef">4.6.1. </a><a href="#name-creator" class="section-name selfRef">Creator</a>
+          </h4>
+<p id="section-4.6.1-1">Sometimes, management of file systems requires that the creator of each file is correctly recorded. Because the default creator of files will be the update agent, this can obscure the actual creator of each file. The Creator metadata element allows overriding the default behaviour and setting the correct creator.<a href="#section-4.6.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.6.1-2">The creator is defined as follows:<a href="#section-4.6.1-2" class="pilcrow">¶</a></p>
+<div class="lang-CDDL sourcecode" id="section-4.6.1-3">
+<pre>
+SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
+UUID_Tagged = #6.37(bstr)
+</pre><a href="#section-4.6.1-3" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6.1-4">The actor ID can be whatever is most appropriate for any given system. Typically, the actor ID will be a string (e.g., username), integer (e.g., POSIX userid), or UUID (e.g., TEEP TA UUID).<a href="#section-4.6.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="creation-modification-time">
+<section id="section-4.6.2">
+          <h4 id="name-creation-modification-time">
+<a href="#section-4.6.2" class="section-number selfRef">4.6.2. </a><a href="#name-creation-modification-time" class="section-name selfRef">Creation &amp; Modification Time</a>
+          </h4>
+<p id="section-4.6.2-1">The creation and modification times are defined by CBOR time types. These are defined in <span>[<a href="#RFC8949" class="cite xref">RFC8949</a>]</span>, Section 3.4.2. The CBOR tag is REQUIRED when either creation or modification time are provided.<a href="#section-4.6.2-1" class="pilcrow">¶</a></p>
+<div class="lang-CDDL sourcecode" id="section-4.6.2-2">
+<pre>
+suit-meta-modification-time =&gt; #6.1(uint)
+suit-meta-creation-time =&gt; #6.1(uint)
+</pre><a href="#section-4.6.2-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="component-default-permissions">
+<section id="section-4.6.3">
+          <h4 id="name-component-default-permissio">
+<a href="#section-4.6.3" class="section-number selfRef">4.6.3. </a><a href="#name-component-default-permissio" class="section-name selfRef">Component Default Permissions</a>
+          </h4>
+<p id="section-4.6.3-1">Typical permissions management systems require read, write, and execute permissions that are applied to all users who do not have their own explicit permissions. These are the default permissions for the current component. Default permissions are described by the following CDDL:<a href="#section-4.6.3-1" class="pilcrow">¶</a></p>
+<div class="lang-CDDL sourcecode" id="section-4.6.3-2">
+<pre>
+SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
+SUIT_meta_permission_bits = &amp;(
+    r: 2, w: 1, x: 0,
+    * $$SUIT_meta_permission_bits_extensions
+)
+</pre><a href="#section-4.6.3-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="user-role-group-permissions">
+<section id="section-4.6.4">
+          <h4 id="name-user-role-group-permissions">
+<a href="#section-4.6.4" class="section-number selfRef">4.6.4. </a><a href="#name-user-role-group-permissions" class="section-name selfRef">User, Role, Group permissions</a>
+          </h4>
+<p id="section-4.6.4-1">Many filesystems have users and groups. Additionally some have roles. Actors that have these associations can have specific permissions associated with them for each component. Each of these sets of permissions is defined the same way: with a map of actor identifiers to permissions.<a href="#section-4.6.4-1" class="pilcrow">¶</a></p>
+<div class="lang-CDDL sourcecode" id="section-4.6.4-2">
+<pre>
+SUIT_meta_permission_map = {
+    + SUIT_meta_actor_id =&gt; SUIT_meta_permissions
+}
+</pre><a href="#section-4.6.4-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.6.4-3">The SUIT_meta_actor_id is the same as defined for Creator, <a href="#suit-meta-creator" class="auto internal xref">Section 4.6.1</a>.<a href="#section-4.6.4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="file-type">
+<section id="section-4.6.5">
+          <h4 id="name-file-type">
+<a href="#section-4.6.5" class="section-number selfRef">4.6.5. </a><a href="#name-file-type" class="section-name selfRef">File Type</a>
+          </h4>
+<p id="section-4.6.5-1">File Type typically identifies whether a file is a directory, regular file, or symbolic link. If not specified, File Type defaults to regular file.<a href="#section-4.6.5-1" class="pilcrow">¶</a></p>
+<p id="section-4.6.5-2">This enables specific management operations for SUIT command sequences:<a href="#section-4.6.5-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6.5-3.1">
+              <p id="section-4.6.5-3.1.1">To create a directory<a href="#section-4.6.5-3.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6.5-3.1.2.1">Set the Component Index to the Component Identifier of the directory to be created<a href="#section-4.6.5-3.1.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-3.1.2.2">Set the Component metadata, including the file type for directory<a href="#section-4.6.5-3.1.2.2" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-3.1.2.3">Set suit-parameter-content to an empty bstr<a href="#section-4.6.5-3.1.2.3" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-3.1.2.4">Invoke suit-directive-write<a href="#section-4.6.5-3.1.2.4" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="section-4.6.5-3.2">
+              <p id="section-4.6.5-3.2.1">To create a symbolic link<a href="#section-4.6.5-3.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6.5-3.2.2.1">Set the Component Index to the Component Identifier of the link to be created<a href="#section-4.6.5-3.2.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-3.2.2.2">Set the Component metadata, including the file type for symbolic link<a href="#section-4.6.5-3.2.2.2" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-3.2.2.3">Set suit-parameter-content to the link target<a href="#section-4.6.5-3.2.2.3" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-3.2.2.4">Invoke suit-directive-write<a href="#section-4.6.5-3.2.2.4" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+          </ul>
+<p id="section-4.6.5-4">For example, the following Payload Fetch &amp; Install sequences will create a new /usr/local/bin directory, download https://cdn.example/example3.bin into a new file: /usr/local/bin/example3, then create a symlink at /usr/bin/example that points to /usr/local/bin/example3.<a href="#section-4.6.5-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6.5-5.1">
+              <p id="section-4.6.5-5.1.1">Common has components for:<a href="#section-4.6.5-5.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6.5-5.1.2.1">/usr/bin/example<a href="#section-4.6.5-5.1.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-5.1.2.2">/usr/local/bin<a href="#section-4.6.5-5.1.2.2" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-5.1.2.3">/usr/local/bin/example3<a href="#section-4.6.5-5.1.2.3" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="section-4.6.5-5.2">
+              <p id="section-4.6.5-5.2.1">Payload fetch:<a href="#section-4.6.5-5.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6.5-5.2.2.1">set component index = 1<a href="#section-4.6.5-5.2.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-5.2.2.2">
+                  <p id="section-4.6.5-5.2.2.2.1">set parameters:<a href="#section-4.6.5-5.2.2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6.5-5.2.2.2.2.1">content = h''<a href="#section-4.6.5-5.2.2.2.2.1" class="pilcrow">¶</a>
+</li>
+                    <li class="normal" id="section-4.6.5-5.2.2.2.2.2">metadata = {file-type: directory}<a href="#section-4.6.5-5.2.2.2.2.2" class="pilcrow">¶</a>
+</li>
+                  </ul>
+</li>
+                <li class="normal" id="section-4.6.5-5.2.2.3">write<a href="#section-4.6.5-5.2.2.3" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-5.2.2.4">set component index = 2<a href="#section-4.6.5-5.2.2.4" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-5.2.2.5">set URI = "https://cdn.example/example3.bin"<a href="#section-4.6.5-5.2.2.5" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-5.2.2.6">fetch<a href="#section-4.6.5-5.2.2.6" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-5.2.2.7">condition image digest<a href="#section-4.6.5-5.2.2.7" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="section-4.6.5-5.3">
+              <p id="section-4.6.5-5.3.1">Install:<a href="#section-4.6.5-5.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6.5-5.3.2.1">set component index = 0<a href="#section-4.6.5-5.3.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="section-4.6.5-5.3.2.2">
+                  <p id="section-4.6.5-5.3.2.2.1">set parameters:<a href="#section-4.6.5-5.3.2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.6.5-5.3.2.2.2.1">content = "/usr/local/bin/example3"<a href="#section-4.6.5-5.3.2.2.2.1" class="pilcrow">¶</a>
+</li>
+                    <li class="normal" id="section-4.6.5-5.3.2.2.2.2">metadata = {file-type: symlink}<a href="#section-4.6.5-5.3.2.2.2.2" class="pilcrow">¶</a>
+</li>
+                  </ul>
+</li>
+                <li class="normal" id="section-4.6.5-5.3.2.3">write<a href="#section-4.6.5-5.3.2.3" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+          </ul>
+</section>
+</div>
 </section>
 </div>
 </section>
@@ -1980,23 +2206,27 @@ SUIT_Directive_Copy_Params = {
 <dl class="references">
 <dt id="I-D.ietf-sacm-coswid">[I-D.ietf-sacm-coswid]</dt>
         <dd>
-<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Fitzgerald-McKay, J.</span>, <span class="refAuthor">Schmidt, C.</span>, and <span class="refAuthor">D. Waltermire</span>, <span class="refTitle">"Concise Software Identification Tags"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-sacm-coswid-22</span>, <time datetime="2022-07-20" class="refDate">20 July 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-sacm-coswid-22.txt">https://www.ietf.org/archive/id/draft-ietf-sacm-coswid-22.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Fitzgerald-McKay, J.</span>, <span class="refAuthor">Schmidt, C.</span>, and <span class="refAuthor">D. Waltermire</span>, <span class="refTitle">"Concise Software Identification Tags"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-sacm-coswid-24</span>, <time datetime="2023-02-24" class="refDate">24 February 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-sacm-coswid-24">https://datatracker.ietf.org/doc/html/draft-ietf-sacm-coswid-24</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-suit-manifest">[I-D.ietf-suit-manifest]</dt>
         <dd>
-<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Zandberg, K.</span>, and <span class="refAuthor">O. Rønningstad</span>, <span class="refTitle">"A Concise Binary Object Representation (CBOR)-based Serialization Format for the Software Updates for Internet of Things (SUIT) Manifest"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-suit-manifest-20</span>, <time datetime="2022-10-07" class="refDate">7 October 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-suit-manifest-20.txt">https://www.ietf.org/archive/id/draft-ietf-suit-manifest-20.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Zandberg, K.</span>, and <span class="refAuthor">O. Rønningstad</span>, <span class="refTitle">"A Concise Binary Object Representation (CBOR)-based Serialization Format for the Software Updates for Internet of Things (SUIT) Manifest"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-suit-manifest-22</span>, <time datetime="2023-02-27" class="refDate">27 February 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-suit-manifest-22">https://datatracker.ietf.org/doc/html/draft-ietf-suit-manifest-22</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
-<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>
-<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8949">[RFC8949]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9019">[RFC9019]</dt>
       <dd>
-<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Brown, D.</span>, and <span class="refAuthor">M. Meriac</span>, <span class="refTitle">"A Firmware Update Architecture for Internet of Things"</span>, <span class="seriesInfo">RFC 9019</span>, <span class="seriesInfo">DOI 10.17487/RFC9019</span>, <time datetime="2021-04" class="refDate">April 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc9019">https://www.rfc-editor.org/info/rfc9019</a>&gt;</span>. </dd>
+<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Brown, D.</span>, and <span class="refAuthor">M. Meriac</span>, <span class="refTitle">"A Firmware Update Architecture for Internet of Things"</span>, <span class="seriesInfo">RFC 9019</span>, <span class="seriesInfo">DOI 10.17487/RFC9019</span>, <time datetime="2021-04" class="refDate">April 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9019">https://www.rfc-editor.org/rfc/rfc9019</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -2007,7 +2237,7 @@ SUIT_Directive_Copy_Params = {
 <dl class="references">
 <dt id="I-D.ietf-suit-information-model">[I-D.ietf-suit-information-model]</dt>
       <dd>
-<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">H. Birkholz</span>, <span class="refTitle">"A Manifest Information Model for Firmware Updates in Internet of Things (IoT) Devices"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-suit-information-model-13</span>, <time datetime="2021-07-08" class="refDate">8 July 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-suit-information-model-13.txt">https://www.ietf.org/archive/id/draft-ietf-suit-information-model-13.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, and <span class="refAuthor">H. Birkholz</span>, <span class="refTitle">"A Manifest Information Model for Firmware Updates in Internet of Things (IoT) Devices"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-suit-information-model-13</span>, <time datetime="2021-07-08" class="refDate">8 July 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-suit-information-model-13">https://datatracker.ietf.org/doc/html/draft-ietf-suit-information-model-13</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -2018,10 +2248,11 @@ SUIT_Directive_Copy_Params = {
 <a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-a-full-cddl" class="section-name selfRef">A. Full CDDL</a>
       </h2>
 <p id="appendix-A-1">To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of <span>[<a href="#I-D.ietf-suit-manifest" class="cite xref">I-D.ietf-suit-manifest</a>]</span><a href="#appendix-A-1" class="pilcrow">¶</a></p>
-<div id="appendix-A-2">
-<pre class="breakable lang-CDDL sourcecode">
+<div class="breakable lang-CDDL sourcecode" id="appendix-A-2">
+<pre>
 $$SUIT_severable-members-extensions //= (
-    suit-coswid =&gt; bstr .cbor concise-software-identity)
+    suit-coswid =&gt; bstr)
+;    suit-coswid =&gt; bstr .cbor concise-software-identity)
 
 $$severable-manifest-members-choice-extensions //= (
     suit-coswid =&gt; bstr .cbor SUIT_Command_Sequence / SUIT_Digest
@@ -2048,10 +2279,10 @@ SUIT_Directive //=(
 
 
 SUIT_Override_Mult_Arg = {
-    uint =&gt; {+ $$SUIT_Parameters}
+    + uint =&gt; {+ $$SUIT_Parameters}
 }
 SUIT_Directive_Copy_Params = {
-    uint =&gt; [+ int]
+    + uint =&gt; [+ int]
 }
 
 SUIT_Wait_Event = { + SUIT_Wait_Events }
@@ -2079,6 +2310,8 @@ SUIT_Parameters //= (suit-parameter-version =&gt;
     SUIT_Parameter_Version_Match)
 SUIT_Parameters //= (suit-parameter-wait-info =&gt;
     bstr .cbor SUIT_Wait_Event)
+SUIT_Parameters //= (suit-parameter-component-metadata =&gt;
+    bstr .cbor SUIT_Component_Metadata)
 
 SUIT_Parameter_Version_Match = [
     suit-condition-version-comparison-type:
@@ -2104,6 +2337,34 @@ suit-condition-version-comparison-lesser-equal = 4
 suit-condition-version-comparison-lesser = 5
 
 SUIT_Condition_Version_Comparison_Value = [+int]
+
+
+SUIT_Component_Metadata = {
+    ? suit-meta-default-permissions =&gt; SUIT_meta_permissions,
+    ? suit-meta-user-permissions =&gt; SUIT_meta_permission_map,
+    ? suit-meta-group-permissions =&gt; SUIT_meta_permission_map,
+    ? suit-meta-role-permissions =&gt; SUIT_meta_permission_map,
+    ? suit-meta-file-type =&gt; SUIT_Filetype,
+    ? suit-meta-modification-time =&gt; CBOR_Datetime,
+    ? suit-meta-creation-time =&gt; CBOR_Datetime,
+    ? suit-meta-creator =&gt; SUIT_meta_actor_id,
+    * $$SUIT_Component_Metadata_Extensions
+}
+
+SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
+SUIT_meta_permission_bits = &amp;(
+    r: 2, w: 1, x: 0,
+    * $$SUIT_meta_permission_bits_extensions
+)
+
+SUIT_meta_permission_map = {
+    + SUIT_meta_actor_id =&gt; SUIT_meta_permissions
+}
+
+SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
+UUID_Tagged = #6.37(bstr)
+
+
 
 $$suit-text-component-key-extensions //= (
     suit-text-version-required =&gt; tstr)
