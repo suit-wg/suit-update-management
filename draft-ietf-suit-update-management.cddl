@@ -101,7 +101,20 @@ SUIT_Component_Metadata = {
 
 SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
 SUIT_meta_permission_bits = &(
-    r: 2, w: 1, x: 0,
+    write_attr_ex: 13,
+    read_attr_ex: 12, 
+    sync: 11,
+    delete: 10,
+    recurse_delete: 9,
+    write_attr: 8,
+    change_owner: 7,
+    change_perm: 6,
+    read_perm: 5,
+    read_attr: 4,
+    create_append: 3,
+    list_read: 2,
+    create_write: 1,
+    traverse_exec: 0,
     * $$SUIT_meta_permission_bits_extensions
 )
 

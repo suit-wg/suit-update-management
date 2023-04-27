@@ -4,8 +4,8 @@
 
 SUIT                                                            B. Moran
 Internet-Draft                                               Arm Limited
-Intended status: Standards Track                           25 April 2023
-Expires: 27 October 2023
+Intended status: Standards Track                           27 April 2023
+Expires: 29 October 2023
 
 
 Update Management Extensions for Software Updates for Internet of Things
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 October 2023.
+   This Internet-Draft will expire on 29 October 2023.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Moran                    Expires 27 October 2023                [Page 1]
+Moran                    Expires 29 October 2023                [Page 1]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Moran                    Expires 27 October 2023                [Page 2]
+Moran                    Expires 29 October 2023                [Page 2]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -165,7 +165,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023                [Page 3]
+Moran                    Expires 29 October 2023                [Page 3]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -221,7 +221,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023                [Page 4]
+Moran                    Expires 29 October 2023                [Page 4]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -277,7 +277,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023                [Page 5]
+Moran                    Expires 29 October 2023                [Page 5]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -333,7 +333,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023                [Page 6]
+Moran                    Expires 29 October 2023                [Page 6]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -389,7 +389,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023                [Page 7]
+Moran                    Expires 29 October 2023                [Page 7]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -445,7 +445,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023                [Page 8]
+Moran                    Expires 29 October 2023                [Page 8]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -501,7 +501,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023                [Page 9]
+Moran                    Expires 29 October 2023                [Page 9]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -557,7 +557,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023               [Page 10]
+Moran                    Expires 29 October 2023               [Page 10]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -613,7 +613,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023               [Page 11]
+Moran                    Expires 29 October 2023               [Page 11]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -669,7 +669,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023               [Page 12]
+Moran                    Expires 29 October 2023               [Page 12]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -725,7 +725,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023               [Page 13]
+Moran                    Expires 29 October 2023               [Page 13]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -781,7 +781,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023               [Page 14]
+Moran                    Expires 29 October 2023               [Page 14]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -837,7 +837,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023               [Page 15]
+Moran                    Expires 29 October 2023               [Page 15]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -893,7 +893,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023               [Page 16]
+Moran                    Expires 29 October 2023               [Page 16]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -949,7 +949,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023               [Page 17]
+Moran                    Expires 29 October 2023               [Page 17]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -1005,7 +1005,7 @@ Appendix A.  A.  Full CDDL
 
 
 
-Moran                    Expires 27 October 2023               [Page 18]
+Moran                    Expires 29 October 2023               [Page 18]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -1061,7 +1061,7 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
 
-Moran                    Expires 27 October 2023               [Page 19]
+Moran                    Expires 29 October 2023               [Page 19]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
@@ -1079,7 +1079,20 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
    SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
    SUIT_meta_permission_bits = &(
-       r: 2, w: 1, x: 0,
+       write_attr_ex: 13,
+       read_attr_ex: 12,
+       sync: 11,
+       delete: 10,
+       recurse_delete: 9,
+       write_attr: 8,
+       change_owner: 7,
+       change_perm: 6,
+       read_perm: 5,
+       read_attr: 4,
+       create_append: 3,
+       list_read: 2,
+       create_write: 1,
+       traverse_exec: 0,
        * $$SUIT_meta_permission_bits_extensions
    )
 
@@ -1102,6 +1115,13 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    suit-condition-update-authorized        = 27
    suit-condition-version                  = 28
 
+
+
+Moran                    Expires 29 October 2023               [Page 20]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
+
    suit-directive-wait                     = 29
 
    suit-wait-event-authorization        = 1
@@ -1114,14 +1134,6 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
    suit-parameter-use-before        = 4
    suit-parameter-minimum-battery   = 26
-
-
-
-Moran                    Expires 27 October 2023               [Page 20]
-
-Internet-Draft      SUIT Update Management Extensions         April 2023
-
-
    suit-parameter-update-priority   = 27
    suit-parameter-version           = 28
    suit-parameter-wait-info         = 29
@@ -1161,16 +1173,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Moran                    Expires 27 October 2023               [Page 21]
+Moran                    Expires 29 October 2023               [Page 21]
