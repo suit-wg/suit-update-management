@@ -206,7 +206,7 @@ SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
 UUID_Tagged = #6.37(bstr)
 ~~~
 
-The actor ID can be whatever is most appropriate for any given system. Typically, the actor ID will be a string (e.g., username), integer (e.g., POSIX userid), or UUID (e.g., TEEP TA UUID).
+The actor ID can be whatever is most appropriate for any given system. For example, the actor ID might be a string (e.g., username), integer (e.g., POSIX userid), or UUID (e.g., TEEP TA UUID).
 
 
 ### Creation & Modification Time
