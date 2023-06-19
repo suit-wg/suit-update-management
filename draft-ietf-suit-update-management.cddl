@@ -52,7 +52,7 @@ SUIT_Wait_Event_Argument_Other_Device_Version = [
 
 SUIT_Parameters //= (suit-parameter-use-before => uint)
 SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
-SUIT_Parameters //= (suit-parameter-update-priority => uint)
+SUIT_Parameters //= (suit-parameter-update-priority => int)
 SUIT_Parameters //= (suit-parameter-version =>
     SUIT_Parameter_Version_Match)
 SUIT_Parameters //= (suit-parameter-wait-info =>
