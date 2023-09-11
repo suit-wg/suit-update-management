@@ -1,7 +1,7 @@
 ---
 title: Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests
 abbrev: SUIT Update Management Extensions
-docname: draft-ietf-suit-update-management-01
+docname: draft-ietf-suit-update-management-02
 category: std
 
 ipr: trust200902
@@ -34,6 +34,7 @@ normative:
   I-D.ietf-sacm-coswid:
   I-D.ietf-suit-manifest:
   RFC9019:
+  RFC8949:
 
 informative:
   I-D.ietf-suit-information-model:
@@ -107,6 +108,7 @@ Minimum Battery | suit-parameter-minimum-battery | {{suit-parameter-minimum-batt
 Update Priority | suit-parameter-update-priority | {{suit-parameter-update-priority}}
 Version | suit-parameter-version | {{suit-parameter-version}}
 Wait Info | suit-parameter-wait-info | {{suit-parameter-wait-info}}
+Component Metadata | suit-parameter-component-metadata | {{suit-parameter-component-metadata}}
 
 ## suit-parameter-use-before {#suit-parameter-use-before}
 
@@ -177,6 +179,121 @@ suit-wait-event-day-of-week-utc | uint | Wait until days since Sunday UTC
 
 suit-wait-event-other-device-version reuses the encoding of suit-parameter-version-match. It is encoded as a sequence that contains an implementation-defined bstr identifier for the other device, and a list of one or more SUIT_Parameter_Version_Match.
 
+## suit-parameter-component-metadata {#suit-parameter-component-metadata}
+
+In some instances, a system may need to know the file metadata for a component. This metadata can include:
+
+* creator
+* creation time
+* modification time
+* default permissions (rwx)
+* a map of user/permission pairs
+* a map of role/permission pairs
+* a map of group/permission pairs
+* file type
+
+Component metadata is applied at time of fetch, copy, or write; see {{I-D.ietf-suit-manifest}}, sections 8.4.10.4, 8.4.10.5, 8.4.10.6. Therefore, the component metadata parameter must be set in advance of the component being fetched, copied into, or written.
+
+ 
+### Creator {#suit-meta-creator}
+
+Sometimes, management of file systems requires that the creator of each file is correctly recorded. Because the default creator of files will be the update agent, this can obscure the actual creator of each file. The Creator metadata element allows overriding the default behaviour and setting the correct creator.
+
+The creator is defined as follows:
+
+~~~ CDDL
+SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
+UUID_Tagged = #6.37(bstr)
+~~~
+
+The actor ID can be whatever is most appropriate for any given system. For example, the actor ID might be a string (e.g., username), integer (e.g., POSIX userid), or UUID (e.g., TEEP TA UUID).
+
+
+### Creation & Modification Time
+
+The creation and modification times are defined by CBOR time types. These are defined in {{RFC8949}}, Section 3.4.2. The CBOR tag is REQUIRED when either creation or modification time are provided.
+
+~~~ CDDL
+suit-meta-modification-time => #6.1(uint)
+suit-meta-creation-time => #6.1(uint)
+~~~
+
+### Component Default Permissions
+
+Typical permissions management systems require read, write, and execute permissions that are applied to all users who do not have their own explicit permissions. These are the default permissions for the current component. Default permissions are described by the following CDDL:
+
+~~~ CDDL
+SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
+SUIT_meta_permission_bits = &(
+    r: 2, w: 1, x: 0,
+    * $$SUIT_meta_permission_bits_extensions
+)
+~~~
+
+### User, Role, Group permissions
+
+Many filesystems have users and groups. Additionally some have roles. Actors that have these associations can have specific permissions associated with them for each component. Each of these sets of permissions is defined the same way: with a map of actor identifiers to permissions.
+
+~~~CDDL
+SUIT_meta_permission_map = {
+    + SUIT_meta_actor_id => SUIT_meta_permissions
+}
+~~~
+
+The SUIT_meta_actor_id is the same as defined for Creator, {{suit-meta-creator}}.
+
+
+### File Type
+
+File Type typically identifies whether a file is a directory, regular file, or symbolic link. If not specified, File Type defaults to regular file.
+
+This enables specific management operations for SUIT command sequences:
+
+* To create a directory
+
+    * Set the Component Index to the Component Identifier of the directory to be created
+    * Set the Component metadata, including the file type for directory
+    * Set suit-parameter-content to an empty bstr
+    * Invoke suit-directive-write
+
+* To create a symbolic link
+
+    * Set the Component Index to the Component Identifier of the link to be created
+    * Set the Component metadata, including the file type for symbolic link
+    * Set suit-parameter-content to the link target 
+    * Invoke suit-directive-write
+
+For example, the following Payload Fetch & Install sequences will create a new /usr/local/bin directory, download https://cdn.example/example3.bin into a new file: /usr/local/bin/example3, then create a symlink at /usr/bin/example that points to /usr/local/bin/example3.
+
+* Common has components for:
+
+    * /usr/bin/example
+    * /usr/local/bin
+    * /usr/local/bin/example3
+
+* Payload fetch:
+
+    * set component index = 1
+    * set parameters:
+
+        * content = h''
+        * metadata = {file-type: directory}
+
+    * write
+    * set component index = 2
+    * set URI = "https://cdn.example/example3.bin"
+    * fetch
+    * condition image digest
+
+* Install:
+
+    * set component index = 0
+    * set parameters:
+
+        * content = "/usr/local/bin/example3"
+        * metadata = {file-type: symlink}
+
+    * write
 
 # Extension Commands
 

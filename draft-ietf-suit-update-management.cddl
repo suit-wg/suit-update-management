@@ -1,5 +1,6 @@
 $$SUIT_severable-members-extensions //= (
-    suit-coswid => bstr .cbor concise-software-identity)
+    suit-coswid => bstr)
+;    suit-coswid => bstr .cbor concise-software-identity)
 
 $$severable-manifest-members-choice-extensions //= (
     suit-coswid => bstr .cbor SUIT_Command_Sequence / SUIT_Digest
@@ -26,10 +27,10 @@ SUIT_Directive //=(
 
 
 SUIT_Override_Mult_Arg = {
-    uint => {+ $$SUIT_Parameters}
+    + uint => {+ $$SUIT_Parameters}
 }
 SUIT_Directive_Copy_Params = {
-    uint => [+ int]
+    + uint => [+ int]
 }
 
 SUIT_Wait_Event = { + SUIT_Wait_Events }
@@ -57,6 +58,8 @@ SUIT_Parameters //= (suit-parameter-version =>
     SUIT_Parameter_Version_Match)
 SUIT_Parameters //= (suit-parameter-wait-info =>
     bstr .cbor SUIT_Wait_Event)
+SUIT_Parameters //= (suit-parameter-component-metadata =>
+    bstr .cbor SUIT_Component_Metadata)
 
 SUIT_Parameter_Version_Match = [
     suit-condition-version-comparison-type:
@@ -82,6 +85,47 @@ suit-condition-version-comparison-lesser-equal = 4
 suit-condition-version-comparison-lesser = 5
 
 SUIT_Condition_Version_Comparison_Value = [+int]
+
+
+SUIT_Component_Metadata = {
+    ? suit-meta-default-permissions => SUIT_meta_permissions,
+    ? suit-meta-user-permissions => SUIT_meta_permission_map,
+    ? suit-meta-group-permissions => SUIT_meta_permission_map,
+    ? suit-meta-role-permissions => SUIT_meta_permission_map,
+    ? suit-meta-file-type => SUIT_Filetype,
+    ? suit-meta-modification-time => CBOR_Datetime,
+    ? suit-meta-creation-time => CBOR_Datetime,
+    ? suit-meta-creator => SUIT_meta_actor_id,
+    * $$SUIT_Component_Metadata_Extensions
+}
+
+SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
+SUIT_meta_permission_bits = &(
+    write_attr_ex: 13,
+    read_attr_ex: 12, 
+    sync: 11,
+    delete: 10,
+    recurse_delete: 9,
+    write_attr: 8,
+    change_owner: 7,
+    change_perm: 6,
+    read_perm: 5,
+    read_attr: 4,
+    creatdir_append: 3,
+    list_read: 2,
+    create_write: 1,
+    traverse_exec: 0,
+    * $$SUIT_meta_permission_bits_extensions
+)
+
+SUIT_meta_permission_map = {
+    + SUIT_meta_actor_id => SUIT_meta_permissions
+}
+
+SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
+UUID_Tagged = #6.37(bstr)
+
+
 
 $$suit-text-component-key-extensions //= (
     suit-text-version-required => tstr)
