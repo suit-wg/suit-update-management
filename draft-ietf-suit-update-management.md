@@ -29,6 +29,11 @@ author:
       name: Brendan Moran
       organization: Arm Limited
       email: Brendan.Moran.ietf@gmail.com
+ -
+      ins: K. Takayama
+      name: Ken Takayama
+      organization: SECOM CO., LTD.
+      email: ken.takayama.ietf@gmail.com
 
 normative:
   I-D.ietf-sacm-coswid:
