@@ -83,27 +83,27 @@ Table of Contents
      4.6.  suit-parameter-component-metadata . . . . . . . . . . . .   8
        4.6.1.  Creator . . . . . . . . . . . . . . . . . . . . . . .   9
        4.6.2.  Creation & Modification Time  . . . . . . . . . . . .   9
-       4.6.3.  Component Default Permissions . . . . . . . . . . . .   9
+       4.6.3.  Component Default Permissions . . . . . . . . . . . .  10
        4.6.4.  User, Role, Group permissions . . . . . . . . . . . .  10
        4.6.5.  File Type . . . . . . . . . . . . . . . . . . . . . .  10
    5.  Extension Commands  . . . . . . . . . . . . . . . . . . . . .  12
      5.1.  suit-condition-use-before . . . . . . . . . . . . . . . .  13
-     5.2.  suit-condition-image-not-match  . . . . . . . . . . . . .  13
-     5.3.  suit-condition-minimum-battery  . . . . . . . . . . . . .  13
-     5.4.  suit-condition-update-authorized  . . . . . . . . . . . .  13
-     5.5.  suit-condition-version  . . . . . . . . . . . . . . . . .  13
+     5.2.  suit-condition-image-not-match  . . . . . . . . . . . . .  14
+     5.3.  suit-condition-minimum-battery  . . . . . . . . . . . . .  14
+     5.4.  suit-condition-update-authorized  . . . . . . . . . . . .  14
+     5.5.  suit-condition-version  . . . . . . . . . . . . . . . . .  14
      5.6.  suit-directive-wait . . . . . . . . . . . . . . . . . . .  14
-     5.7.  suit-directive-override-multiple  . . . . . . . . . . . .  14
-     5.8.  suit-directive-copy-params  . . . . . . . . . . . . . . .  15
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+     5.7.  suit-directive-override-multiple  . . . . . . . . . . . .  15
+     5.8.  suit-directive-copy-params  . . . . . . . . . . . . . . .  16
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
      6.1.  SUIT Commands . . . . . . . . . . . . . . . . . . . . . .  16
-     6.2.  SUIT Parameters . . . . . . . . . . . . . . . . . . . . .  16
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  17
+     6.2.  SUIT Parameters . . . . . . . . . . . . . . . . . . . . .  17
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  18
    Appendix A.  A.  Full CDDL  . . . . . . . . . . . . . . . . . . .  18
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  21
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  22
 
 
 
@@ -479,8 +479,9 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    UUID_Tagged = #6.37(bstr)
 
    The actor ID can be whatever is most appropriate for any given
-   system.  Typically, the actor ID will be a string (e.g., username),
-   integer (e.g., POSIX userid), or UUID (e.g., TEEP TA UUID).
+   system.  For example, the actor ID might be a string (e.g.,
+   username), integer (e.g., POSIX userid), or UUID (e.g., TEEP TA
+   UUID).
 
 4.6.2.  Creation & Modification Time
 
@@ -491,13 +492,12 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    suit-meta-modification-time => #6.1(uint)
    suit-meta-creation-time => #6.1(uint)
 
-4.6.3.  Component Default Permissions
 
-   Typical permissions management systems require read, write, and
-   execute permissions that are applied to all users who do not have
-   their own explicit permissions.  These are the default permissions
-   for the current component.  Default permissions are described by the
-   following CDDL:
+
+
+
+
+
 
 
 
@@ -505,6 +505,14 @@ Moran                    Expires 29 October 2023                [Page 9]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
+
+4.6.3.  Component Default Permissions
+
+   Typical permissions management systems require read, write, and
+   execute permissions that are applied to all users who do not have
+   their own explicit permissions.  These are the default permissions
+   for the current component.  Default permissions are described by the
+   following CDDL:
 
    SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
    SUIT_meta_permission_bits = &(
@@ -546,14 +554,6 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
       -  Set suit-parameter-content to an empty bstr
 
-      -  Invoke suit-directive-write
-
-   *  To create a symbolic link
-
-      -  Set the Component Index to the Component Identifier of the link
-         to be created
-
-
 
 
 
@@ -561,6 +561,13 @@ Moran                    Expires 29 October 2023               [Page 10]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
+
+      -  Invoke suit-directive-write
+
+   *  To create a symbolic link
+
+      -  Set the Component Index to the Component Identifier of the link
+         to be created
 
       -  Set the Component metadata, including the file type for
          symbolic link
@@ -604,19 +611,18 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
    *  Install:
 
-      -  set component index = 0
-
-      -  set parameters:
-
-         o  content = "/usr/local/bin/example3"
-
-
 
 
 Moran                    Expires 29 October 2023               [Page 11]
 
 Internet-Draft      SUIT Update Management Extensions         April 2023
 
+
+      -  set component index = 0
+
+      -  set parameters:
+
+         o  content = "/usr/local/bin/example3"
 
          o  metadata = {file-type: symlink}
 
@@ -627,6 +633,46 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    The following table defines the semantics of the commands defined in
    this specification in the same way as in the Abstract Machine
    Description, Section 6.4, of [I-D.ietf-suit-manifest].
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Moran                    Expires 29 October 2023               [Page 12]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
 
      +=============+=================+===============================+
      | Command     | CDDL Identifier | Semantic of the Operation     |
@@ -664,16 +710,6 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
                                   Table 3
 
-
-
-
-
-
-Moran                    Expires 29 October 2023               [Page 12]
-
-Internet-Draft      SUIT Update Management Extensions         April 2023
-
-
 5.1.  suit-condition-use-before
 
    Verify that the current time is BEFORE the specified time. suit-
@@ -684,6 +720,15 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    1970-01-01 00:00:00 UTC.  Timestamp conditions MUST be evaluated in
    64 bits, regardless of encoded CBOR size. suit-condition-use-before
    is OPTIONAL to implement.
+
+
+
+
+
+Moran                    Expires 29 October 2023               [Page 13]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
 
 5.2.  suit-condition-image-not-match
 
@@ -721,15 +766,6 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    component's version against the version info specified in suit-
    parameter-version (Section 4.4)
 
-
-
-
-
-Moran                    Expires 29 October 2023               [Page 13]
-
-Internet-Draft      SUIT Update Management Extensions         April 2023
-
-
 5.6.  suit-directive-wait
 
    suit-directive-wait directs the manifest processor to pause until a
@@ -742,6 +778,13 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    3.  Network availability
 
    4.  Other Device Firmware Version
+
+
+
+Moran                    Expires 29 October 2023               [Page 14]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
 
    5.  Time
 
@@ -777,15 +820,6 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    follows a code-path nearly identical to set-component-index +
    override-parameters.
 
-
-
-
-
-Moran                    Expires 29 October 2023               [Page 14]
-
-Internet-Draft      SUIT Update Management Extensions         April 2023
-
-
    This command is purely an encoding alias for set-component-index and
    override-parameters.  The component index is set to the last
    component listed in the override-multiple argument when override-
@@ -795,6 +829,18 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    multiple:
 
    CDDL SUIT_Override_Mult_Arg = { uint => {+ $$SUIT_Parameters} }
+
+
+
+
+
+
+
+
+Moran                    Expires 29 October 2023               [Page 15]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
 
 5.8.  suit-directive-copy-params
 
@@ -832,16 +878,6 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    *  allocate the commands and parameters as shown in the following
       tables
 
-
-
-
-
-
-Moran                    Expires 29 October 2023               [Page 15]
-
-Internet-Draft      SUIT Update Management Extensions         April 2023
-
-
 6.1.  SUIT Commands
 
                 +=======+===================+=============+
@@ -854,6 +890,14 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
                 | 26    | Minimum Battery   | Section 5.3 |
                 +-------+-------------------+-------------+
                 | 27    | Update Authorized | Section 5.4 |
+
+
+
+Moran                    Expires 29 October 2023               [Page 16]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
+
                 +-------+-------------------+-------------+
                 | 28    | Version           | Section 5.5 |
                 +-------+-------------------+-------------+
@@ -890,14 +934,6 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 8.1.  Normative References
 
-
-
-
-Moran                    Expires 29 October 2023               [Page 16]
-
-Internet-Draft      SUIT Update Management Extensions         April 2023
-
-
    [I-D.ietf-sacm-coswid]
               Birkholz, H., Fitzgerald-McKay, J., Schmidt, C., and D.
               Waltermire, "Concise Software Identification Tags", Work
@@ -910,6 +946,14 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
               O. Rønningstad, "A Concise Binary Object Representation
               (CBOR)-based Serialization Format for the Software Updates
               for Internet of Things (SUIT) Manifest", Work in Progress,
+
+
+
+Moran                    Expires 29 October 2023               [Page 17]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
+
               Internet-Draft, draft-ietf-suit-manifest-22, 27 February
               2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
               suit-manifest-22>.
@@ -943,17 +987,6 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
               <https://datatracker.ietf.org/doc/html/draft-ietf-suit-
               information-model-13>.
 
-
-
-
-
-
-
-Moran                    Expires 29 October 2023               [Page 17]
-
-Internet-Draft      SUIT Update Management Extensions         April 2023
-
-
 Appendix A.  A.  Full CDDL
 
    To be valid, the following CDDL MUST be appended to the SUIT Manifest
@@ -969,6 +1002,14 @@ Appendix A.  A.  Full CDDL
    )
 
    SUIT_Condition //= (
+
+
+
+Moran                    Expires 29 October 2023               [Page 18]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
+
        suit-condition-image-not-match,   SUIT_Rep_Policy)
    SUIT_Condition //= (
        suit-condition-use-before,        SUIT_Rep_Policy)
@@ -1002,14 +1043,6 @@ Appendix A.  A.  Full CDDL
    SUIT_Wait_Events //= (suit-wait-event-network => int)
    SUIT_Wait_Events //= (suit-wait-event-other-device-version
        => SUIT_Wait_Event_Argument_Other_Device_Version)
-
-
-
-Moran                    Expires 29 October 2023               [Page 18]
-
-Internet-Draft      SUIT Update Management Extensions         April 2023
-
-
    SUIT_Wait_Events //= (suit-wait-event-time => uint); Timestamp
    SUIT_Wait_Events //= (suit-wait-event-time-of-day
        => uint); Time of Day (seconds since 00:00:00)
@@ -1025,6 +1058,14 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
    SUIT_Parameters //= (suit-parameter-update-priority => uint)
    SUIT_Parameters //= (suit-parameter-version =>
+
+
+
+Moran                    Expires 29 October 2023               [Page 19]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
+
        SUIT_Parameter_Version_Match)
    SUIT_Parameters //= (suit-parameter-wait-info =>
        bstr .cbor SUIT_Wait_Event)
@@ -1058,14 +1099,6 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
 
 
    SUIT_Component_Metadata = {
-
-
-
-Moran                    Expires 29 October 2023               [Page 19]
-
-Internet-Draft      SUIT Update Management Extensions         April 2023
-
-
        ? suit-meta-default-permissions => SUIT_meta_permissions,
        ? suit-meta-user-permissions => SUIT_meta_permission_map,
        ? suit-meta-group-permissions => SUIT_meta_permission_map,
@@ -1081,6 +1114,14 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    SUIT_meta_permission_bits = &(
        write_attr_ex: 13,
        read_attr_ex: 12,
+
+
+
+Moran                    Expires 29 October 2023               [Page 20]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
+
        sync: 11,
        delete: 10,
        recurse_delete: 9,
@@ -1089,9 +1130,9 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
        change_perm: 6,
        read_perm: 5,
        read_attr: 4,
-       create_append: 3,
+       creatdir_append: 3,
        list_read: 2,
-       create_write: 1,
+       createfile_write: 1,
        traverse_exec: 0,
        * $$SUIT_meta_permission_bits_extensions
    )
@@ -1115,13 +1156,6 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    suit-condition-update-authorized        = 27
    suit-condition-version                  = 28
 
-
-
-Moran                    Expires 29 October 2023               [Page 20]
-
-Internet-Draft      SUIT Update Management Extensions         April 2023
-
-
    suit-directive-wait                     = 29
 
    suit-wait-event-authorization        = 1
@@ -1136,6 +1170,14 @@ Internet-Draft      SUIT Update Management Extensions         April 2023
    suit-parameter-minimum-battery   = 26
    suit-parameter-update-priority   = 27
    suit-parameter-version           = 28
+
+
+
+Moran                    Expires 29 October 2023               [Page 21]
+
+Internet-Draft      SUIT Update Management Extensions         April 2023
+
+
    suit-parameter-wait-info         = 29
 
    suit-text-version-required      = 7
@@ -1173,4 +1215,18 @@ Author's Address
 
 
 
-Moran                    Expires 29 October 2023               [Page 21]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Moran                    Expires 29 October 2023               [Page 22]

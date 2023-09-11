@@ -111,7 +111,7 @@ SUIT_meta_permission_bits = &(
     change_perm: 6,
     read_perm: 5,
     read_attr: 4,
-    create_append: 3,
+    creatdir_append: 3,
     list_read: 2,
     create_write: 1,
     traverse_exec: 0,

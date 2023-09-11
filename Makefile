@@ -20,7 +20,7 @@
 DRAFT = draft-ietf-suit-update-management
 
 
-$(DRAFT).xml: $(DRAFT).md
+$(DRAFT).xml: $(DRAFT).md $(DRAFT).cddl 
 	# make -C cddl
 	# make -C examples
 	kdrfc -ht3 $<
