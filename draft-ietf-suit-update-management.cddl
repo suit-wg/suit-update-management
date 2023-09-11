@@ -138,6 +138,8 @@ suit-condition-update-authorized        = 27
 suit-condition-version                  = 28
 
 suit-directive-wait                     = 29
+suit-directive-override-multiple        = 34
+suit-directive-copy-params              = 35
 
 suit-wait-event-authorization        = 1
 suit-wait-event-power                = 2

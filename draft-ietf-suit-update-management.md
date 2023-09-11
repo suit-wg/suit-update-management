@@ -406,6 +406,8 @@ Label | Name | Reference
 27 | Update Authorized | {{suit-condition-update-authorized}}
 28 | Version | {{suit-condition-version}}
 29 | Wait For Event | {{suit-directive-wait}}
+34 | Override Multiple | {{suit-directive-override-multiple}}
+35 | Copy Params | {{suit-directive-copy-params}}
 
 ## SUIT Parameters
 
