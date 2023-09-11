@@ -1,6 +1,6 @@
 $$SUIT_severable-members-extensions //= (
     suit-coswid => bstr)
-;    suit-coswid => bstr .cbor concise-software-identity)
+;    suit-coswid => bstr .cbor concise-swid-tag)
 
 $$severable-manifest-members-choice-extensions //= (
     suit-coswid => bstr .cbor SUIT_Command_Sequence / SUIT_Digest
