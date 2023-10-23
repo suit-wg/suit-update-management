@@ -165,7 +165,7 @@ Versions SHOULD be encoded as follows:
 3. The third integer is the patch version. This is typically reserved for bug fixes.
 4. The fourth integer is the build number.
 
-According to {{semver}}, the build number should be ignored, however  This complicates the processing model. 
+According to {{semver}}, the build number should be ignored, however this complicates the processing model. 
 
 A pre-release indicator may be inserted anywhere in the list, except at element 0. The pre-release indicator is encoded as:
 
@@ -192,9 +192,9 @@ suit-wait-event-power | int | Wait until power state
 suit-wait-event-network | int | Wait until network state
 suit-wait-event-other-device-version | See below | Wait for other device to match version
 suit-wait-event-time | uint | Wait until time (seconds since 1970-01-01)
-suit-wait-event-time-of-day | uint | Wait until seconds since 00:00:00
+suit-wait-event-time-of-day | uint | Wait until seconds since 00:00:00 Local Time
 suit-wait-event-time-of-day-utc | uint | Wait until seconds since 00:00:00 UTC
-suit-wait-event-day-of-week | uint | Wait until days since Sunday
+suit-wait-event-day-of-week | uint | Wait until days since Sunday Local Time
 suit-wait-event-day-of-week-utc | uint | Wait until days since Sunday UTC
 
 suit-wait-event-other-device-version reuses the encoding of suit-parameter-version-match. It is encoded as a sequence that contains an implementation-defined bstr identifier for the other device, and a list of one or more SUIT_Parameter_Version_Match.
@@ -345,23 +345,23 @@ suit-condition-minimum-battery provides a mechanism to test a Recipient's batter
 
 ## suit-condition-update-authorized
 
-Request Authorization from the application and fail if not authorized. This can allow a user to decline an update. suit-parameter-update-priority ({{suit-parameter-update-priority}}) provides an integer priority level that the application can use to determine whether or not to authorize the update. Priorities are application defined. suit-condition-update-authorized is OPTIONAL to implement.
+Request authorization from the application and fail if not authorized. This can allow a user to decline an update. suit-parameter-update-priority ({{suit-parameter-update-priority}}) provides an integer priority level that the application can use to determine whether or not to authorize the update. Priorities are application defined. suit-condition-update-authorized is OPTIONAL to implement.
 
 ## suit-condition-version
 
-suit-condition-version allows comparing versions of firmware. Verifying image digests is preferred to version checks because digests are more precise. suit-condition-version examines a component's version against the version info specified in suit-parameter-version ({{suit-parameter-version}})
+suit-condition-version allows comparing versions of firmware. Verifying image digests is preferred to version checks because digests are more precise. suit-condition-version examines a component's version against the version info specified in suit-parameter-version ({{suit-parameter-version}}).
 
 ## suit-directive-wait {#suit-directive-wait}
 
 suit-directive-wait directs the manifest processor to pause until a specified event occurs. Some possible events include:
 
 1. Authorization
-2. External Power
+2. External power
 3. Network availability
-4. Other Device Firmware Version
+4. Other device firmware version
 5. Time
-6. Time of Day
-7. Day of Week
+6. Time of day
+7. Day of week
 
 ## suit-directive-override-multiple
 
@@ -448,7 +448,7 @@ This document extends the SUIT manifest specification. A detailed security treat
 
 #  Full CDDL {#full-cddl}
 
-To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of {{I-D.ietf-suit-manifest}}
+To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of {{I-D.ietf-suit-manifest}}.
 
 ~~~ CDDL
 {::include draft-ietf-suit-update-management.cddl}
