@@ -40,6 +40,12 @@ normative:
   I-D.ietf-suit-manifest:
   RFC9019:
   RFC8949:
+  RFC9334:
+  semver:
+    title: "Semantic Versioning 2.0.0"
+    author:
+    date: 2013-06-18
+    target: https://semver.org
 
 informative:
   I-D.ietf-suit-information-model:
@@ -48,7 +54,7 @@ informative:
 This specification describes extensions to the SUIT manifest format
 defined in {{I-D.ietf-suit-manifest}}. These extensions allow an update
 author, update distributor or device operator to more precisely control
-the distribution and installation of updates to IoT devices. These
+the distribution and installation of updates to devices. These
 extensions also provide a mechanism to inform a management system of
 Software Identifier and Software Bill Of Materials information about an
 updated device.
@@ -57,9 +63,9 @@ updated device.
 
 #  Introduction
 
-Full management of software updates for unattended, connected devices, such as Internet of Things devices requires a cooperation between the update author(s) and management, distribution, policy enforcement, and auditing systems. This specification provides the extensions to the SUIT manifest ({{I-D.ietf-suit-manifest}}) that enable an author to coordinate with these other systems. These extensions enable authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials information.
+Full management of software updates for unattended, connected devices requires a cooperation between the update author(s) and management, distribution, policy enforcement, and auditing systems. This specification provides the extensions to the SUIT manifest ({{I-D.ietf-suit-manifest}}) that enable an author to coordinate with these other systems. These extensions enable authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials information.
 
-Extensions in this specification are OPTIONAL to implment and OPTIONAL to include in manifests unless otherwise designated.
+Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests unless otherwise designated.
 
 #  Conventions and Terminology
 
@@ -67,18 +73,18 @@ Extensions in this specification are OPTIONAL to implment and OPTIONAL to includ
 
 Additionally, the following terminology is used throughout this document:
 
-* SUIT: Software Update for the Internet of Things, also the IETF working group for this standard.
+* SUIT: Software Update for the Internet of Things, also the IETF working group for this proposed standard. While this software update mechanism is designed with the limitations and requirements of IoT devices in mind, there is no restriction preventing its use outside of IoT devices or for non-software payloads.
 
 # Extension Metadata
 
 Some additional metadata makes management of SUIT updates easier:
 
-* CoSWID, CoMID, CoRIM
+* Concise Software Identifiers (CoSWID), Concise Module Identifiers (CoMID), Concise Reference Integrity Manifest (CoRIM)
 * Text descriptions of requirements
 
 ## suit-coswid {#manifest-digest-coswid}
 
-a CoSWID can enable Software Bill-of-Materials use-cases. A CoMID can enable monitoring of expected hardware. A CoRIM (which may contain both CoSWID and CoMID) can enable both of these use-cases, but can also act as the transport for expected values to an attestation Verifier. Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.
+a CoSWID can enable Software Bill-of-Materials use-cases. A CoMID can enable monitoring of expected hardware. A CoRIM (which may contain both CoSWID and CoMID) can enable both of these use-cases, but can also act as the transport for expected values to an attestation Verifier (see {{RFC9334}}). Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.
 
 suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{I-D.ietf-sacm-coswid}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.
 
@@ -86,9 +92,10 @@ suit-coswid typically requires no processing by the Recipient. However all Recip
 
 suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests.
 
-NOTE: CoRIM comprises a list of CoSWID and a list of CoMID, so it may be preferable to a CoSWID.
+RFC EDITOR NOTE: Remove following 2 notes.
 
-NOTE: CoMID may be a preferable alternative to Vendor ID/Class ID, however it consumes more bandwidth, so a UUID based on CoMID may be appropriate.
+* NOTE: CoRIM comprises a list of CoSWIDs and a list of CoMIDs, so it may be preferable to a CoSWID.
+* NOTE: CoMID may be a preferable alternative to Vendor ID/Class ID, however it consumes more bandwidth, so a UUID based on CoMID may be appropriate.
 
 ## text-version-required {#text-version-required}
 
@@ -117,7 +124,7 @@ Component Metadata | suit-parameter-component-metadata | {{suit-parameter-compon
 
 ## suit-parameter-use-before {#suit-parameter-use-before}
 
-An expiry date for the use of the manifest encoded as the positive integer number of seconds since 1970-01-01. Implementations that use this parameter MUST use a 64-bit internal representation of the integer. Used with {{suit-condition-use-before}}
+An expiry date for the use of the manifest encoded as the positive integer number of seconds since 1970-01-01. Implementations that use this parameter MUST use a 64-bit internal representation of the integer. Used with {{suit-condition-use-before}}.
 
 ## suit-parameter-minimum-battery
 
@@ -127,7 +134,7 @@ This parameter sets the minimum battery level in mWh. This parameter is encoded 
 
 This parameter sets the priority of the update. This parameter is encoded as an integer. It is used along with suit-condition-update-authorized ({{suit-condition-update-authorized}}) to ask an application for permission to initiate an update. This does not constitute a privilege inversion because an explicit request for authorization has been provided by the Update Authority in the form of the suit-condition-update-authorized command.
 
-Applications MAY define their own meanings for the update priority. For example, critical reliability & vulnerability fixes MAY be given negative numbers, while bug fixes MAY be given small positive numbers, and feature additions MAY be given larger positive numbers, which allows an application to make an informed decision about whether and when to allow an update to proceed.
+Applications MAY define their own meanings for the update priority. For example, critical reliability and vulnerability fixes might be given negative numbers, while bug fixes might be given small positive numbers, and feature additions might be given larger positive numbers, which allows an application to make an informed decision about whether and when to allow an update to proceed.
 
 ## suit-parameter-version {#suit-parameter-version}
 
@@ -143,24 +150,32 @@ The component version can be compared as:
 
 Versions are encoded as a CBOR list of integers. Comparisons are done on each integer in sequence. Comparison stops after all integers in the list defined by the manifest have been consumed OR after a non-equal match has occurred. For example, if the manifest defines a comparison, "Equal \[1\]", then this will match all version sequences starting with 1. If a manifest defines both "Greater or Equal \[1,0\]" and "Lesser \[1,10\]", then it will match versions 1.0.x up to, but not including 1.10.
 
-While the exact encoding of versions is application-defined, semantic versions map conveniently. For example,
+The encoded versions SHOULD be semantic versions (See {{semver}}). For example,
 
 * 1.2.3 = \[1,2,3\].
-* 1.2-rc3 = \[1,2,-1,3\].
+* 1.2-rc.3 = \[1,2,-1,3\].
 * 1.2-beta = \[1,2,-2\].
 * 1.2-alpha = \[1,2,-3\].
-* 1.2-alpha4 = \[1,2,-3,4\].
+* 1.2.4-alpha.1 = \[1,2,4,-3,1\].
 
-suit-condition-version is OPTIONAL to implement.
-
-Versions SHOULD be provided as follows:
+Versions SHOULD be encoded as follows:
 
 1. The first integer represents the major number. This indicates breaking changes to the component.
 2. The second integer represents the minor number. This is typically reserved for new features or large, non-breaking changes.
 3. The third integer is the patch version. This is typically reserved for bug fixes.
 4. The fourth integer is the build number.
 
-Where Alpha (-3), Beta (-2), and Release Candidate (-1) are used, they are inserted as a negative number between Minor and Patch numbers. This allows these releases to compare correctly with final releases. For example, Version 2.0, RC1 should be lower than Version 2.0.0 and higher than any Version 1.x. By encoding RC as -1, this works correctly: \[2,0,-1,1\] compares as lower than \[2,0,0\]. Similarly, beta (-2) is lower than RC and alpha (-3) is lower than RC.
+According to {{semver}}, the build number should be ignored, however  This complicates the processing model. 
+
+A pre-release indicator may be inserted anywhere in the list, except at element 0. The pre-release indicator is encoded as:
+
+* -1: Release Candidate
+* -2: Beta
+* -3: Alpha
+
+This allows these releases to compare correctly with final releases. For example, Version 2.0, RC1 should be lower than Version 2.0.0 and higher than any Version 1.x. By encoding RC as -1, this works correctly: \[2,0,-1,1\] compares as lower than \[2,0,0\]. Similarly, beta (-2) is lower than RC and alpha (-3) is lower than RC.
+
+suit-condition-version is OPTIONAL to implement.
 
 ## suit-parameter-wait-info
 
@@ -431,7 +446,7 @@ This document extends the SUIT manifest specification. A detailed security treat
 
 --- back
 
-# A. Full CDDL {#full-cddl}
+#  Full CDDL {#full-cddl}
 
 To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of {{I-D.ietf-suit-manifest}}
 
