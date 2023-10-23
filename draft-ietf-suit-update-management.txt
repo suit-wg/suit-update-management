@@ -5,20 +5,20 @@
 SUIT                                                            B. Moran
 Internet-Draft                                               Arm Limited
 Intended status: Standards Track                             K. Takayama
-Expires: 14 March 2024                                   SECOM CO., LTD.
-                                                       11 September 2023
+Expires: 25 April 2024                                   SECOM CO., LTD.
+                                                         23 October 2023
 
 
 Update Management Extensions for Software Updates for Internet of Things
                             (SUIT) Manifests
-                  draft-ietf-suit-update-management-03
+                  draft-ietf-suit-update-management-04
 
 Abstract
 
    This specification describes extensions to the SUIT manifest format
    defined in [I-D.ietf-suit-manifest].  These extensions allow an
    update author, update distributor or device operator to more
-   precisely control the distribution and installation of updates to IoT
+   precisely control the distribution and installation of updates to
    devices.  These extensions also provide a mechanism to inform a
    management system of Software Identifier and Software Bill Of
    Materials information about an updated device.
@@ -38,7 +38,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 14 March 2024.
+   This Internet-Draft will expire on 25 April 2024.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Moran & Takayama          Expires 14 March 2024                 [Page 1]
+Moran & Takayama          Expires 25 April 2024                 [Page 1]
 
-Internet-Draft      SUIT Update Management Extensions     September 2023
+Internet-Draft      SUIT Update Management Extensions       October 2023
 
 
    extracted from this document must include Revised BSD License text as
@@ -67,17 +67,17 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Conventions and Terminology . . . . . . . . . . . . . . . . .   3
    3.  Extension Metadata  . . . . . . . . . . . . . . . . . . . . .   3
-     3.1.  suit-coswid . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.1.  suit-coswid . . . . . . . . . . . . . . . . . . . . . . .   4
      3.2.  text-version-required . . . . . . . . . . . . . . . . . .   4
-   4.  Extension Parameters  . . . . . . . . . . . . . . . . . . . .   4
+   4.  Extension Parameters  . . . . . . . . . . . . . . . . . . . .   5
      4.1.  suit-parameter-use-before . . . . . . . . . . . . . . . .   5
      4.2.  suit-parameter-minimum-battery  . . . . . . . . . . . . .   5
-     4.3.  suit-parameter-update-priority  . . . . . . . . . . . . .   5
+     4.3.  suit-parameter-update-priority  . . . . . . . . . . . . .   6
      4.4.  suit-parameter-version  . . . . . . . . . . . . . . . . .   6
-     4.5.  suit-parameter-wait-info  . . . . . . . . . . . . . . . .   7
-     4.6.  suit-parameter-component-metadata . . . . . . . . . . . .   8
+     4.5.  suit-parameter-wait-info  . . . . . . . . . . . . . . . .   8
+     4.6.  suit-parameter-component-metadata . . . . . . . . . . . .   9
        4.6.1.  Creator . . . . . . . . . . . . . . . . . . . . . . .   9
-       4.6.2.  Creation & Modification Time  . . . . . . . . . . . .   9
+       4.6.2.  Creation & Modification Time  . . . . . . . . . . . .  10
        4.6.3.  Component Default Permissions . . . . . . . . . . . .  10
        4.6.4.  User, Role, Group permissions . . . . . . . . . . . .  10
        4.6.5.  File Type . . . . . . . . . . . . . . . . . . . . . .  10
@@ -97,7 +97,7 @@ Table of Contents
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  18
-   Appendix A.  A.  Full CDDL  . . . . . . . . . . . . . . . . . . .  18
+   Appendix A.  Full CDDL  . . . . . . . . . . . . . . . . . . . . .  19
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
 
 
@@ -109,25 +109,25 @@ Table of Contents
 
 
 
-Moran & Takayama          Expires 14 March 2024                 [Page 2]
+Moran & Takayama          Expires 25 April 2024                 [Page 2]
 
-Internet-Draft      SUIT Update Management Extensions     September 2023
+Internet-Draft      SUIT Update Management Extensions       October 2023
 
 
 1.  Introduction
 
-   Full management of software updates for unattended, connected
-   devices, such as Internet of Things devices requires a cooperation
-   between the update author(s) and management, distribution, policy
-   enforcement, and auditing systems.  This specification provides the
-   extensions to the SUIT manifest ([I-D.ietf-suit-manifest]) that
-   enable an author to coordinate with these other systems.  These
-   extensions enable authors to instruct devices to examine update
-   priority, local update authorisation, update lifetime, and system
-   properties.  They also enable devices to report and distributors to
-   collect Software Bill of Materials information.
+   Full management of software updates for unattended, connected devices
+   requires a cooperation between the update author(s) and management,
+   distribution, policy enforcement, and auditing systems.  This
+   specification provides the extensions to the SUIT manifest
+   ([I-D.ietf-suit-manifest]) that enable an author to coordinate with
+   these other systems.  These extensions enable authors to instruct
+   devices to examine update priority, local update authorisation,
+   update lifetime, and system properties.  They also enable devices to
+   report and distributors to collect Software Bill of Materials
+   information.
 
-   Extensions in this specification are OPTIONAL to implment and
+   Extensions in this specification are OPTIONAL to implement and
    OPTIONAL to include in manifests unless otherwise designated.
 
 2.  Conventions and Terminology
@@ -142,15 +142,33 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    document:
 
    *  SUIT: Software Update for the Internet of Things, also the IETF
-      working group for this standard.
+      working group for this proposed standard.  While this software
+      update mechanism is designed with the limitations and requirements
+      of IoT devices in mind, there is no restriction preventing its use
+      outside of IoT devices or for non-software payloads.
 
 3.  Extension Metadata
 
    Some additional metadata makes management of SUIT updates easier:
 
-   *  CoSWID, CoMID, CoRIM
+   *  Concise Software Identifiers (CoSWID), Concise Module Identifiers
+      (CoMID), Concise Reference Integrity Manifest (CoRIM)
 
    *  Text descriptions of requirements
+
+
+
+
+
+
+
+
+
+
+Moran & Takayama          Expires 25 April 2024                 [Page 3]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
 
 3.1.  suit-coswid
 
@@ -158,17 +176,9 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    can enable monitoring of expected hardware.  A CoRIM (which may
    contain both CoSWID and CoMID) can enable both of these use-cases,
    but can also act as the transport for expected values to an
-   attestation Verifier.  Tightly coupling update and attestation
-   ensures that verification infrastructure always knows what software
-   to expect on each device.
-
-
-
-
-Moran & Takayama          Expires 14 March 2024                 [Page 3]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
+   attestation Verifier (see [RFC9334]).  Tightly coupling update and
+   attestation ensures that verification infrastructure always knows
+   what software to expect on each device.
 
    suit-coswid is a member of the suit-manifest.  It contains a Concise
    Software Identifier (CoSWID) as defined in [I-D.ietf-sacm-coswid].
@@ -182,12 +192,14 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in
    manifests.
 
-   NOTE: CoRIM comprises a list of CoSWID and a list of CoMID, so it may
-   be preferable to a CoSWID.
+   RFC EDITOR NOTE: Remove following 2 notes.
 
-   NOTE: CoMID may be a preferable alternative to Vendor ID/Class ID,
-   however it consumes more bandwidth, so a UUID based on CoMID may be
-   appropriate.
+   *  NOTE: CoRIM comprises a list of CoSWIDs and a list of CoMIDs, so
+      it may be preferable to a CoSWID.
+
+   *  NOTE: CoMID may be a preferable alternative to Vendor ID/Class ID,
+      however it consumes more bandwidth, so a UUID based on CoMID may
+      be appropriate.
 
 3.2.  text-version-required
 
@@ -207,6 +219,13 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    not v2.0 or above, the author would add the following structure to
    the suit-text element.  Note that this text is in cbor-diag notation.
 
+
+
+Moran & Takayama          Expires 25 April 2024                 [Page 4]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
+
    [h'78',h'79'] : {
        7 : ">=1.2.5,<2"
    }
@@ -217,14 +236,6 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    specified in Section 5.  These parameters follow the same
    considerations as defined in Section 8.4.8 of
    [I-D.ietf-suit-manifest].
-
-
-
-
-Moran & Takayama          Expires 14 March 2024                 [Page 4]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
 
    +=================+===================================+=============+
    | Name            | CDDL Structure                    | Reference   |
@@ -252,13 +263,24 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    An expiry date for the use of the manifest encoded as the positive
    integer number of seconds since 1970-01-01.  Implementations that use
    this parameter MUST use a 64-bit internal representation of the
-   integer.  Used with Section 5.1
+   integer.  Used with Section 5.1.
 
 4.2.  suit-parameter-minimum-battery
 
    This parameter sets the minimum battery level in mWh.  This parameter
    is encoded as a positive integer.  Used with suit-condition-minimum-
    battery (Section 5.3).
+
+
+
+
+
+
+
+Moran & Takayama          Expires 25 April 2024                 [Page 5]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
 
 4.3.  suit-parameter-update-priority
 
@@ -270,24 +292,12 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    the Update Authority in the form of the suit-condition-update-
    authorized command.
 
-
-
-
-
-
-
-
-Moran & Takayama          Expires 14 March 2024                 [Page 5]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
-
    Applications MAY define their own meanings for the update priority.
-   For example, critical reliability & vulnerability fixes MAY be given
-   negative numbers, while bug fixes MAY be given small positive
-   numbers, and feature additions MAY be given larger positive numbers,
-   which allows an application to make an informed decision about
-   whether and when to allow an update to proceed.
+   For example, critical reliability and vulnerability fixes might be
+   given negative numbers, while bug fixes might be given small positive
+   numbers, and feature additions might be given larger positive
+   numbers, which allows an application to make an informed decision
+   about whether and when to allow an update to proceed.
 
 4.4.  suit-parameter-version
 
@@ -320,29 +330,28 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    Equal [1,0]" and "Lesser [1,10]", then it will match versions 1.0.x
    up to, but not including 1.10.
 
-   While the exact encoding of versions is application-defined, semantic
-   versions map conveniently.  For example,
+
+
+
+Moran & Takayama          Expires 25 April 2024                 [Page 6]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
+
+   The encoded versions SHOULD be semantic versions (See [semver]).  For
+   example,
 
    *  1.2.3 = [1,2,3].
 
-   *  1.2-rc3 = [1,2,-1,3].
+   *  1.2-rc.3 = [1,2,-1,3].
 
    *  1.2-beta = [1,2,-2].
 
    *  1.2-alpha = [1,2,-3].
 
+   *  1.2.4-alpha.1 = [1,2,4,-3,1].
 
-
-Moran & Takayama          Expires 14 March 2024                 [Page 6]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
-
-   *  1.2-alpha4 = [1,2,-3,4].
-
-   suit-condition-version is OPTIONAL to implement.
-
-   Versions SHOULD be provided as follows:
+   Versions SHOULD be encoded as follows:
 
    1.  The first integer represents the major number.  This indicates
        breaking changes to the component.
@@ -356,14 +365,34 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
    4.  The fourth integer is the build number.
 
-   Where Alpha (-3), Beta (-2), and Release Candidate (-1) are used,
-   they are inserted as a negative number between Minor and Patch
-   numbers.  This allows these releases to compare correctly with final
-   releases.  For example, Version 2.0, RC1 should be lower than Version
-   2.0.0 and higher than any Version 1.x.  By encoding RC as -1, this
-   works correctly: [2,0,-1,1] compares as lower than [2,0,0].
-   Similarly, beta (-2) is lower than RC and alpha (-3) is lower than
-   RC.
+   According to [semver], the build number should be ignored, however
+   this complicates the processing model.
+
+   A pre-release indicator may be inserted anywhere in the list, except
+   at element 0.  The pre-release indicator is encoded as:
+
+   *  -1: Release Candidate
+
+   *  -2: Beta
+
+   *  -3: Alpha
+
+   This allows these releases to compare correctly with final releases.
+   For example, Version 2.0, RC1 should be lower than Version 2.0.0 and
+   higher than any Version 1.x.  By encoding RC as -1, this works
+   correctly: [2,0,-1,1] compares as lower than [2,0,0].  Similarly,
+   beta (-2) is lower than RC and alpha (-3) is lower than RC.
+
+   suit-condition-version is OPTIONAL to implement.
+
+
+
+
+
+Moran & Takayama          Expires 25 April 2024                 [Page 7]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
 
 4.5.  suit-parameter-wait-info
 
@@ -380,19 +409,6 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    suit-parameter-wait-info is encoded as a map of wait events.  When
    ALL wait events are satisfied, the Manifest Processor continues.  The
    wait events currently defined are described in the following table.
-
-
-
-
-
-
-
-
-
-Moran & Takayama          Expires 14 March 2024                 [Page 7]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
 
       +======================+==========+==========================+
       | Name                 | Encoding | Description              |
@@ -413,19 +429,26 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
       |                      |          | since 1970-01-01)        |
       +----------------------+----------+--------------------------+
       | suit-wait-event-     | uint     | Wait until seconds since |
-      | time-of-day          |          | 00:00:00                 |
+      | time-of-day          |          | 00:00:00 Local Time      |
       +----------------------+----------+--------------------------+
       | suit-wait-event-     | uint     | Wait until seconds since |
       | time-of-day-utc      |          | 00:00:00 UTC             |
       +----------------------+----------+--------------------------+
       | suit-wait-event-day- | uint     | Wait until days since    |
-      | of-week              |          | Sunday                   |
+      | of-week              |          | Sunday Local Time        |
       +----------------------+----------+--------------------------+
       | suit-wait-event-day- | uint     | Wait until days since    |
       | of-week-utc          |          | Sunday UTC               |
       +----------------------+----------+--------------------------+
 
                                  Table 2
+
+
+
+Moran & Takayama          Expires 25 April 2024                 [Page 8]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
 
    suit-wait-event-other-device-version reuses the encoding of suit-
    parameter-version-match.  It is encoded as a sequence that contains
@@ -442,13 +465,6 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    *  creation time
 
    *  modification time
-
-
-
-Moran & Takayama          Expires 14 March 2024                 [Page 8]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
 
    *  default permissions (rwx)
 
@@ -483,6 +499,13 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    username), integer (e.g., POSIX userid), or UUID (e.g., TEEP TA
    UUID).
 
+
+
+Moran & Takayama          Expires 25 April 2024                 [Page 9]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
+
 4.6.2.  Creation & Modification Time
 
    The creation and modification times are defined by CBOR time types.
@@ -491,20 +514,6 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
    suit-meta-modification-time => #6.1(uint)
    suit-meta-creation-time => #6.1(uint)
-
-
-
-
-
-
-
-
-
-
-Moran & Takayama          Expires 14 March 2024                 [Page 9]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
 
 4.6.3.  Component Default Permissions
 
@@ -546,6 +555,13 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
    *  To create a directory
 
+
+
+Moran & Takayama          Expires 25 April 2024                [Page 10]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
+
       -  Set the Component Index to the Component Identifier of the
          directory to be created
 
@@ -553,14 +569,6 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
          directory
 
       -  Set suit-parameter-content to an empty bstr
-
-
-
-
-Moran & Takayama          Expires 14 March 2024                [Page 10]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
 
       -  Invoke suit-directive-write
 
@@ -603,6 +611,13 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
       -  set component index = 2
 
+
+
+Moran & Takayama          Expires 25 April 2024                [Page 11]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
+
       -  set URI = "https://cdn.example/example3.bin"
 
       -  fetch
@@ -610,13 +625,6 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
       -  condition image digest
 
    *  Install:
-
-
-
-Moran & Takayama          Expires 14 March 2024                [Page 11]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
 
       -  set component index = 0
 
@@ -661,17 +669,9 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
 
 
-
-
-
-
-
-
-
-
-Moran & Takayama          Expires 14 March 2024                [Page 12]
+Moran & Takayama          Expires 25 April 2024                [Page 12]
 
-Internet-Draft      SUIT Update Management Extensions     September 2023
+Internet-Draft      SUIT Update Management Extensions       October 2023
 
 
      +=============+=================+===============================+
@@ -725,9 +725,9 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
 
 
-Moran & Takayama          Expires 14 March 2024                [Page 13]
+Moran & Takayama          Expires 25 April 2024                [Page 13]
 
-Internet-Draft      SUIT Update Management Extensions     September 2023
+Internet-Draft      SUIT Update Management Extensions       October 2023
 
 
 5.2.  suit-condition-image-not-match
@@ -751,7 +751,7 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
 5.4.  suit-condition-update-authorized
 
-   Request Authorization from the application and fail if not
+   Request authorization from the application and fail if not
    authorized.  This can allow a user to decline an update. suit-
    parameter-update-priority (Section 4.3) provides an integer priority
    level that the application can use to determine whether or not to
@@ -764,7 +764,7 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    Verifying image digests is preferred to version checks because
    digests are more precise. suit-condition-version examines a
    component's version against the version info specified in suit-
-   parameter-version (Section 4.4)
+   parameter-version (Section 4.4).
 
 5.6.  suit-directive-wait
 
@@ -773,24 +773,24 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
    1.  Authorization
 
-   2.  External Power
+   2.  External power
 
    3.  Network availability
 
-   4.  Other Device Firmware Version
+   4.  Other device firmware version
 
 
 
-Moran & Takayama          Expires 14 March 2024                [Page 14]
+Moran & Takayama          Expires 25 April 2024                [Page 14]
 
-Internet-Draft      SUIT Update Management Extensions     September 2023
+Internet-Draft      SUIT Update Management Extensions       October 2023
 
 
    5.  Time
 
-   6.  Time of Day
+   6.  Time of day
 
-   7.  Day of Week
+   7.  Day of week
 
 5.7.  suit-directive-override-multiple
 
@@ -837,9 +837,9 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
 
 
-Moran & Takayama          Expires 14 March 2024                [Page 15]
+Moran & Takayama          Expires 25 April 2024                [Page 15]
 
-Internet-Draft      SUIT Update Management Extensions     September 2023
+Internet-Draft      SUIT Update Management Extensions       October 2023
 
 
 5.8.  suit-directive-copy-params
@@ -893,9 +893,9 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
 
 
-Moran & Takayama          Expires 14 March 2024                [Page 16]
+Moran & Takayama          Expires 25 April 2024                [Page 16]
 
-Internet-Draft      SUIT Update Management Extensions     September 2023
+Internet-Draft      SUIT Update Management Extensions       October 2023
 
 
                 +-------+-------------------+-------------+
@@ -949,9 +949,9 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
 
 
-Moran & Takayama          Expires 14 March 2024                [Page 17]
+Moran & Takayama          Expires 25 April 2024                [Page 17]
 
-Internet-Draft      SUIT Update Management Extensions     September 2023
+Internet-Draft      SUIT Update Management Extensions       October 2023
 
 
    [I-D.ietf-suit-manifest]
@@ -982,6 +982,14 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
               RFC 9019, DOI 10.17487/RFC9019, April 2021,
               <https://www.rfc-editor.org/rfc/rfc9019>.
 
+   [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
+              W. Pan, "Remote ATtestation procedureS (RATS)
+              Architecture", RFC 9334, DOI 10.17487/RFC9334, January
+              2023, <https://www.rfc-editor.org/rfc/rfc9334>.
+
+   [semver]   "Semantic Versioning 2.0.0", 18 June 2013,
+              <https://semver.org>.
+
 8.2.  Informative References
 
    [I-D.ietf-suit-information-model]
@@ -992,23 +1000,21 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
               <https://datatracker.ietf.org/doc/html/draft-ietf-suit-
               information-model-13>.
 
-Appendix A.  A.  Full CDDL
+
+
+
+
+
+Moran & Takayama          Expires 25 April 2024                [Page 18]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
+
+Appendix A.  Full CDDL
 
    To be valid, the following CDDL MUST be appended to the SUIT Manifest
    CDDL.  The SUIT CDDL is defined in Appendix A of
-   [I-D.ietf-suit-manifest]
-
-
-
-
-
-
-
-
-Moran & Takayama          Expires 14 March 2024                [Page 18]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
+   [I-D.ietf-suit-manifest].
 
    $$SUIT_severable-members-extensions //= (
        suit-coswid => bstr)
@@ -1052,19 +1058,19 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    SUIT_Wait_Events //= (suit-wait-event-network => int)
    SUIT_Wait_Events //= (suit-wait-event-other-device-version
        => SUIT_Wait_Event_Argument_Other_Device_Version)
+
+
+
+Moran & Takayama          Expires 25 April 2024                [Page 19]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
+
    SUIT_Wait_Events //= (suit-wait-event-time => uint); Timestamp
    SUIT_Wait_Events //= (suit-wait-event-time-of-day
        => uint); Time of Day (seconds since 00:00:00)
    SUIT_Wait_Events //= (suit-wait-event-day-of-week
        => uint); Days since Sunday
-
-
-
-
-Moran & Takayama          Expires 14 March 2024                [Page 19]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
 
    SUIT_Wait_Event_Argument_Other_Device_Version = [
        other-device: bstr,
@@ -1108,20 +1114,20 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
 
 
    SUIT_Component_Metadata = {
+
+
+
+Moran & Takayama          Expires 25 April 2024                [Page 20]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
+
        ? suit-meta-default-permissions => SUIT_meta_permissions,
        ? suit-meta-user-permissions => SUIT_meta_permission_map,
        ? suit-meta-group-permissions => SUIT_meta_permission_map,
        ? suit-meta-role-permissions => SUIT_meta_permission_map,
        ? suit-meta-file-type => SUIT_Filetype,
        ? suit-meta-modification-time => CBOR_Datetime,
-
-
-
-Moran & Takayama          Expires 14 March 2024                [Page 20]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
-
        ? suit-meta-creation-time => CBOR_Datetime,
        ? suit-meta-creator => SUIT_meta_actor_id,
        * $$SUIT_Component_Metadata_Extensions
@@ -1165,19 +1171,18 @@ Internet-Draft      SUIT Update Management Extensions     September 2023
    suit-condition-update-authorized        = 27
    suit-condition-version                  = 28
 
+
+
+Moran & Takayama          Expires 25 April 2024                [Page 21]
+
+Internet-Draft      SUIT Update Management Extensions       October 2023
+
+
    suit-directive-wait                     = 29
    suit-directive-override-multiple        = 34
    suit-directive-copy-params              = 35
 
    suit-wait-event-authorization        = 1
-
-
-
-Moran & Takayama          Expires 14 March 2024                [Page 21]
-
-Internet-Draft      SUIT Update Management Extensions     September 2023
-
-
    suit-wait-event-power                = 2
    suit-wait-event-network              = 3
    suit-wait-event-other-device-version = 4
@@ -1224,9 +1229,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-Moran & Takayama          Expires 14 March 2024                [Page 22]
+Moran & Takayama          Expires 25 April 2024                [Page 22]
