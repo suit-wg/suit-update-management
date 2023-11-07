@@ -163,11 +163,10 @@ Versions SHOULD be encoded as follows:
 1. The first integer represents the major number. This indicates breaking changes to the component.
 2. The second integer represents the minor number. This is typically reserved for new features or large, non-breaking changes.
 3. The third integer is the patch version. This is typically reserved for bug fixes.
-4. The fourth integer is the build number.
 
-According to {{semver}}, the build number should be ignored, however this complicates the processing model. 
+The version MAY include a build number as an additional integer appended to the the three above. According to {{semver}}, the build number should be ignored. 
 
-A pre-release indicator may be inserted anywhere in the list, except at element 0. The pre-release indicator is encoded as:
+A pre-release indicator MAY be inserted anywhere in the list, except at element 0. The pre-release indicator is encoded as:
 
 * -1: Release Candidate
 * -2: Beta
