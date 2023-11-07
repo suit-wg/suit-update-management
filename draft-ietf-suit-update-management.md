@@ -156,7 +156,6 @@ The encoded versions SHOULD be semantic versions (See {{semver}}). For example,
 * 1.2-rc.3 = \[1,2,-1,3\].
 * 1.2-beta = \[1,2,-2\].
 * 1.2-alpha = \[1,2,-3\].
-* 1.2.4-alpha.1 = \[1,2,4,-3,1\].
 
 Versions SHOULD be encoded as follows:
 
@@ -164,7 +163,12 @@ Versions SHOULD be encoded as follows:
 2. The second integer represents the minor number. This is typically reserved for new features or large, non-breaking changes.
 3. The third integer is the patch version. This is typically reserved for bug fixes.
 
-The version MAY include a build number as an additional integer appended to the the three above. According to {{semver}}, the build number should be ignored. 
+The version MAY include a build number as an additional integer appended to the the three above. For example, 
+
+* 1.2.3.99 = \[1,2,3,99\].
+* 1.2.4-alpha.1 = \[1,2,4,-3,1\].
+
+In keeping with {{semver}}, the build number SHOULD be ignored.
 
 A pre-release indicator MAY be inserted anywhere in the list, except at element 0. The pre-release indicator is encoded as:
 
