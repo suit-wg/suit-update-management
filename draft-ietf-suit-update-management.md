@@ -138,9 +138,20 @@ Applications MAY define their own meanings for the update priority. For example,
 
 ## suit-parameter-version {#suit-parameter-version}
 
-Indicates allowable versions for the specified component. Allowable versions can be specified, either with a list or with range matching. This parameter is compared with version asserted by the current component when suit-condition-version ({{suit-condition-version}}) is invoked. The current component may assert the current version in many ways, including storage in a parameter storage database, in a metadata object, or in a known location within the component itself.
+Indicates allowable versions for the specified component. One version comparison can be made with each suit-parameter-version. This parameter is compared with version asserted by the current component when suit-condition-version ({{suit-condition-version}}) is invoked. The current component may assert the current version in many ways, including storage in a parameter storage database, in a metadata object, or in a known location within the component itself.
 
-The component version can be compared as:
+Each suit-parameter-version contains a comparison operator and a version, according to the following CDDL:
+
+~~~CDDL
+SUIT_Parameter_Version_Match = [
+    suit-condition-version-comparison-type:
+        SUIT_Condition_Version_Comparison_Types,
+    suit-condition-version-comparison-value:
+        SUIT_Condition_Version_Comparison_Value
+]
+~~~
+
+The comparison type can be:
 
 * Greater.
 * Greater or Equal.
@@ -148,7 +159,12 @@ The component version can be compared as:
 * Lesser or Equal.
 * Lesser.
 
-Versions are encoded as a CBOR list of integers. Comparisons are done on each integer in sequence. Comparison stops after all integers in the list defined by the manifest have been consumed OR after a non-equal match has occurred. For example, if the manifest defines a comparison, "Equal \[1\]", then this will match all version sequences starting with 1. If a manifest defines both "Greater or Equal \[1,0\]" and "Lesser \[1,10\]", then it will match versions 1.0.x up to, but not including 1.10.
+
+The version comparison value is encoded as a CBOR list of integers. Comparisons are done on each integer in sequence. Comparison stops after all integers in the list defined by the manifest have been consumed OR after an non-equal comparison has occurred. For example, if the manifest defines a comparison, "Equal \[1\]", then this will match all version sequences starting with 1. If a manifest defines both "Greater or Equal \[1,0\]" and "Lesser \[1,10\]", then it will match versions 1.0.x up to, but not including 1.10.
+
+suit-parameter-version is OPTIONAL to implement.
+
+## suit-parameter-version Semantic Versioning encoding guidelines
 
 The encoded versions SHOULD be semantic versions (See {{semver}}). For example,
 
@@ -157,18 +173,20 @@ The encoded versions SHOULD be semantic versions (See {{semver}}). For example,
 * 1.2-beta = \[1,2,-2\].
 * 1.2-alpha = \[1,2,-3\].
 
-Versions SHOULD be encoded as follows:
+Versions SHOULD be encoded according to the following rules:
+
+1. Positive integers (and 0) represent the numeric elements of the semantic version
+2. A maximum of three positive integers (or 0s) SHOULD be used.
+3. The first element MUST be 0 or a positive integer
+4. Negative integers represent pre-release indicators.
+
+While {{semver}} allows a build number, it mandates that the build number is ignored. Because suit-parameter-version exists solely to enable the Manifest Processor to make a decision about version compatibility, build numbers SHOULD NOT be included.
+
+In {{semver}}, 
 
 1. The first integer represents the major number. This indicates breaking changes to the component.
 2. The second integer represents the minor number. This is typically reserved for new features or large, non-breaking changes.
 3. The third integer is the patch version. This is typically reserved for bug fixes.
-
-The version MAY include a build number as an additional integer appended to the the three above. For example, 
-
-* 1.2.3.99 = \[1,2,3,99\].
-* 1.2.4-alpha.1 = \[1,2,4,-3,1\].
-
-In keeping with {{semver}}, the build number SHOULD be ignored.
 
 A pre-release indicator MAY be inserted anywhere in the list, except at element 0. The pre-release indicator is encoded as:
 
@@ -177,8 +195,6 @@ A pre-release indicator MAY be inserted anywhere in the list, except at element 
 * -3: Alpha
 
 This allows these releases to compare correctly with final releases. For example, Version 2.0, RC1 should be lower than Version 2.0.0 and higher than any Version 1.x. By encoding RC as -1, this works correctly: \[2,0,-1,1\] compares as lower than \[2,0,0\]. Similarly, beta (-2) is lower than RC and alpha (-3) is lower than RC.
-
-suit-condition-version is OPTIONAL to implement.
 
 ## suit-parameter-wait-info
 
