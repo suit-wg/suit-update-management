@@ -79,12 +79,24 @@ Additionally, the following terminology is used throughout this document:
 
 Some additional metadata makes management of SUIT updates easier:
 
+* A semantic version number for the update represented by the manifest
 * Concise Software Identifiers (CoSWID), Concise Module Identifiers (CoMID), Concise Reference Integrity Manifest (CoRIM)
 * Text descriptions of requirements
+* Text description of the current versions of components
+
+## suit-set-version {#suit-set-version}
+
+This metadata encodes a semantic version for the component set that the manifest updates, including any dependencies. This enables version comparisons to be performed on manifests. Non-manifest images encode their versions independently of the manifest.
+
+The version SHOULD be encoded as a semantic version, according to {{semver}}. There are several restrictions to these composition rules: alphanumeric pre-release indicators are not permitted. Because suit-set-version is a machine-readable parameter for determining compatibility and because {{semver}} mandates that the build-number is ignored, build numbers SHOULD NOT be included.
+
+The composition of suit-set-version is the same as {{suit-parameter-version}}.
+
+If a build number is desired, it SHOULD be included via {{text-current-version}}.
 
 ## suit-coswid {#manifest-digest-coswid}
 
-a CoSWID can enable Software Bill-of-Materials use-cases. A CoMID can enable monitoring of expected hardware. A CoRIM (which may contain both CoSWID and CoMID) can enable both of these use-cases, but can also act as the transport for expected values to an attestation Verifier (see {{RFC9334}}). Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.
+A CoSWID can enable Software Bill-of-Materials use-cases. A CoMID can enable monitoring of expected hardware. A CoRIM (which may contain both CoSWID and CoMID) can enable both of these use-cases, but can also act as the transport for expected values to an attestation Verifier (see {{RFC9334}}). Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.
 
 suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{I-D.ietf-sacm-coswid}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.
 
@@ -108,6 +120,14 @@ By way of example only, to express a dependency on a component "\['x', 'y'\]", w
     7 : ">=1.2.5,<2"
 }
 ~~~
+
+## text-current-version {#text-current-version}
+
+suit-text-current-version is used to provide human-readable version information equivalent to {{suit-set-version}}. This metadata MAY have a version listed for each or any component. The Manifest Processor MUST NOT consume this version; it is for human readability only.
+
+To describe a version, a Manifest Author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-current-version key with a free text version that is representative of the version of the component. This text SHOULD be expressive enough that a device operator can be expected to understand the version. This is a free text field and there are no specific formatting rules.
+
+It is RECOMMENDED that the Manifest Author use a Semantic Version ({{semver}}) in the free-text field. Unlike {{suit-set-version}}, the full semantic version specification can be used.
 
 # Extension Parameters {#extension-parameters}
 
@@ -163,7 +183,7 @@ The version comparison value is encoded as a CBOR list of integers. Comparisons 
 
 suit-parameter-version is OPTIONAL to implement.
 
-## suit-parameter-version Semantic Versioning encoding guidelines
+### suit-parameter-version Semantic Versioning encoding guidelines
 
 The encoded versions SHOULD be semantic versions (See {{semver}}). For example,
 
@@ -171,13 +191,12 @@ The encoded versions SHOULD be semantic versions (See {{semver}}). For example,
 * 1.2-rc.3 = \[1,2,-1,3\].
 * 1.2-beta = \[1,2,-2\].
 * 1.2-alpha = \[1,2,-3\].
+* 1.2.3-alpha.4 = \[1,2,3,-3,4\].
 
-Versions SHOULD be encoded according to the following rules:
+Versions SHOULD be composed of:
 
-1. Positive integers (and 0) represent the numeric elements of the semantic version
-2. A maximum of three positive integers (or 0s) SHOULD be used.
-3. The first element MUST be 0 or a positive integer
-4. Negative integers represent pre-release indicators.
+1. A release version encoded as a sequence of 1 to 3 positive integers
+2. A pre-release indicator encoded as a negative integer, followed by a sequence of positive integers
 
 While {{semver}} allows a build number, it mandates that the build number is ignored. Because suit-parameter-version exists solely to enable the Manifest Processor to make a decision about version compatibility, build numbers SHOULD NOT be included.
 
@@ -187,7 +206,7 @@ In {{semver}},
 2. The second integer represents the minor number. This is typically reserved for new features or large, non-breaking changes.
 3. The third integer is the patch version. This is typically reserved for bug fixes.
 
-A pre-release indicator MAY be inserted anywhere in the list, except at element 0. The pre-release indicator is encoded as:
+The pre-release indicator SHOULD NOT appear as element 0. The pre-release indicator is encoded as:
 
 * -1: Release Candidate
 * -2: Beta
