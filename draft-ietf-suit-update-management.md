@@ -1,7 +1,7 @@
 ---
 title: Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests
 abbrev: SUIT Update Management Extensions
-docname: draft-ietf-suit-update-management-05
+docname: draft-ietf-suit-update-management-07
 category: std
 
 ipr: trust200902
@@ -196,7 +196,7 @@ The encoded versions SHOULD be semantic versions (See {{semver}}). For example,
 Versions SHOULD be composed of:
 
 1. A release version encoded as a sequence of 1 to 3 positive integers
-2. A pre-release indicator encoded as a negative integer, followed by a sequence of positive integers
+2. An optional pre-release indicator encoded as a negative integer, followed by zero or more positive integers
 
 While {{semver}} allows a build number, it mandates that the build number is ignored. Because suit-parameter-version exists solely to enable the Manifest Processor to make a decision about version compatibility, build numbers SHOULD NOT be included.
 
