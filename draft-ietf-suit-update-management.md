@@ -446,12 +446,21 @@ SUIT_Directive_Copy_Params = {
 
 #  IANA Considerations {#iana}
 
-IANA is requested to:
+IANA is requested to allocate the commands and parameters as shown in the following tables.
 
-* allocate key 14 in the SUIT Envelope registry for suit-coswid
-* allocate key 14 in the SUIT Manifest registry for suit-coswid
-* allocate key 7 in the SUIT Component Text registry for suit-text-version-required
-* allocate the commands and parameters as shown in the following tables
+## SUIT Envelope Elements
+
+Label | Name | Reference
+---|---|---
+6 | Set Version | {{suit-set-version}} of [TBD: this document]
+14 | CoSWID | {{manifest-digest-coswid}} of [TBD: this document]
+
+## SUIT Manifest Elements
+
+Label | Name | Reference
+---|---|---
+6 | Set Version | {{suit-set-version}} of [TBD: this document]
+14 | CoSWID | {{manifest-digest-coswid}} of [TBD: this document]
 
 ## SUIT Commands
 
@@ -475,6 +484,13 @@ Label | Name | Reference
 27 | Update Priority | {{suit-parameter-update-priority}}
 28 | Version | {{suit-parameter-version}}
 29 | Wait Info | {{suit-parameter-wait-info}}
+
+## SUIT Component Text Values
+
+Label | Name | Reference
+---|---|---
+7 | Component Version Required | {{text-version-required}} of [TBD: this document]
+8 | Current Version | {{text-current-version}} of [TBD: this document]
 
 #  Security Considerations
 
