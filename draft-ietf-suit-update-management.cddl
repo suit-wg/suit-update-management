@@ -126,7 +126,7 @@ SUIT_meta_permission_map = {
     + SUIT_meta_actor_id => SUIT_meta_permissions
 }
 
-SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
+SUIT_meta_actor_id = UUID_Tagged / bstr / tstr / int
 UUID_Tagged = #6.37(bstr)
 
 
