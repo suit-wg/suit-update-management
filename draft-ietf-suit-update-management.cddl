@@ -55,14 +55,14 @@ SUIT_Wait_Event_Argument_Other_Device_Version = [
     other-device-version: [ + SUIT_Parameter_Version_Match ]
 ]
 
-SUIT_Parameters //= (suit-parameter-use-before => uint)
-SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
-SUIT_Parameters //= (suit-parameter-update-priority => int)
-SUIT_Parameters //= (suit-parameter-version =>
+$$SUIT_Parameters //= (suit-parameter-use-before => uint)
+$$SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
+$$SUIT_Parameters //= (suit-parameter-update-priority => int)
+$$SUIT_Parameters //= (suit-parameter-version =>
     bstr .cbor SUIT_Parameter_Version_Match)
-SUIT_Parameters //= (suit-parameter-wait-info =>
+$$SUIT_Parameters //= (suit-parameter-wait-info =>
     bstr .cbor SUIT_Wait_Event)
-SUIT_Parameters //= (suit-parameter-component-metadata =>
+$$SUIT_Parameters //= (suit-parameter-component-metadata =>
     bstr .cbor SUIT_Component_Metadata)
 
 SUIT_Parameter_Version_Match = [
@@ -97,8 +97,8 @@ SUIT_Component_Metadata = {
     ? suit-meta-group-permissions => SUIT_meta_permission_map,
     ? suit-meta-role-permissions => SUIT_meta_permission_map,
     ? suit-meta-file-type => SUIT_Filetype,
-    ? suit-meta-modification-time => CBOR_Datetime,
-    ? suit-meta-creation-time => CBOR_Datetime,
+    ? suit-meta-modification-time => #6.1(uint),
+    ? suit-meta-creation-time => #6.1(uint),
     ? suit-meta-creator => SUIT_meta_actor_id,
     * $$SUIT_Component_Metadata_Extensions
 }
