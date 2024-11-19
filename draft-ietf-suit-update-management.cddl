@@ -103,10 +103,19 @@ SUIT_Component_Metadata = {
     * $$SUIT_Component_Metadata_Extensions
 }
 
+suit-meta-default-permissions = 1
+suit-meta-user-permissions = 2
+suit-meta-group-permissions = 3
+suit-meta-role-permissions = 4
+suit-meta-file-type = 5
+suit-meta-modification-time = 6
+suit-meta-creation-time = 7
+suit-meta-creator = 8
+
 SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
 SUIT_meta_permission_bits = &(
     write_attr_ex: 13,
-    read_attr_ex: 12, 
+    read_attr_ex: 12,
     sync: 11,
     delete: 10,
     recurse_delete: 9,
@@ -129,6 +138,13 @@ SUIT_meta_permission_map = {
 SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
 UUID_Tagged = #6.37(bstr)
 
+SUIT_Filetype /= suit-filetype-regular
+SUIT_Filetype /= suit-filetype-directory
+SUIT_Filetype /= suit-filetype-symlink
+
+suit-filetype-regular = 1
+suit-filetype-directory = 2
+suit-filetype-symlink = 3
 
 
 $$suit-text-component-key-extensions //= (
@@ -156,11 +172,12 @@ suit-wait-event-time                 = 5
 suit-wait-event-time-of-day          = 6
 suit-wait-event-day-of-week          = 7
 
-suit-parameter-use-before        = 4
-suit-parameter-minimum-battery   = 26
-suit-parameter-update-priority   = 27
-suit-parameter-version           = 28
-suit-parameter-wait-info         = 29
+suit-parameter-use-before         = 4
+suit-parameter-minimum-battery    = 26
+suit-parameter-update-priority    = 27
+suit-parameter-version            = 28
+suit-parameter-wait-info          = 29
+suit-parameter-component-metadata = 30
 
 suit-text-version-required      = 7
 suit-text-current-version       = 8
