@@ -1,5 +1,5 @@
 $$unseverable-manifest-member-extensions //= (
-    suit-set-version => tstr
+    suit-set-version => bstr .cbor SUIT_Condition_Version_Comparison_Value
 )
 $$SUIT_severable-members-extensions //= (
     suit-coswid => bstr)
