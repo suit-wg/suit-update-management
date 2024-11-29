@@ -483,6 +483,7 @@ Label | Name | Reference
 27 | Update Priority | {{suit-parameter-update-priority}}
 28 | Version | {{suit-parameter-version}}
 29 | Wait Info | {{suit-parameter-wait-info}}
+30 | Component Metadata | {{suit-parameter-component-metadata}}
 
 ## SUIT Component Text Values
 
