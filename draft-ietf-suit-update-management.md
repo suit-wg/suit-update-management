@@ -452,7 +452,6 @@ IANA is requested to allocate the commands and parameters as shown in the follow
 
 Label | Name | Reference
 ---|---|---
-6 | Set Version | {{suit-set-version}} of [TBD: this document]
 14 | CoSWID | {{manifest-digest-coswid}} of [TBD: this document]
 
 ## SUIT Manifest Elements
