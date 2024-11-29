@@ -36,11 +36,11 @@ author:
       email: ken.takayama.ietf@gmail.com
 
 normative:
-  I-D.ietf-sacm-coswid:
   I-D.ietf-suit-manifest:
   RFC9019:
   RFC8949:
   RFC9334:
+  RFC9393:
   semver:
     title: "Semantic Versioning 2.0.0"
     author:
@@ -98,7 +98,7 @@ If a build number is desired, it SHOULD be included via {{text-current-version}}
 
 A CoSWID can enable Software Bill-of-Materials use-cases. A CoMID can enable monitoring of expected hardware. A CoRIM (which may contain both CoSWID and CoMID) can enable both of these use-cases, but can also act as the transport for expected values to an attestation Verifier (see {{RFC9334}}). Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.
 
-suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{I-D.ietf-sacm-coswid}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.
+suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{RFC9393}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.
 
 suit-coswid typically requires no processing by the Recipient. However all Recipients MUST NOT fail if a suit-coswid is present.
 
