@@ -21,9 +21,10 @@ CDDL=update-complete.cddl
 COSE_XML_URL=https://www.ietf.org/archive/id/draft-ietf-cose-msg-24.xml
 COSE_XML=cose.xml
 COSE_CDDL=cose.cddl
+COSWID_CDDL=coswid.cddl
+COSWID_CDDL_URL=https://raw.githubusercontent.com/sacmwg/draft-ietf-sacm-coswid/refs/heads/master/concise-swid-tag.cddl
 SUIT_CDDL=suit.cddl
 SUIT_CDDL_URL=https://raw.githubusercontent.com/suit-wg/manifest-spec/master/draft-ietf-suit-manifest.cddl
-SUIT_COMPLETE_CDDL=suit-complete.cddl
 UPDATE_CDDL=../draft-ietf-suit-update-management.cddl
 
 all: ${CDDL}
@@ -33,16 +34,15 @@ all: ${CDDL}
 ${COSE_XML}:
 	curl -o $@ ${COSE_XML_URL}
 
+${COSWID_CDDL}:
+	curl ${COSWID_CDDL_URL} | sed -e 's/label /coswid-label /g' > $@
+
 ${SUIT_CDDL}:
 	curl -o $@ ${SUIT_CDDL_URL}
 
 ${COSE_CDDL}: ${COSE_XML} cose_cddl.py
 	@python3 cose_cddl.py $< | sed -e 's/^!$$//' > $@
 
-${SUIT_COMPLETE_CDDL}: ${SUIT_CDDL} ${COSE_CDDL}
-	cat $^ > $@
-
 .PHONY: ${CDDL}
-${CDDL}: ${UPDATE_CDDL} ${SUIT_COMPLETE_CDDL}
+${CDDL}: ${SUIT_CDDL} ${UPDATE_CDDL} ${COSE_CDDL} ${COSWID_CDDL}
 	cat $^ > $@
-	cddl $@ generate

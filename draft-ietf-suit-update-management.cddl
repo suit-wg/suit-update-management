@@ -3,11 +3,10 @@ $$unseverable-manifest-member-extensions //= (
         bstr .cbor SUIT_Condition_Version_Comparison_Value
 )
 $$SUIT_severable-members-extensions //= (
-    suit-coswid => bstr)
-;    suit-coswid => bstr .cbor concise-swid-tag)
+    suit-coswid => bstr .cbor concise-swid-tag)
 
 $$severable-manifest-members-choice-extensions //= (
-    suit-coswid => bstr .cbor SUIT_Command_Sequence / SUIT_Digest
+    suit-coswid => bstr .cbor concise-swid-tag / SUIT_Digest
 )
 
 SUIT_Condition //= (
