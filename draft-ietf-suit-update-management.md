@@ -36,11 +36,10 @@ author:
       email: ken.takayama.ietf@gmail.com
 
 normative:
-  I-D.ietf-sacm-coswid:
+  RFC9393:
+  I-D.ietf-rats-corim:
   I-D.ietf-suit-manifest:
-  RFC9019:
   RFC8949:
-  RFC9334:
   semver:
     title: "Semantic Versioning 2.0.0"
     author:
@@ -49,6 +48,8 @@ normative:
 
 informative:
   I-D.ietf-suit-information-model:
+  RFC9019:
+  RFC9334:
 
 --- abstract
 This specification describes extensions to the SUIT manifest format
@@ -63,24 +64,22 @@ updated device.
 
 #  Introduction
 
-Full management of software updates for unattended, connected devices requires a cooperation between the update author(s) and management, distribution, policy enforcement, and auditing systems. This specification provides the extensions to the SUIT manifest ({{I-D.ietf-suit-manifest}}) that enable an author to coordinate with these other systems. These extensions enable authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials information.
+Full management of software updates for unattended, connected devices requires a cooperation between the update author(s) and management, distribution, policy enforcement, and auditing systems. This specification provides the extensions to the SUIT manifest that enable an author to coordinate with these other systems. These extensions enable authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials information.
 
-Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests unless otherwise designated.
+Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests.
 
 #  Conventions and Terminology
 
 {::boilerplate bcp14}
 
-Additionally, the following terminology is used throughout this document:
-
-* SUIT: Software Update for the Internet of Things, also the IETF working group for this proposed standard. While this software update mechanism is designed with the limitations and requirements of IoT devices in mind, there is no restriction preventing its use outside of IoT devices or for non-software payloads.
+This draft makes use of terminology defined in {{RFC9019}} and {{I-D.ietf-suit-manifest}}.
 
 # Extension Metadata
 
 Some additional metadata makes management of SUIT updates easier:
 
 * A semantic version number for the update represented by the manifest
-* Concise Software Identifiers (CoSWID), Concise Module Identifiers (CoMID), Concise Reference Integrity Manifest (CoRIM)
+* Concise Software Identifiers (CoSWID) {{RFC9393}}
 * Text descriptions of requirements
 * Text description of the current versions of components
 
@@ -90,48 +89,43 @@ This metadata encodes a semantic version for the component set that the manifest
 
 The version SHOULD be encoded as a semantic version, according to {{semver}}. There are several restrictions to these composition rules: alphanumeric pre-release indicators are not permitted. Because suit-set-version is a machine-readable parameter for determining compatibility and because {{semver}} mandates that the build-number is ignored, build numbers SHOULD NOT be included.
 
-The composition of suit-set-version is the same as {{suit-parameter-version}}.
+The composition of suit-set-version is the same as suit-parameter-version ({{suit-parameter-version}}).
 
-If a build number is desired, it SHOULD be included via {{text-current-version}}.
+If a build number is desired, it SHOULD be included via text-current-version ({{text-current-version}}).
 
 ## suit-coswid {#manifest-digest-coswid}
 
-A CoSWID can enable Software Bill-of-Materials use-cases. A CoMID can enable monitoring of expected hardware. A CoRIM (which may contain both CoSWID and CoMID) can enable both of these use-cases, but can also act as the transport for expected values to an attestation Verifier (see {{RFC9334}}). Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.
+A CoSWID can enable Software Bill of Materials use-cases. Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.
 
-suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{I-D.ietf-sacm-coswid}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.
+suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{RFC9393}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.
 
 suit-coswid typically requires no processing by the Recipient. However all Recipients MUST NOT fail if a suit-coswid is present.
 
 suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests.
 
-RFC EDITOR NOTE: Remove following 2 notes.
-
-* NOTE: CoRIM comprises a list of CoSWIDs and a list of CoMIDs, so it may be preferable to a CoSWID.
-* NOTE: CoMID may be a preferable alternative to Vendor ID/Class ID, however it consumes more bandwidth, so a UUID based on CoMID may be appropriate.
-
-## text-version-required {#text-version-required}
+## suit-text-version-required {#text-version-required}
 
 suit-text-version-required is used to represent a version-based dependency on suit-parameter-version as described in {{suit-parameter-version}} and {{suit-condition-version}}. To describe a version dependency, a Manifest Author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-version-required key with a free text expression that is representative of the version constraints placed on the dependency. This text SHOULD be expressive enough that a device operator can be expected to understand the dependency. This is a free text field and there are no specific formatting rules.
 
-By way of example only, to express a dependency on a component "\['x', 'y'\]", where the version should be any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
+By way of example only, to express a dependency on a component "\["x", "y"\]", where the version should be any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
 
-~~~
-[h'78',h'79'] : {
+~~~CDDL
+["x","y"] : {
     7 : ">=1.2.5,<2"
 }
 ~~~
 
 ## text-current-version {#text-current-version}
 
-suit-text-current-version is used to provide human-readable version information equivalent to {{suit-set-version}}. This metadata MAY have a version listed for each or any component. The Manifest Processor MUST NOT consume this version; it is for human readability only.
+suit-text-current-version is used to provide human-readable version information equivalent to suit-set-version ({{suit-set-version}}). This metadata MAY have a version listed for each or any component. The Manifest Processor MUST NOT consume this version; it is for human readability only.
 
 To describe a version, a Manifest Author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-current-version key with a free text version that is representative of the version of the component. This text SHOULD be expressive enough that a device operator can be expected to understand the version. This is a free text field and there are no specific formatting rules.
 
-It is RECOMMENDED that the Manifest Author use a Semantic Version ({{semver}}) in the free-text field. Unlike {{suit-set-version}}, the full semantic version specification can be used.
+It is RECOMMENDED that the Manifest Author use a Semantic Version ({{semver}}) in the free-text field. Unlike suit-set-version ({{suit-set-version}}), the full semantic version specification can be used.
 
 # Extension Parameters {#extension-parameters}
 
-Several parameters are needed to define the behaviour of the commands specified in {{extension-commands}}. These parameters follow the same considerations as defined in Section 8.4.8 of {{I-D.ietf-suit-manifest}}.
+Several parameters are needed to define the behaviour of the commands specified in Extension Commands ({{extension-commands})}. These parameters follow the same considerations as defined in Section 8.4.8 of {{I-D.ietf-suit-manifest}}.
 
 Name | CDDL Structure | Reference
 ---|---|---
