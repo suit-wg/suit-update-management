@@ -1,7 +1,7 @@
 ---
 title: Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests
 abbrev: SUIT Update Management Extensions
-docname: draft-ietf-suit-update-management-07
+docname: draft-ietf-suit-update-management-09
 category: std
 
 ipr: trust200902
@@ -37,7 +37,6 @@ author:
 
 normative:
   RFC9393:
-  I-D.ietf-rats-corim:
   I-D.ietf-suit-manifest:
   RFC8949:
   semver:
@@ -49,11 +48,10 @@ normative:
 informative:
   I-D.ietf-suit-information-model:
   RFC9019:
-  RFC9334:
 
 --- abstract
-This specification describes extensions to the SUIT manifest format
-defined in {{I-D.ietf-suit-manifest}}. These extensions allow an update
+This specification describes extensions to the SUIT manifest format.
+These extensions allow an update
 author, update distributor or device operator to more precisely control
 the distribution and installation of updates to devices. These
 extensions also provide a mechanism to inform a management system of
@@ -107,10 +105,10 @@ suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests.
 
 suit-text-version-required is used to represent a version-based dependency on suit-parameter-version as described in {{suit-parameter-version}} and {{suit-condition-version}}. To describe a version dependency, a Manifest Author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-version-required key with a free text expression that is representative of the version constraints placed on the dependency. This text SHOULD be expressive enough that a device operator can be expected to understand the dependency. This is a free text field and there are no specific formatting rules.
 
-By way of example only, to express a dependency on a component "\["x", "y"\]", where the version should be any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
+By way of example only, to express a dependency on a component "\['x', 'y'\]", where the version should be any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
 
 ~~~CDDL
-["x","y"] : {
+['x','y'] : {
     7 : ">=1.2.5,<2"
 }
 ~~~
@@ -125,7 +123,7 @@ It is RECOMMENDED that the Manifest Author use a Semantic Version ({{semver}}) i
 
 # Extension Parameters {#extension-parameters}
 
-Several parameters are needed to define the behaviour of the commands specified in Extension Commands ({{extension-commands})}. These parameters follow the same considerations as defined in Section 8.4.8 of {{I-D.ietf-suit-manifest}}.
+Several parameters are needed to define the behaviour of the commands specified in Extension Commands ({{extension-commands}}). These parameters follow the same considerations as defined in Section 8.4.8 of {{I-D.ietf-suit-manifest}}.
 
 Name | CDDL Structure | Reference
 ---|---|---

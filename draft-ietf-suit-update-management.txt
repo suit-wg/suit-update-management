@@ -5,23 +5,22 @@
 SUIT                                                            B. Moran
 Internet-Draft                                               Arm Limited
 Intended status: Standards Track                             K. Takayama
-Expires: 4 September 2025                                SECOM CO., LTD.
-                                                            3 March 2025
+Expires: 18 September 2025                               SECOM CO., LTD.
+                                                           17 March 2025
 
 
 Update Management Extensions for Software Updates for Internet of Things
                             (SUIT) Manifests
-                  draft-ietf-suit-update-management-07
+                  draft-ietf-suit-update-management-09
 
 Abstract
 
-   This specification describes extensions to the SUIT manifest format
-   defined in [I-D.ietf-suit-manifest].  These extensions allow an
-   update author, update distributor or device operator to more
-   precisely control the distribution and installation of updates to
-   devices.  These extensions also provide a mechanism to inform a
-   management system of Software Identifier and Software Bill Of
-   Materials information about an updated device.
+   This specification describes extensions to the SUIT manifest format.
+   These extensions allow an update author, update distributor or device
+   operator to more precisely control the distribution and installation
+   of updates to devices.  These extensions also provide a mechanism to
+   inform a management system of Software Identifier and Software Bill
+   Of Materials information about an updated device.
 
 Status of This Memo
 
@@ -38,26 +37,32 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2025.
+   This Internet-Draft will expire on 18 September 2025.
 
 Copyright Notice
 
    Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
+
+
+
+
+
+
+
+
+
+Moran & Takayama        Expires 18 September 2025               [Page 1]
+
+Internet-Draft      SUIT Update Management Extensions         March 2025
+
+
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents (https://trustee.ietf.org/
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
-
-
-
-Moran & Takayama        Expires 4 September 2025                [Page 1]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
    extracted from this document must include Revised BSD License text as
    described in Section 4.e of the Trust Legal Provisions and are
    provided without warranty as described in the Revised BSD License.
@@ -101,18 +106,16 @@ Table of Contents
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  20
-   Appendix A.  Full CDDL  . . . . . . . . . . . . . . . . . . . . .  21
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
 
 
 
-
-
-
-Moran & Takayama        Expires 4 September 2025                [Page 2]
+Moran & Takayama        Expires 18 September 2025               [Page 2]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
+
+   Appendix A.  Full CDDL  . . . . . . . . . . . . . . . . . . . . .  20
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
 
 1.  Introduction
 
@@ -162,10 +165,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-
-
-
-Moran & Takayama        Expires 4 September 2025                [Page 3]
+Moran & Takayama        Expires 18 September 2025               [Page 3]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -213,20 +213,20 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    expected to understand the dependency.  This is a free text field and
    there are no specific formatting rules.
 
-   By way of example only, to express a dependency on a component "["x",
-   "y"]", where the version should be any v1.x later than v1.2.5, but
+   By way of example only, to express a dependency on a component "['x',
+   'y']", where the version should be any v1.x later than v1.2.5, but
    not v2.0 or above, the author would add the following structure to
    the suit-text element.  Note that this text is in cbor-diag notation.
 
 
 
 
-Moran & Takayama        Expires 4 September 2025                [Page 4]
+Moran & Takayama        Expires 18 September 2025               [Page 4]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
-   ["x","y"] : {
+   ['x','y'] : {
        7 : ">=1.2.5,<2"
    }
 
@@ -253,7 +253,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 4.  Extension Parameters
 
    Several parameters are needed to define the behaviour of the commands
-   specified in Extension Commands (Section 5)}. These parameters follow
+   specified in Extension Commands (Section 5).  These parameters follow
    the same considerations as defined in Section 8.4.8 of
    [I-D.ietf-suit-manifest].
 
@@ -277,7 +277,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025                [Page 5]
+Moran & Takayama        Expires 18 September 2025               [Page 5]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -333,7 +333,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025                [Page 6]
+Moran & Takayama        Expires 18 September 2025               [Page 6]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -389,7 +389,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025                [Page 7]
+Moran & Takayama        Expires 18 September 2025               [Page 7]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -445,7 +445,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025                [Page 8]
+Moran & Takayama        Expires 18 September 2025               [Page 8]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -501,7 +501,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025                [Page 9]
+Moran & Takayama        Expires 18 September 2025               [Page 9]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -557,7 +557,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025               [Page 10]
+Moran & Takayama        Expires 18 September 2025              [Page 10]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -613,7 +613,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025               [Page 11]
+Moran & Takayama        Expires 18 September 2025              [Page 11]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -669,7 +669,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025               [Page 12]
+Moran & Takayama        Expires 18 September 2025              [Page 12]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -725,7 +725,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025               [Page 13]
+Moran & Takayama        Expires 18 September 2025              [Page 13]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -781,7 +781,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025               [Page 14]
+Moran & Takayama        Expires 18 September 2025              [Page 14]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -837,7 +837,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025               [Page 15]
+Moran & Takayama        Expires 18 September 2025              [Page 15]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -893,7 +893,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025               [Page 16]
+Moran & Takayama        Expires 18 September 2025              [Page 16]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -949,7 +949,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025               [Page 17]
+Moran & Takayama        Expires 18 September 2025              [Page 17]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -1005,7 +1005,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 4 September 2025               [Page 18]
+Moran & Takayama        Expires 18 September 2025              [Page 18]
 
 Internet-Draft      SUIT Update Management Extensions         March 2025
 
@@ -1050,22 +1050,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 8.1.  Normative References
 
-   [I-D.ietf-rats-corim]
-              Birkholz, H., Fossati, T., Deshpande, Y., Smith, N., and
-              W. Pan, "Concise Reference Integrity Manifest", Work in
-              Progress, Internet-Draft, draft-ietf-rats-corim-06, 18
-              October 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-rats-corim-06>.
-
-
-
-
-
-Moran & Takayama        Expires 4 September 2025               [Page 19]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
    [I-D.ietf-suit-manifest]
               Moran, B., Tschofenig, H., Birkholz, H., Zandberg, K., and
               O. Rønningstad, "A Concise Binary Object Representation
@@ -1074,6 +1058,13 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
               Internet-Draft, draft-ietf-suit-manifest-33, 24 February
               2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
               suit-manifest-33>.
+
+
+
+Moran & Takayama        Expires 18 September 2025              [Page 19]
+
+Internet-Draft      SUIT Update Management Extensions         March 2025
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1112,26 +1103,24 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
               RFC 9019, DOI 10.17487/RFC9019, April 2021,
               <https://www.rfc-editor.org/rfc/rfc9019>.
 
-
-
-
-
-
-Moran & Takayama        Expires 4 September 2025               [Page 20]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
-   [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
-              W. Pan, "Remote ATtestation procedureS (RATS)
-              Architecture", RFC 9334, DOI 10.17487/RFC9334, January
-              2023, <https://www.rfc-editor.org/rfc/rfc9334>.
-
 Appendix A.  Full CDDL
 
    To be valid, the following CDDL MUST be appended to the SUIT Manifest
    CDDL.  The SUIT CDDL is defined in Appendix A of
    [I-D.ietf-suit-manifest].
+
+
+
+
+
+
+
+
+
+Moran & Takayama        Expires 18 September 2025              [Page 20]
+
+Internet-Draft      SUIT Update Management Extensions         March 2025
+
 
    $$unseverable-manifest-member-extensions //= (
        suit-current-version => \
@@ -1170,14 +1159,6 @@ Appendix A.  Full CDDL
    }
    SUIT_Directive_Copy_Params = {
        + uint => [+ int]
-
-
-
-Moran & Takayama        Expires 4 September 2025               [Page 21]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
    }
 
    SUIT_Wait_Event = { + SUIT_Wait_Events }
@@ -1189,6 +1170,14 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
        => SUIT_Wait_Event_Argument_Other_Device_Version)
    SUIT_Wait_Events //= (suit-wait-event-time => uint); Timestamp
    SUIT_Wait_Events //= (suit-wait-event-time-of-day
+
+
+
+Moran & Takayama        Expires 18 September 2025              [Page 21]
+
+Internet-Draft      SUIT Update Management Extensions         March 2025
+
+
        => uint); Time of Day (seconds since 00:00:00)
    SUIT_Wait_Events //= (suit-wait-event-day-of-week
        => uint); Days since Sunday
@@ -1226,14 +1215,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
        suit-condition-version-comparison-lesser
 
    suit-condition-version-comparison-greater = 1
-
-
-
-Moran & Takayama        Expires 4 September 2025               [Page 22]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
    suit-condition-version-comparison-greater-equal = 2
    suit-condition-version-comparison-equal = 3
    suit-condition-version-comparison-lesser-equal = 4
@@ -1245,6 +1226,14 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    SUIT_Component_Metadata = {
        ? suit-meta-default-permissions => SUIT_meta_permissions,
        ? suit-meta-user-permissions => SUIT_meta_permission_map,
+
+
+
+Moran & Takayama        Expires 18 September 2025              [Page 22]
+
+Internet-Draft      SUIT Update Management Extensions         March 2025
+
+
        ? suit-meta-group-permissions => SUIT_meta_permission_map,
        ? suit-meta-role-permissions => SUIT_meta_permission_map,
        ? suit-meta-file-type => SUIT_Filetype,
@@ -1282,14 +1271,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-
-
-
-Moran & Takayama        Expires 4 September 2025               [Page 23]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
    $$suit-text-component-key-extensions //= (
        suit-text-version-required => tstr)
    $$suit-text-component-key-extensions //= (
@@ -1301,6 +1282,14 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    suit-condition-image-not-match          = 25
    suit-condition-minimum-battery          = 26
    suit-condition-update-authorized        = 27
+
+
+
+Moran & Takayama        Expires 18 September 2025              [Page 23]
+
+Internet-Draft      SUIT Update Management Extensions         March 2025
+
+
    suit-condition-version                  = 28
 
    suit-directive-wait                     = 29
@@ -1341,4 +1330,15 @@ Authors' Addresses
 
 
 
-Moran & Takayama        Expires 4 September 2025               [Page 24]
+
+
+
+
+
+
+
+
+
+
+
+Moran & Takayama        Expires 18 September 2025              [Page 24]
