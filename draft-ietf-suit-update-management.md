@@ -50,8 +50,7 @@ informative:
   RFC9019:
 
 --- abstract
-This specification describes extensions to the SUIT manifest format.
-These extensions allow an update
+This specification describes extensions to the SUIT manifest format. These extensions allow an update
 author, update distributor or device operator to more precisely control
 the distribution and installation of updates to devices. These
 extensions also provide a mechanism to inform a management system of
@@ -62,7 +61,7 @@ updated device.
 
 #  Introduction
 
-Full management of software updates for unattended, connected devices requires a cooperation between the update author(s) and management, distribution, policy enforcement, and auditing systems. This specification provides the extensions to the SUIT manifest that enable an author to coordinate with these other systems. These extensions enable authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials information.
+Full management of software updates for unattended, connected devices requires a cooperation between the update author(s) and management, distribution, policy enforcement, and auditing systems. This specification provides the extensions to the SUIT manifest {{I-D.ietf-suit-manifest}} that enable an author to coordinate with these other systems. These extensions enable authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials information.
 
 Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests.
 
