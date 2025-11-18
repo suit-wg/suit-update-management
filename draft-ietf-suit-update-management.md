@@ -63,7 +63,7 @@ updated device.
 
 Full management of software updates for unattended, connected devices requires a cooperation between the update author(s) and management, distribution, policy enforcement, and auditing systems. This specification provides the extensions to the SUIT manifest {{I-D.ietf-suit-manifest}} that enable an author to coordinate with these other systems. These extensions enable authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials information.
 
-Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests.
+Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests. A Recipient that encounters a command or parameter it does not implement MUST reject the manifest as defined in {{I-D.ietf-suit-manifest}} Section 8.4.2, ensuring that update behaviour is never ambiguous. Conversely, when a deployment relies on update-management behaviour defined here, the manifest author MUST ensure that targeted recipients advertise support for the required extensions (for example via enablement policy or capability negotiation) before shipping such manifests so that required commands will be honoured rather than rejected.
 
 #  Conventions and Terminology
 
@@ -102,7 +102,7 @@ suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests.
 
 ## suit-text-version-required {#text-version-required}
 
-suit-text-version-required is used to represent a version-based dependency on suit-parameter-version as described in {{suit-parameter-version}} and {{suit-condition-version}}. When a Manifest Author needs to communicate such a dependency to operators, the author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-version-required key with a free text expression that is representative of the version constraints placed on the dependency so that field personnel can validate compliance. Deployments that provide operator guidance exclusively through other channels MAY omit this field. This text SHOULD be expressive enough that a device operator can be expected to understand the dependency; predefined tokens MAY be used when supporting documentation ensures equivalent clarity. This is a free text field and there are no specific formatting rules.
+suit-text-version-required is used to represent a version-based dependency on suit-parameter-version as described in {{suit-parameter-version}} and {{suit-condition-version}}. When a Manifest Author needs to communicate such a dependency to operators, the author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-version-required key with a free text expression that is representative of the version constraints placed on the dependency so that field personnel can validate compliance. Deployments that provide operator guidance exclusively through other channels MAY omit this field. This text SHOULD be expressive enough that a device operator can be expected to understand the dependency; predefined tokens MAY be used when supporting documentation ensures equivalent clarity. Expressions in this field MUST be encoded as UTF-8 text limited to printable characters (Unicode general categories L, N, P, or Zs) and SHOULD use simple relational operators (for example `>`, `>=`, `<`, `<=`, `=`) so that automated tooling can perform lint checks. This is a free text field and there are no specific formatting rules.
 
 By way of example only, to express a dependency on a component "\['x', 'y'\]", where the version should be any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
 
@@ -116,7 +116,7 @@ By way of example only, to express a dependency on a component "\['x', 'y'\]", w
 
 suit-text-current-version is used to provide human-readable version information equivalent to suit-set-version ({{suit-set-version}}). This metadata MAY have a version listed for each or any component. The Manifest Processor MUST NOT consume this version; it is for human readability only.
 
-To describe a version, a Manifest Author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-current-version key with a free text version that is representative of the version of the component so that operators can reconcile machine and human-readable records. Deployments that provide human-facing version information through other configuration channels MAY omit this text. This text SHOULD be expressive enough that a device operator can be expected to understand the version; environments that rely on catalog identifiers MAY use those identifiers when supporting documentation provides the necessary context. This is a free text field and there are no specific formatting rules.
+To describe a version, a Manifest Author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-current-version key with a free text version that is representative of the version of the component so that operators can reconcile machine and human-readable records. Deployments that provide human-facing version information through other configuration channels MAY omit this text. This text SHOULD be expressive enough that a device operator can be expected to understand the version; environments that rely on catalog identifiers MAY use those identifiers when supporting documentation provides the necessary context. Values in this field MUST be encoded as UTF-8 text limited to printable characters, and implementations MUST treat suit-set-version and suit-parameter-version as authoritative when a discrepancy exists. Recipients MUST NOT interpret this text as executable code or markup and MUST treat it as display-only information. This is a free text field and there are no specific formatting rules.
 
 It is RECOMMENDED that the Manifest Author use a Semantic Version ({{semver}}) in the free-text field to keep human-readable and machine-readable versions aligned. Unlike suit-set-version ({{suit-set-version}}), the full semantic version specification can be used.
 
@@ -240,6 +240,8 @@ In some instances, a system may need to know the file metadata for a component. 
 * a map of group/permission pairs
 * file type
 
+Unless otherwise stated, all string values in this structure MUST be encoded as UTF-8 without control characters (Unicode general categories Cc or Cf) and SHOULD be limited to human-readable identifiers such as names or POSIX-style paths. Binary values conveyed via `bstr` MUST be well-formed for the consuming platform (for example, a UUID or permissions bitmap) and MUST NOT exceed the minimum length required to represent the value canonically.
+
 Component metadata is applied at time of fetch, copy, or write; see {{I-D.ietf-suit-manifest}}, sections 8.4.10.4, 8.4.10.5, 8.4.10.6. Therefore, the component metadata parameter must be set in advance of the component being fetched, copied into, or written.
 
  
@@ -346,6 +348,8 @@ For example, the following Payload Fetch & Install sequences will create a new /
 # Extension Commands
 
 The following table defines the semantics of the commands defined in this specification in the same way as in the Abstract Machine Description, Section 6.4, of {{I-D.ietf-suit-manifest}}.
+
+All commands defined in this specification are OPTIONAL to implement. A Recipient that encounters a command it does not implement MUST reject the manifest as defined in {{I-D.ietf-suit-manifest}} Section 8.4.2, ensuring that update behaviour is never ambiguous.
 
 | Command Name | CDDL Identifier | Semantic of the Operation
 |------|---|----
@@ -470,6 +474,10 @@ Label | Name | Reference
 #  Security Considerations
 
 This document extends the SUIT manifest specification. A detailed security treatment can be found in the architecture {{RFC9019}} and in the information model {{I-D.ietf-suit-information-model}} documents.
+
+The free-text fields introduced in Sections {{text-version-required}} and {{text-current-version}} are intended solely for human consumption. Recipients MUST treat those values as untrusted input: they MUST NOT evaluate the text, execute embedded markup, or override machine-readable decisions derived from suit-set-version or suit-parameter-version. Implementations SHOULD bound the length of displayed text to mitigate interface flooding and log injection.
+
+Component metadata ({{suit-parameter-component-metadata}}) can expose operator identifiers, file paths, or other locally meaningful strings. Deployments SHOULD validate these values against local policy before applying them, and MUST handle missing or malformed metadata defensively so that the update agent does not escalate privileges or disclose sensitive information inadvertently.
 
 
 --- back
