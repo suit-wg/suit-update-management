@@ -84,25 +84,25 @@ Some additional metadata makes management of SUIT updates easier:
 
 This metadata encodes a semantic version for the component set that the manifest updates, including any dependencies. This enables version comparisons to be performed on manifests. Non-manifest images encode their versions independently of the manifest.
 
-The version SHOULD be encoded as a semantic version, according to {{semver}}. There are several restrictions to these composition rules: alphanumeric pre-release indicators are not permitted. Because suit-set-version is a machine-readable parameter for determining compatibility and because {{semver}} mandates that the build-number is ignored, build numbers SHOULD NOT be included.
+The version MUST be encoded as a semantic version, according to {{semver}}, so that recipients can compare manifests deterministically. Deployments that cannot supply a semantic version without loss of fidelity MUST omit suit-set-version and convey any human-facing numbering via text-current-version ({{text-current-version}}). Because suit-set-version is a machine-readable parameter for determining compatibility and because {{semver}} mandates that the build-number is ignored, build numbers MUST NOT be included.
 
 The composition of suit-set-version is the same as suit-parameter-version ({{suit-parameter-version}}).
 
-If a build number is desired, it SHOULD be included via text-current-version ({{text-current-version}}).
+If a build number is desired, the manifest author MAY include it via text-current-version ({{text-current-version}}).
 
 ## suit-coswid {#manifest-digest-coswid}
 
 A CoSWID can enable Software Bill of Materials use-cases. Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.
 
-suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{RFC9393}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient.
+suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{RFC9393}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient while preserving the manifest signature. Implementations that cannot support severable elements MAY include suit-coswid non-severably, but MUST ensure that Recipients can still process the manifest.
 
-suit-coswid typically requires no processing by the Recipient. However all Recipients MUST NOT fail if a suit-coswid is present.
+suit-coswid typically requires no processing by the Recipient. However, Recipients MUST NOT fail if a suit-coswid is present.
 
 suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests.
 
 ## suit-text-version-required {#text-version-required}
 
-suit-text-version-required is used to represent a version-based dependency on suit-parameter-version as described in {{suit-parameter-version}} and {{suit-condition-version}}. To describe a version dependency, a Manifest Author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-version-required key with a free text expression that is representative of the version constraints placed on the dependency. This text SHOULD be expressive enough that a device operator can be expected to understand the dependency. This is a free text field and there are no specific formatting rules.
+suit-text-version-required is used to represent a version-based dependency on suit-parameter-version as described in {{suit-parameter-version}} and {{suit-condition-version}}. When a Manifest Author needs to communicate such a dependency to operators, the author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-version-required key with a free text expression that is representative of the version constraints placed on the dependency so that field personnel can validate compliance. Deployments that provide operator guidance exclusively through other channels MAY omit this field. This text SHOULD be expressive enough that a device operator can be expected to understand the dependency; predefined tokens MAY be used when supporting documentation ensures equivalent clarity. This is a free text field and there are no specific formatting rules.
 
 By way of example only, to express a dependency on a component "\['x', 'y'\]", where the version should be any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
 
@@ -116,9 +116,9 @@ By way of example only, to express a dependency on a component "\['x', 'y'\]", w
 
 suit-text-current-version is used to provide human-readable version information equivalent to suit-set-version ({{suit-set-version}}). This metadata MAY have a version listed for each or any component. The Manifest Processor MUST NOT consume this version; it is for human readability only.
 
-To describe a version, a Manifest Author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-current-version key with a free text version that is representative of the version of the component. This text SHOULD be expressive enough that a device operator can be expected to understand the version. This is a free text field and there are no specific formatting rules.
+To describe a version, a Manifest Author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-current-version key with a free text version that is representative of the version of the component so that operators can reconcile machine and human-readable records. Deployments that provide human-facing version information through other configuration channels MAY omit this text. This text SHOULD be expressive enough that a device operator can be expected to understand the version; environments that rely on catalog identifiers MAY use those identifiers when supporting documentation provides the necessary context. This is a free text field and there are no specific formatting rules.
 
-It is RECOMMENDED that the Manifest Author use a Semantic Version ({{semver}}) in the free-text field. Unlike suit-set-version ({{suit-set-version}}), the full semantic version specification can be used.
+It is RECOMMENDED that the Manifest Author use a Semantic Version ({{semver}}) in the free-text field to keep human-readable and machine-readable versions aligned. Unlike suit-set-version ({{suit-set-version}}), the full semantic version specification can be used.
 
 # Extension Parameters {#extension-parameters}
 
@@ -176,7 +176,7 @@ suit-parameter-version is OPTIONAL to implement.
 
 ### suit-parameter-version Semantic Versioning encoding guidelines
 
-The encoded versions SHOULD be semantic versions (See {{semver}}). For example,
+The encoded versions follow semantic versioning (see {{semver}}). For example,
 
 * 1.2.3 = \[1,2,3\].
 * 1.2-rc.3 = \[1,2,-1,3\].
@@ -184,12 +184,12 @@ The encoded versions SHOULD be semantic versions (See {{semver}}). For example,
 * 1.2-alpha = \[1,2,-3\].
 * 1.2.3-alpha.4 = \[1,2,3,-3,4\].
 
-Versions SHOULD be composed of:
+Versions are composed of:
 
 1. A release version encoded as a sequence of 1 to 3 positive integers
 2. An optional pre-release indicator encoded as a negative integer, followed by zero or more positive integers
 
-While {{semver}} allows a build number, it mandates that the build number is ignored. Because suit-parameter-version exists solely to enable the Manifest Processor to make a decision about version compatibility, build numbers SHOULD NOT be included.
+While {{semver}} allows a build number, it mandates that the build number is ignored. Because suit-parameter-version exists solely to enable the Manifest Processor to make a decision about version compatibility, build numbers MUST NOT be included.
 
 In {{semver}}, 
 
@@ -197,9 +197,9 @@ In {{semver}},
 2. The second integer represents the minor number. This is typically reserved for new features or large, non-breaking changes.
 3. The third integer is the patch version. This is typically reserved for bug fixes.
 
-The pre-release indicator SHOULD NOT appear as element 0. The pre-release indicator is encoded as:
+The pre-release indicator MUST NOT appear as element 0. The pre-release indicator is encoded as:
 
-* -1: Release Candidate
+* -1: Release Candidate (RC)
 * -2: Beta
 * -3: Alpha
 
@@ -211,7 +211,7 @@ suit-directive-wait ({{suit-directive-wait}}) directs the manifest processor to 
 
 The exact implementation of the pause is implementation-defined. For example, this could be done by blocking on a semaphore, registering an event handler and suspending the manifest processor, polling for a notification, or aborting the update entirely, then restarting when a notification is received.
 
-suit-parameter-wait-info is encoded as a map of wait events. When ALL wait events are satisfied, the Manifest Processor continues. The wait events currently defined are described in the following table.
+suit-parameter-wait-info is encoded as a map of wait events. All wait events MUST be satisfied before the Manifest Processor continues. The wait events currently defined are described in the following table.
 
 Name | Encoding | Description
 ---|---|---
@@ -225,7 +225,7 @@ suit-wait-event-time-of-day-utc | uint | Wait until seconds since 00:00:00 UTC
 suit-wait-event-day-of-week | uint | Wait until days since Sunday Local Time
 suit-wait-event-day-of-week-utc | uint | Wait until days since Sunday UTC
 
-suit-wait-event-other-device-version reuses the encoding of suit-parameter-version-match. It is encoded as a sequence that contains an implementation-defined bstr identifier for the other device, and a list of one or more SUIT_Parameter_Version_Match.
+suit-wait-event-other-device-version reuses the encoding of SUIT_Parameter_Version_Match. It is encoded as a sequence that contains an implementation-defined bstr identifier for the other device, and a list of one or more SUIT_Parameter_Version_Match.
 
 ## suit-parameter-component-metadata {#suit-parameter-component-metadata}
 
@@ -476,7 +476,7 @@ This document extends the SUIT manifest specification. A detailed security treat
 
 #  Full CDDL {#full-cddl}
 
-To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of {{I-D.ietf-suit-manifest}}.
+To be valid, the following CDDL must be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of {{I-D.ietf-suit-manifest}}.
 
 ~~~ CDDL
 {::include draft-ietf-suit-update-management.cddl}
