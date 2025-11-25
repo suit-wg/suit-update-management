@@ -172,17 +172,9 @@ The comparison type can be:
 
 The version comparison value is encoded as a CBOR list of integers. Comparisons are done on each integer in sequence. Comparison stops after all integers in the list defined by the manifest have been consumed OR after an non-equal comparison has occurred. For example, if the manifest defines a comparison, "Equal \[1\]", then this will match all version sequences starting with 1. If a manifest defines both "Greater or Equal \[1,0\]" and "Lesser \[1,10\]", then it will match versions 1.0.x up to, but not including 1.10.
 
-suit-parameter-version is OPTIONAL to implement.
-
 ### suit-parameter-version Semantic Versioning encoding guidelines
 
-The encoded versions follow semantic versioning (see {{semver}}). For example,
-
-* 1.2.3 = \[1,2,3\].
-* 1.2-rc.3 = \[1,2,-1,3\].
-* 1.2-beta = \[1,2,-2\].
-* 1.2-alpha = \[1,2,-3\].
-* 1.2.3-alpha.4 = \[1,2,3,-3,4\].
+The encoded versions follow semantic versioning (see {{semver}}).
 
 Versions are composed of:
 
@@ -204,6 +196,14 @@ The pre-release indicator MUST NOT appear as element 0. The pre-release indicato
 * -3: Alpha
 
 This allows these releases to compare correctly with final releases. For example, Version 2.0, RC1 should be lower than Version 2.0.0 and higher than any Version 1.x. By encoding RC as -1, this works correctly: \[2,0,-1,1\] compares as lower than \[2,0,0\]. Similarly, beta (-2) is lower than RC and alpha (-3) is lower than RC.
+
+For example:
+
+* 1.2.3 = \[1,2,3\].
+* 1.2-rc.3 = \[1,2,-1,3\].
+* 1.2-beta = \[1,2,-2\].
+* 1.2-alpha = \[1,2,-3\].
+* 1.2.3-alpha.4 = \[1,2,3,-3,4\].
 
 ## suit-parameter-wait-info
 
