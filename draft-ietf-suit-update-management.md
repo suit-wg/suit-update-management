@@ -1,7 +1,7 @@
 ---
 title: Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests
 abbrev: SUIT Update Management Extensions
-docname: draft-ietf-suit-update-management-09
+docname: draft-ietf-suit-update-management-10
 category: std
 stream: IETF
 
