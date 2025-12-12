@@ -3,6 +3,7 @@ title: Update Management Extensions for Software Updates for Internet of Things 
 abbrev: SUIT Update Management Extensions
 docname: draft-ietf-suit-update-management-09
 category: std
+stream: IETF
 
 ipr: trust200902
 area: Security
