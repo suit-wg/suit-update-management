@@ -99,17 +99,17 @@ If a build number is desired, the manifest author MAY include it via text-curren
 
 A CoSWID can enable Software Bill of Materials (SBOM) use-cases. Tightly coupling update and attestation ensures that verification infrastructure always knows what software to expect on each device.
 
-suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{RFC9393}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not required by the Recipient while preserving the manifest signature. Implementations that cannot support severable elements MAY include suit-coswid non-severably, but MUST ensure that Recipients can still process the manifest.
+suit-coswid is a member of the suit-manifest. It contains a Concise Software Identifier (CoSWID) as defined in {{RFC9393}}. This element SHOULD be made severable so that it can be discarded by the Recipient or an intermediary if it is not used by the Recipient while preserving the manifest signature. Implementations that cannot support severable elements MAY include suit-coswid non-severably, but MUST ensure that Recipients can still process the manifest.
 
-suit-coswid typically requires no processing by the Recipient. Recipients that implement suit-coswid MUST treat it as optional metadata, and Recipients that do not implement suit-coswid MUST reject the manifest as required by {{I-D.ietf-suit-manifest}} Section 8.4.2 so that unsupported extensions are never applied silently.
+suit-coswid is optional extension metadata and typically requires no processing by the Recipient. Recipients that do not understand or do not use optional extension metadata are not required to interpret the CoSWID content. A Recipient MUST NOT fail solely because a well-formed, policy-permitted suit-coswid field is present. A Recipient MAY still fail or reject the manifest when the suit-coswid field or its digest is malformed, when local policy rejects the metadata, when processing would exhaust available resources, when validation of processed CoSWID metadata fails, or when a manifest relies on unsupported critical behaviour. This requirement does not imply that every Recipient implements CoSWID processing.
 
-suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests.
+suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in manifests because management systems commonly need a durable software identity after update installation. CoSWID and related Software Bill of Materials metadata can support inventory, vulnerability management, compliance checks, and reconciliation between the installed update state and management-system records. This recommendation is scoped to the operational and security value of identifying installed software; it does not imply that the presence of SBOM metadata proves that the software is free of vulnerabilities or policy issues. Other extension metadata is not generally RECOMMENDED unless required by deployment policy or by a SUIT profile.
 
 ## suit-text-version-required {#text-version-required}
 
 suit-text-version-required is used to represent a version-based dependency on suit-parameter-version as described in {{suit-parameter-version}} and {{suit-condition-version}}. When a Manifest Author needs to communicate such a dependency to operators, the author SHOULD populate the suit-text map with a SUIT_Component_Identifier key for the dependency component, and place in the corresponding map a suit-text-version-required key with a free text expression that is representative of the version constraints placed on the dependency so that field personnel can validate compliance. Deployments that provide operator guidance exclusively through other channels MAY omit this field. This text SHOULD be expressive enough that a device operator can be expected to understand the dependency; predefined tokens MAY be used when supporting documentation ensures equivalent clarity. Expressions in this field MUST be encoded as UTF-8 text limited to printable characters (Unicode general categories L, N, P, or Zs) and SHOULD use simple relational operators (for example `>`, `>=`, `<`, `<=`, `=`) so that automated tooling can perform lint checks. Implementations that render this text SHOULD escape or filter it to prevent markup or control-code injection. This is a free text field and there are no additional specific formatting rules beyond the requirements above.
 
-By way of example only, to express a dependency on a component "\['x', 'y'\]", where the version should be any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
+By way of example only, to express a dependency on a component "\['x', 'y'\]", where the intended version is any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
 
 ~~~CDDL
 ['x','y'] : {
@@ -140,11 +140,11 @@ Component Metadata | suit-parameter-component-metadata | {{suit-parameter-compon
 
 ## suit-parameter-use-before {#suit-parameter-use-before}
 
-An expiry date for the use of the manifest encoded as the positive integer number of seconds since 1970-01-01. Implementations that use this parameter MUST use a 64-bit internal representation of the integer. Used with {{suit-condition-use-before}}.
+An expiry date for the use of the manifest encoded as the non-negative integer number of seconds since 1970-01-01. Implementations that use this parameter MUST use a 64-bit internal representation of the integer. Used with {{suit-condition-use-before}}.
 
 ## suit-parameter-minimum-battery
 
-This parameter sets the minimum battery level in mWh. This parameter is encoded as a positive integer. Used with suit-condition-minimum-battery ({{suit-condition-minimum-battery}}).
+This parameter sets the minimum battery level in mWh. This parameter is encoded as a non-negative integer. Used with suit-condition-minimum-battery ({{suit-condition-minimum-battery}}).
 
 ## suit-parameter-update-priority
 
@@ -154,7 +154,7 @@ Applications MAY define their own meanings for the update priority. For example,
 
 ## suit-parameter-version {#suit-parameter-version}
 
-Indicates allowable versions for the specified component. One version comparison can be made with each suit-parameter-version. This parameter is compared with version asserted by the current component when suit-condition-version ({{suit-condition-version}}) is invoked. The current component may assert the current version in many ways, including storage in a parameter storage database, in a metadata object, or in a known location within the component itself.
+Indicates allowable versions for the specified component. One version comparison can be made with each suit-parameter-version. This parameter is compared with the version asserted by the current component when suit-condition-version ({{suit-condition-version}}) is invoked. The current component can assert the current version in many ways, including storage in a parameter storage database, in a metadata object, or in a known location within the component itself.
 
 Each suit-parameter-version contains a comparison operator and a version, according to the following CDDL:
 
@@ -184,7 +184,7 @@ The encoded versions follow semantic versioning (see {{semver}}). Manifest Autho
 Versions are composed of:
 
 1. A release version encoded as a sequence of 1 to 3 non-negative integers (allowing zero values as defined by {{semver}})
-2. An optional pre-release indicator encoded as a negative integer, followed by zero or more positive integers
+2. An optional pre-release indicator encoded as a negative integer, followed by zero or more non-negative integers
 
 While {{semver}} allows a build number, it mandates that the build number is ignored. Because suit-parameter-version exists solely to enable the Manifest Processor to make a decision about version compatibility, build numbers MUST NOT be included.
 
@@ -200,7 +200,7 @@ The pre-release indicator MUST NOT appear as element 0. The pre-release indicato
 * -2: Beta
 * -3: Alpha
 
-This allows these releases to compare correctly with final releases. For example, Version 2.0, RC1 should be lower than Version 2.0.0 and higher than any Version 1.x. By encoding RC as -1, this works correctly: \[2,0,-1,1\] compares as lower than \[2,0,0\]. Similarly, beta (-2) is lower than RC and alpha (-3) is lower than RC.
+This allows these releases to compare correctly with final releases. For example, Version 2.0, RC1 is lower than Version 2.0.0 and higher than any Version 1.x. By encoding RC as -1, this works correctly: \[2,0,-1,1\] compares as lower than \[2,0,0\]. Similarly, beta (-2) is lower than RC and alpha (-3) is lower than RC.
 
 For example:
 
@@ -234,7 +234,7 @@ suit-wait-event-other-device-version reuses the encoding of SUIT_Parameter_Versi
 
 ## suit-parameter-component-metadata {#suit-parameter-component-metadata}
 
-In some instances, a system may need to know the file metadata for a component. This metadata can include:
+In some instances, a system needs to know the file metadata for a component. This metadata can include:
 
 * creator
 * creation time
@@ -383,7 +383,7 @@ All commands defined in this specification are OPTIONAL to implement. A Recipien
 
 ## suit-condition-use-before
 
-Verify that the current time is BEFORE the specified time. suit-condition-use-before is used to specify the last time at which an update should be installed. The recipient evaluates the current time against the suit-parameter-use-before parameter ({{suit-parameter-use-before}}), which MUST have already been set as a parameter, encoded as seconds after 1970-01-01 00:00:00 UTC. Timestamp conditions MUST be evaluated in 64 bits, regardless of encoded CBOR size. suit-condition-use-before is OPTIONAL to implement.
+Verify that the current time is BEFORE the specified time. suit-condition-use-before is used to specify the last time at which an update is to be installed. The recipient evaluates the current time against the suit-parameter-use-before parameter ({{suit-parameter-use-before}}), which MUST have already been set as a parameter, encoded as seconds after 1970-01-01 00:00:00 UTC. Timestamp conditions MUST be evaluated in 64 bits, regardless of encoded CBOR size. suit-condition-use-before is OPTIONAL to implement.
 
 ## suit-condition-image-not-match
 
@@ -429,7 +429,7 @@ This directive enables setting parameters for multiple components at the same ti
 
 Override-multiple requires the command (1-2 bytes) and one additional map to hold the parameter sets (1 byte). For one component, there is no savings. For multiple components, there is an encoding savings of 2 bytes per component.
 
-Proper structuring of code should ensure that override-multiple follows a code-path nearly identical to set-component-index + override-parameters.
+Implementations can structure code so that override-multiple follows a code-path nearly identical to set-component-index + override-parameters.
 
 This command is purely an encoding alias for set-component-index and override-parameters. The component index is set to the last component listed in the override-multiple argument when override-multiple completes.
 
