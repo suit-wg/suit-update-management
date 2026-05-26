@@ -247,7 +247,7 @@ In some instances, a system may need to know the file metadata for a component. 
 
 Unless otherwise stated, all string values in this structure MUST be encoded as UTF-8 without control characters (Unicode general categories Cc or Cf) and SHOULD be limited to human-readable identifiers such as names or POSIX-style paths. Binary values conveyed via `bstr` MUST be well-formed for the consuming platform (for example, a UUID or permissions bitmap) and MUST NOT exceed the minimum length required to represent the value canonically.
 
-Component metadata is applied at time of fetch, copy, or write; see {{I-D.ietf-suit-manifest}}, sections 8.4.10.4, 8.4.10.5, 8.4.10.6. Therefore, the component metadata parameter must be set in advance of the component being fetched, copied into, or written.
+Component metadata is applied at time of fetch, copy, or write; see {{I-D.ietf-suit-manifest}}, Sections 8.4.10.4, 8.4.10.5, and 8.4.10.6. Therefore, the component metadata parameter MUST be set in advance of the component being fetched, copied into, or written.
 
  
 ### Creator {#suit-meta-creator}
@@ -370,7 +370,7 @@ All commands defined in this specification are OPTIONAL to implement. A Recipien
 
 ## suit-condition-use-before
 
-Verify that the current time is BEFORE the specified time. suit-condition-use-before is used to specify the last time at which an update should be installed. The recipient evaluates the current time against the suit-parameter-use-before parameter ({{suit-parameter-use-before}}), which must have already been set as a parameter, encoded as seconds after 1970-01-01 00:00:00 UTC. Timestamp conditions MUST be evaluated in 64 bits, regardless of encoded CBOR size. suit-condition-use-before is OPTIONAL to implement.
+Verify that the current time is BEFORE the specified time. suit-condition-use-before is used to specify the last time at which an update should be installed. The recipient evaluates the current time against the suit-parameter-use-before parameter ({{suit-parameter-use-before}}), which MUST have already been set as a parameter, encoded as seconds after 1970-01-01 00:00:00 UTC. Timestamp conditions MUST be evaluated in 64 bits, regardless of encoded CBOR size. suit-condition-use-before is OPTIONAL to implement.
 
 ## suit-condition-image-not-match
 
