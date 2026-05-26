@@ -49,20 +49,24 @@ SUIT_Wait_Events //= (suit-wait-event-time-of-day
     => uint); Time of Day (seconds since 00:00:00)
 SUIT_Wait_Events //= (suit-wait-event-day-of-week
     => uint); Days since Sunday
+SUIT_Wait_Events //= (suit-wait-event-time-of-day-utc
+    => uint); Time of Day UTC (seconds since 00:00:00)
+SUIT_Wait_Events //= (suit-wait-event-day-of-week-utc
+    => uint); Days since Sunday UTC
 
 SUIT_Wait_Event_Argument_Other_Device_Version = [
     other-device: bstr,
     other-device-version: [ + SUIT_Parameter_Version_Match ]
 ]
 
-SUIT_Parameters //= (suit-parameter-use-before => uint)
-SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
-SUIT_Parameters //= (suit-parameter-update-priority => int)
-SUIT_Parameters //= (suit-parameter-version =>
+$$SUIT_Parameters //= (suit-parameter-use-before => uint)
+$$SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
+$$SUIT_Parameters //= (suit-parameter-update-priority => int)
+$$SUIT_Parameters //= (suit-parameter-version =>
     bstr .cbor SUIT_Parameter_Version_Match)
-SUIT_Parameters //= (suit-parameter-wait-info =>
+$$SUIT_Parameters //= (suit-parameter-wait-info =>
     bstr .cbor SUIT_Wait_Event)
-SUIT_Parameters //= (suit-parameter-component-metadata =>
+$$SUIT_Parameters //= (suit-parameter-component-metadata =>
     bstr .cbor SUIT_Component_Metadata)
 
 SUIT_Parameter_Version_Match = [
@@ -97,16 +101,25 @@ SUIT_Component_Metadata = {
     ? suit-meta-group-permissions => SUIT_meta_permission_map,
     ? suit-meta-role-permissions => SUIT_meta_permission_map,
     ? suit-meta-file-type => SUIT_Filetype,
-    ? suit-meta-modification-time => CBOR_Datetime,
-    ? suit-meta-creation-time => CBOR_Datetime,
+    ? suit-meta-modification-time => #6.1(uint),
+    ? suit-meta-creation-time => #6.1(uint),
     ? suit-meta-creator => SUIT_meta_actor_id,
     * $$SUIT_Component_Metadata_Extensions
 }
 
+suit-meta-default-permissions = 1
+suit-meta-user-permissions = 2
+suit-meta-group-permissions = 3
+suit-meta-role-permissions = 4
+suit-meta-file-type = 5
+suit-meta-modification-time = 6
+suit-meta-creation-time = 7
+suit-meta-creator = 8
+
 SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
 SUIT_meta_permission_bits = &(
     write_attr_ex: 13,
-    read_attr_ex: 12, 
+    read_attr_ex: 12,
     sync: 11,
     delete: 10,
     recurse_delete: 9,
@@ -126,8 +139,16 @@ SUIT_meta_permission_map = {
     + SUIT_meta_actor_id => SUIT_meta_permissions
 }
 
-SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
+SUIT_meta_actor_id = UUID_Tagged / bstr / tstr / int
 UUID_Tagged = #6.37(bstr)
+
+SUIT_Filetype /= suit-filetype-regular
+SUIT_Filetype /= suit-filetype-directory
+SUIT_Filetype /= suit-filetype-symlink
+
+suit-filetype-regular = 1
+suit-filetype-directory = 2
+suit-filetype-symlink = 3
 
 
 
@@ -155,12 +176,15 @@ suit-wait-event-other-device-version = 4
 suit-wait-event-time                 = 5
 suit-wait-event-time-of-day          = 6
 suit-wait-event-day-of-week          = 7
+suit-wait-event-time-of-day-utc      = 8
+suit-wait-event-day-of-week-utc      = 9
 
-suit-parameter-use-before        = 4
-suit-parameter-minimum-battery   = 26
-suit-parameter-update-priority   = 27
-suit-parameter-version           = 28
-suit-parameter-wait-info         = 29
+suit-parameter-use-before         = 4
+suit-parameter-minimum-battery    = 26
+suit-parameter-update-priority    = 27
+suit-parameter-version            = 28
+suit-parameter-wait-info          = 29
+suit-parameter-component-metadata = 30
 
 suit-text-version-required      = 7
 suit-text-current-version       = 8
