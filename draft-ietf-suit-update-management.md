@@ -89,7 +89,7 @@ Some additional metadata makes management of SUIT updates easier:
 
 This metadata encodes a semantic version for the component set that the manifest updates, including any dependencies. This enables version comparisons to be performed on manifests. Non-manifest images encode their versions independently of the manifest.
 
-The version MUST be encoded as a semantic version, according to {{semver}}, so that recipients can compare manifests deterministically. Deployments that cannot supply a semantic version without loss of fidelity MUST omit suit-set-version and convey any human-facing numbering via text-current-version ({{text-current-version}}). Because suit-set-version is a machine-readable parameter for determining compatibility and because {{semver}} mandates that the build-number is ignored, build numbers MUST NOT be included.
+Manifest Authors SHOULD encode suit-set-version whenever the release can be represented as a semantic version so that Recipients can compare manifests deterministically. The version MUST be encoded as a semantic version, according to {{semver}}, to preserve that deterministic ordering. Deployments that cannot supply a semantic version without loss of fidelity MUST omit suit-set-version and convey any human-facing numbering via text-current-version ({{text-current-version}}). Because suit-set-version is a machine-readable parameter for determining compatibility and because {{semver}} mandates that the build-number is ignored, build numbers MUST NOT be included.
 
 The composition of suit-set-version is the same as suit-parameter-version ({{suit-parameter-version}}).
 
@@ -179,11 +179,11 @@ The version comparison value is encoded as a CBOR list of integers. Comparisons 
 
 ### suit-parameter-version Semantic Versioning encoding guidelines
 
-The encoded versions follow semantic versioning (see {{semver}}).
+The encoded versions follow semantic versioning (see {{semver}}). Manifest Authors SHOULD keep their encoding aligned with Semantic Versioning so that Recipients can compare versions deterministically; if another numbering scheme is required, the sequence of integers encoded here MUST still preserve release ordering (for example, `[2025,12,6]` for a calendar-based release).
 
 Versions are composed of:
 
-1. A release version encoded as a sequence of 1 to 3 positive integers
+1. A release version encoded as a sequence of 1 to 3 non-negative integers (allowing zero values as defined by {{semver}})
 2. An optional pre-release indicator encoded as a negative integer, followed by zero or more positive integers
 
 While {{semver}} allows a build number, it mandates that the build number is ignored. Because suit-parameter-version exists solely to enable the Manifest Processor to make a decision about version compatibility, build numbers MUST NOT be included.
