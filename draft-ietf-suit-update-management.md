@@ -257,7 +257,7 @@ Sometimes, management of file systems requires that the creator of each file is 
 The creator is defined as follows:
 
 ~~~ CDDL
-SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
+SUIT_meta_actor_id = UUID_Tagged / bstr / tstr / int
 UUID_Tagged = #6.37(bstr)
 ~~~
 
@@ -280,7 +280,20 @@ Typical permissions management systems require read, write, and execute permissi
 ~~~ CDDL
 SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
 SUIT_meta_permission_bits = &(
-    r: 2, w: 1, x: 0,
+    write_attr_ex: 13,
+    read_attr_ex: 12,
+    sync: 11,
+    delete: 10,
+    recurse_delete: 9,
+    write_attr: 8,
+    change_owner: 7,
+    change_perm: 6,
+    read_perm: 5,
+    read_attr: 4,
+    creatdir_append: 3,
+    list_read: 2,
+    create_write: 1,
+    traverse_exec: 0,
     * $$SUIT_meta_permission_bits_extensions
 )
 ~~~
@@ -424,7 +437,7 @@ The following CDDL defines the argument for suit-directive-override-multiple:
 
 ```CDDL
 SUIT_Override_Mult_Arg = {
-    uint => {+ $$SUIT_Parameters}
+    + uint => {+ $$SUIT_Parameters}
 }
 ```
 
@@ -440,18 +453,26 @@ The following CDDL defines the argument for suit-directive-copy-params:
 
 ```CDDL
 SUIT_Directive_Copy_Params = {
-    uint => [+ int]
+    + uint => [+ int]
 }
 ```
 
 #  IANA Considerations {#iana}
 
-IANA is requested to:
+IANA is requested to allocate the commands, parameters, and metadata values shown in the following tables.
 
-* allocate key 14 in the SUIT Envelope registry for suit-coswid
-* allocate key 14 in the SUIT Manifest registry for suit-coswid
-* allocate key 7 in the SUIT Component Text registry for suit-text-version-required
-* allocate the commands and parameters as shown in the following tables
+## SUIT Envelope Elements
+
+Label | Name | Reference
+---|---|---
+14 | CoSWID | {{manifest-digest-coswid}}
+
+## SUIT Manifest Elements
+
+Label | Name | Reference
+---|---|---
+6 | Set Version | {{suit-set-version}}
+14 | CoSWID | {{manifest-digest-coswid}}
 
 ## SUIT Commands
 
@@ -475,6 +496,14 @@ Label | Name | Reference
 27 | Update Priority | {{suit-parameter-update-priority}}
 28 | Version | {{suit-parameter-version}}
 29 | Wait Info | {{suit-parameter-wait-info}}
+30 | Component Metadata | {{suit-parameter-component-metadata}}
+
+## SUIT Component Text Values
+
+Label | Name | Reference
+---|---|---
+7 | Component Version Required | {{text-version-required}}
+8 | Current Version | {{text-current-version}}
 
 #  Security Considerations
 
@@ -489,7 +518,7 @@ Component metadata ({{suit-parameter-component-metadata}}) can expose operator i
 
 #  Full CDDL {#full-cddl}
 
-To be valid, the following CDDL must be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of {{I-D.ietf-suit-manifest}}.
+To be valid, the following CDDL MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of {{I-D.ietf-suit-manifest}}.
 
 ~~~ CDDL
 {::include draft-ietf-suit-update-management.cddl}
