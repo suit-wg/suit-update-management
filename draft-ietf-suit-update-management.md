@@ -72,6 +72,10 @@ Extensions in this specification are OPTIONAL to implement and OPTIONAL to inclu
 
 This draft makes use of terminology defined in {{RFC9019}} and {{I-D.ietf-suit-manifest}}.
 
+In addition, this document uses the following term:
+
+* *Primary cell*: a single-use battery chemistry that can be discharged but not recharged, making energy budgeting a one-way operation.
+
 # Extension Metadata
 
 Some additional metadata makes management of SUIT updates easier:
