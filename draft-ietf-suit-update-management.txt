@@ -5,13 +5,13 @@
 SUIT                                                            B. Moran
 Internet-Draft                                               Arm Limited
 Intended status: Standards Track                             K. Takayama
-Expires: 18 September 2025                               SECOM CO., LTD.
-                                                           17 March 2025
+Expires: 4 January 2027                                  SECOM CO., LTD.
+                                                             3 July 2026
 
 
 Update Management Extensions for Software Updates for Internet of Things
                             (SUIT) Manifests
-                  draft-ietf-suit-update-management-09
+                  draft-ietf-suit-update-management-13
 
 Abstract
 
@@ -37,11 +37,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 September 2025.
+   This Internet-Draft will expire on 4 January 2027.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Moran & Takayama        Expires 18 September 2025               [Page 1]
+Moran & Takayama         Expires 4 January 2027                 [Page 1]
 
-Internet-Draft      SUIT Update Management Extensions         March 2025
+Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -71,66 +71,78 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Conventions and Terminology . . . . . . . . . . . . . . . . .   3
-   3.  Extension Metadata  . . . . . . . . . . . . . . . . . . . . .   3
-     3.1.  suit-set-version  . . . . . . . . . . . . . . . . . . . .   3
+   3.  Extension Metadata  . . . . . . . . . . . . . . . . . . . . .   4
+     3.1.  suit-set-version  . . . . . . . . . . . . . . . . . . . .   4
      3.2.  suit-coswid . . . . . . . . . . . . . . . . . . . . . . .   4
-     3.3.  suit-text-version-required  . . . . . . . . . . . . . . .   4
-     3.4.  text-current-version  . . . . . . . . . . . . . . . . . .   5
-   4.  Extension Parameters  . . . . . . . . . . . . . . . . . . . .   5
-     4.1.  suit-parameter-use-before . . . . . . . . . . . . . . . .   6
-     4.2.  suit-parameter-minimum-battery  . . . . . . . . . . . . .   6
-     4.3.  suit-parameter-update-priority  . . . . . . . . . . . . .   6
-     4.4.  suit-parameter-version  . . . . . . . . . . . . . . . . .   7
+     3.3.  suit-text-version-required  . . . . . . . . . . . . . . .   5
+     3.4.  suit-text-current-version . . . . . . . . . . . . . . . .   6
+   4.  Extension Parameters  . . . . . . . . . . . . . . . . . . . .   7
+     4.1.  suit-parameter-use-before . . . . . . . . . . . . . . . .   7
+     4.2.  suit-parameter-minimum-battery  . . . . . . . . . . . . .   7
+     4.3.  suit-parameter-update-priority  . . . . . . . . . . . . .   8
+     4.4.  suit-parameter-version  . . . . . . . . . . . . . . . . .   8
        4.4.1.  suit-parameter-version Semantic Versioning encoding
-               guidelines  . . . . . . . . . . . . . . . . . . . . .   8
-     4.5.  suit-parameter-wait-info  . . . . . . . . . . . . . . . .   9
-     4.6.  suit-parameter-component-metadata . . . . . . . . . . . .  10
-       4.6.1.  Creator . . . . . . . . . . . . . . . . . . . . . . .  11
-       4.6.2.  Creation & Modification Time  . . . . . . . . . . . .  11
-       4.6.3.  Component Default Permissions . . . . . . . . . . . .  12
-       4.6.4.  User, Role, Group permissions . . . . . . . . . . . .  12
-       4.6.5.  File Type . . . . . . . . . . . . . . . . . . . . . .  12
-   5.  Extension Commands  . . . . . . . . . . . . . . . . . . . . .  14
-     5.1.  suit-condition-use-before . . . . . . . . . . . . . . . .  15
-     5.2.  suit-condition-image-not-match  . . . . . . . . . . . . .  16
-     5.3.  suit-condition-minimum-battery  . . . . . . . . . . . . .  16
-     5.4.  suit-condition-update-authorized  . . . . . . . . . . . .  16
-     5.5.  suit-condition-version  . . . . . . . . . . . . . . . . .  16
-     5.6.  suit-directive-wait . . . . . . . . . . . . . . . . . . .  16
-     5.7.  suit-directive-override-multiple  . . . . . . . . . . . .  17
-     5.8.  suit-directive-copy-params  . . . . . . . . . . . . . . .  18
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
-     6.1.  SUIT Commands . . . . . . . . . . . . . . . . . . . . . .  18
-     6.2.  SUIT Parameters . . . . . . . . . . . . . . . . . . . . .  19
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  20
+               guidelines  . . . . . . . . . . . . . . . . . . . . .   9
+     4.5.  suit-parameter-wait-info  . . . . . . . . . . . . . . . .  10
+     4.6.  suit-parameter-component-metadata . . . . . . . . . . . .  12
+       4.6.1.  Creator . . . . . . . . . . . . . . . . . . . . . . .  13
+       4.6.2.  Creation & Modification Time  . . . . . . . . . . . .  13
+       4.6.3.  Component Default Permissions . . . . . . . . . . . .  13
+       4.6.4.  User, Role, Group permissions . . . . . . . . . . . .  14
+       4.6.5.  File Type . . . . . . . . . . . . . . . . . . . . . .  14
+   5.  Extension Commands  . . . . . . . . . . . . . . . . . . . . .  16
+     5.1.  suit-condition-use-before . . . . . . . . . . . . . . . .  17
+     5.2.  suit-condition-image-not-match  . . . . . . . . . . . . .  18
+     5.3.  suit-condition-minimum-battery  . . . . . . . . . . . . .  18
+     5.4.  suit-condition-update-authorized  . . . . . . . . . . . .  18
+     5.5.  suit-condition-version  . . . . . . . . . . . . . . . . .  18
+     5.6.  suit-directive-wait . . . . . . . . . . . . . . . . . . .  18
+     5.7.  suit-directive-override-multiple  . . . . . . . . . . . .  19
+     5.8.  suit-directive-copy-params  . . . . . . . . . . . . . . .  20
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  20
+     6.1.  SUIT Envelope Elements  . . . . . . . . . . . . . . . . .  20
+     6.2.  SUIT Manifest Elements  . . . . . . . . . . . . . . . . .  20
+     6.3.  SUIT Commands . . . . . . . . . . . . . . . . . . . . . .  21
+     6.4.  SUIT Parameters . . . . . . . . . . . . . . . . . . . . .  21
+     6.5.  SUIT Component Text Values  . . . . . . . . . . . . . . .  22
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  22
 
 
 
-Moran & Takayama        Expires 18 September 2025               [Page 2]
+Moran & Takayama         Expires 4 January 2027                 [Page 2]
 
-Internet-Draft      SUIT Update Management Extensions         March 2025
+Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
-   Appendix A.  Full CDDL  . . . . . . . . . . . . . . . . . . . . .  20
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  22
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  23
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  23
+   Appendix A.  Full CDDL  . . . . . . . . . . . . . . . . . . . . .  24
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
 
 1.  Introduction
 
    Full management of software updates for unattended, connected devices
    requires a cooperation between the update author(s) and management,
    distribution, policy enforcement, and auditing systems.  This
-   specification provides the extensions to the SUIT manifest that
-   enable an author to coordinate with these other systems.  These
-   extensions enable authors to instruct devices to examine update
-   priority, local update authorisation, update lifetime, and system
-   properties.  They also enable devices to report and distributors to
-   collect Software Bill of Materials information.
+   specification provides the extensions to the SUIT manifest
+   [I-D.ietf-suit-manifest] that enable an author to coordinate with
+   these other systems.  These extensions enable authors to instruct
+   devices to examine update priority, local update authorisation,
+   update lifetime, and system properties.  They also enable devices to
+   report and distributors to collect Software Bill of Materials (SBOM)
+   information.
 
    Extensions in this specification are OPTIONAL to implement and
-   OPTIONAL to include in manifests.
+   OPTIONAL to include in manifests.  A Recipient that encounters a
+   command or parameter it does not implement MUST reject the manifest
+   as defined in [I-D.ietf-suit-manifest] Section 8.4.2, ensuring that
+   update behaviour is never ambiguous.  Conversely, when a deployment
+   relies on update-management behaviour defined here, the manifest
+   author MUST ensure that targeted recipients advertise support for the
+   required extensions (for example via enablement policy or capability
+   negotiation) before shipping such manifests so that required commands
+   will be honoured rather than rejected.
 
 2.  Conventions and Terminology
 
@@ -142,6 +154,21 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
    This draft makes use of terminology defined in [RFC9019] and
    [I-D.ietf-suit-manifest].
+
+   This document uses semantic versioning terminology from [semver],
+   including major, minor, patch, pre-release, and build metadata.  The
+   machine-readable version encoding defined in Section 4.4 is a
+   constrained integer encoding based on that terminology: it encodes
+   release versions as one to three non-negative integers, supports only
+   the pre-release classes defined in Section 4.4, and excludes build
+   metadata from machine-readable comparisons.
+
+
+
+Moran & Takayama         Expires 4 January 2027                 [Page 3]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
 
 3.  Extension Metadata
 
@@ -163,74 +190,119 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    version comparisons to be performed on manifests.  Non-manifest
    images encode their versions independently of the manifest.
 
-
-
-Moran & Takayama        Expires 18 September 2025               [Page 3]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
-   The version SHOULD be encoded as a semantic version, according to
-   [semver].  There are several restrictions to these composition rules:
-   alphanumeric pre-release indicators are not permitted.  Because suit-
-   set-version is a machine-readable parameter for determining
-   compatibility and because [semver] mandates that the build-number is
-   ignored, build numbers SHOULD NOT be included.
+   Manifest Authors SHOULD encode suit-set-version whenever the release
+   can be represented by the constrained version encoding defined in
+   Section 4.4 so that Recipients can compare manifests
+   deterministically.  Deployments that cannot supply such a version
+   without loss of fidelity MUST omit suit-set-version and convey any
+   human-facing numbering via suit-text-current-version (Section 3.4).
+   Because suit-set-version is a machine-readable parameter for
+   determining compatibility and build metadata is ignored for semantic-
+   version precedence, build metadata MUST NOT be included.
 
    The composition of suit-set-version is the same as suit-parameter-
    version (Section 4.4).
 
-   If a build number is desired, it SHOULD be included via text-current-
-   version (Section 3.4).
+   If build metadata is desired, the manifest author MAY include it via
+   suit-text-current-version (Section 3.4).
 
 3.2.  suit-coswid
 
-   A CoSWID can enable Software Bill of Materials use-cases.  Tightly
-   coupling update and attestation ensures that verification
+   A CoSWID can enable Software Bill of Materials (SBOM) use-cases.
+   Tightly coupling update and attestation ensures that verification
    infrastructure always knows what software to expect on each device.
+
+
+
+
+
+
+
+
+
+
+Moran & Takayama         Expires 4 January 2027                 [Page 4]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
 
    suit-coswid is a member of the suit-manifest.  It contains a Concise
    Software Identifier (CoSWID) as defined in [RFC9393].  This element
    SHOULD be made severable so that it can be discarded by the Recipient
-   or an intermediary if it is not required by the Recipient.
-
-   suit-coswid typically requires no processing by the Recipient.
-   However all Recipients MUST NOT fail if a suit-coswid is present.
+   or an intermediary if it is not used by the Recipient while
+   preserving the manifest signature.  Implementations that cannot
+   support severable elements MAY include suit-coswid non-severably, but
+   MUST ensure that Recipients can still process the manifest.
 
    suit-coswid is RECOMMENDED to implement and RECOMMENDED to include in
-   manifests.
+   manifests because management systems commonly need a durable software
+   identity after update installation.  CoSWID and related Software Bill
+   of Materials metadata can support inventory, vulnerability
+   management, compliance checks, and reconciliation between the
+   installed update state and management-system records.  This
+   recommendation is scoped to the operational and security value of
+   identifying installed software; it does not imply that the presence
+   of SBOM metadata proves that the software is free of vulnerabilities
+   or policy issues.  Other extension metadata is not generally
+   RECOMMENDED unless required by deployment policy or by a SUIT
+   profile.
+
+   Recipients that do not use suit-coswid are not required to interpret
+   the CoSWID content.  When suit-coswid is severable, such Recipients
+   or intermediaries can discard it without invalidating the manifest
+   signature.  When suit-coswid is not severable, a Recipient MUST NOT
+   fail solely because a well-formed, policy-permitted suit-coswid field
+   is present.
+
+   Recipients that use or validate suit-coswid MAY still fail or reject
+   the manifest when the suit-coswid field or its digest is malformed,
+   when local policy rejects the metadata, when processing would exhaust
+   available resources, when validation of processed CoSWID metadata
+   fails, or when a manifest relies on unsupported critical behaviour.
+   These requirements do not imply that every Recipient implements
+   CoSWID processing.
 
 3.3.  suit-text-version-required
 
    suit-text-version-required is used to represent a version-based
    dependency on suit-parameter-version as described in Section 4.4 and
-   Section 5.5.  To describe a version dependency, a Manifest Author
-   SHOULD populate the suit-text map with a SUIT_Component_Identifier
-   key for the dependency component, and place in the corresponding map
-   a suit-text-version-required key with a free text expression that is
-   representative of the version constraints placed on the dependency.
-   This text SHOULD be expressive enough that a device operator can be
-   expected to understand the dependency.  This is a free text field and
-   there are no specific formatting rules.
+   Section 5.5.  When a Manifest Author needs to communicate such a
+   dependency to operators, the author SHOULD populate the suit-text map
+   with a SUIT_Component_Identifier key for the dependency component,
+   and place in the corresponding map a suit-text-version-required key
+   with a free text expression that is representative of the version
+   constraints placed on the dependency so that field personnel can
+   validate compliance.  Deployments that provide operator guidance
+   exclusively through other channels MAY omit this field.  This text
+
+
+
+Moran & Takayama         Expires 4 January 2027                 [Page 5]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
+   SHOULD be expressive enough that a device operator can be expected to
+   understand the dependency; predefined tokens MAY be used when
+   supporting documentation ensures equivalent clarity.  Expressions in
+   this field MUST be encoded as UTF-8 text limited to printable
+   characters (Unicode general categories L, N, P, or Zs) and SHOULD use
+   simple relational operators (for example >, >=, <, <=, =) so that
+   automated tooling can perform lint checks.  Implementations that
+   render this text SHOULD escape or filter it to prevent markup or
+   control-code injection.  This is a free text field and there are no
+   additional specific formatting rules beyond the requirements above.
 
    By way of example only, to express a dependency on a component "['x',
-   'y']", where the version should be any v1.x later than v1.2.5, but
+   'y']", where the intended version is any v1.x later than v1.2.5, but
    not v2.0 or above, the author would add the following structure to
    the suit-text element.  Note that this text is in cbor-diag notation.
-
-
-
-
-Moran & Takayama        Expires 18 September 2025               [Page 4]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
 
    ['x','y'] : {
        7 : ">=1.2.5,<2"
    }
 
-3.4.  text-current-version
+3.4.  suit-text-current-version
 
    suit-text-current-version is used to provide human-readable version
    information equivalent to suit-set-version (Section 3.1).  This
@@ -242,13 +314,34 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    text map with a SUIT_Component_Identifier key for the dependency
    component, and place in the corresponding map a suit-text-current-
    version key with a free text version that is representative of the
-   version of the component.  This text SHOULD be expressive enough that
-   a device operator can be expected to understand the version.  This is
-   a free text field and there are no specific formatting rules.
+   version of the component so that operators can reconcile machine and
+   human-readable records.  Deployments that provide human-facing
+   version information through other configuration channels MAY omit
+   this text.  This text SHOULD be expressive enough that a device
+   operator can be expected to understand the version; environments that
+   rely on catalog identifiers MAY use those identifiers when supporting
+   documentation provides the necessary context.  Values in this field
+   MUST be encoded as UTF-8 text limited to printable characters, and
+   implementations MUST treat suit-set-version and suit-parameter-
+   version as authoritative when a discrepancy exists.  Recipients MUST
+   NOT interpret this text as executable code or markup and MUST treat
+   it as display-only information.  Implementations that render this
+   text SHOULD sanitize, escape, or otherwise filter it before
+   presentation.  This is a free text field and there are no additional
+   specific formatting rules beyond the requirements above.
+
+
+
+
+Moran & Takayama         Expires 4 January 2027                 [Page 6]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
 
    It is RECOMMENDED that the Manifest Author use a Semantic Version
-   ([semver]) in the free-text field.  Unlike suit-set-version
-   (Section 3.1), the full semantic version specification can be used.
+   ([semver]) in the free-text field to keep human-readable and machine-
+   readable versions aligned.  Unlike suit-set-version (Section 3.1),
+   the full semantic version specification can be used.
 
 4.  Extension Parameters
 
@@ -256,31 +349,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    specified in Extension Commands (Section 5).  These parameters follow
    the same considerations as defined in Section 8.4.8 of
    [I-D.ietf-suit-manifest].
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Moran & Takayama        Expires 18 September 2025               [Page 5]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
 
    +=================+===================================+=============+
    | Name            | CDDL Structure                    | Reference   |
@@ -305,16 +373,26 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 4.1.  suit-parameter-use-before
 
-   An expiry date for the use of the manifest encoded as the positive
-   integer number of seconds since 1970-01-01.  Implementations that use
-   this parameter MUST use a 64-bit internal representation of the
-   integer.  Used with Section 5.1.
+   An expiry date for the use of the manifest encoded as the non-
+   negative integer number of seconds since 1970-01-01.  Implementations
+   that use this parameter MUST use a 64-bit internal representation of
+   the integer.  Used with Section 5.1.
 
 4.2.  suit-parameter-minimum-battery
 
    This parameter sets the minimum battery level in mWh.  This parameter
-   is encoded as a positive integer.  Used with suit-condition-minimum-
-   battery (Section 5.3).
+   is encoded as a non-negative integer.  Used with suit-condition-
+   minimum-battery (Section 5.3).
+
+
+
+
+
+
+Moran & Takayama         Expires 4 January 2027                 [Page 7]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
 
 4.3.  suit-parameter-update-priority
 
@@ -326,21 +404,12 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    the Update Authority in the form of the suit-condition-update-
    authorized command.
 
-
-
-
-
-
-
-
-Moran & Takayama        Expires 18 September 2025               [Page 6]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
-   Applications MAY define their own meanings for the update priority.
-   For example, critical reliability and vulnerability fixes might be
-   given negative numbers, while bug fixes might be given small positive
+   Numerically smaller values indicate higher update priority.
+   Recipients and applications that compare suit-parameter-update-
+   priority values MUST use this ordering.  Local policy MAY assign
+   deployment-specific meanings to particular values or ranges.  For
+   example, critical reliability and vulnerability fixes might be given
+   negative numbers, while bug fixes might be given small positive
    numbers, and feature additions might be given larger positive
    numbers, which allows an application to make an informed decision
    about whether and when to allow an update to proceed.
@@ -349,9 +418,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
    Indicates allowable versions for the specified component.  One
    version comparison can be made with each suit-parameter-version.
-   This parameter is compared with version asserted by the current
+   This parameter is compared with the version asserted by the current
    component when suit-condition-version (Section 5.5) is invoked.  The
-   current component may assert the current version in many ways,
+   current component can assert the current version in many ways,
    including storage in a parameter storage database, in a metadata
    object, or in a known location within the component itself.
 
@@ -373,6 +442,14 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
    *  Equal.
 
+
+
+
+Moran & Takayama         Expires 4 January 2027                 [Page 8]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
    *  Lesser or Equal.
 
    *  Lesser.
@@ -386,20 +463,75 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    both "Greater or Equal [1,0]" and "Lesser [1,10]", then it will match
    versions 1.0.x up to, but not including 1.10.
 
-
-
-
-Moran & Takayama        Expires 18 September 2025               [Page 7]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
-   suit-parameter-version is OPTIONAL to implement.
-
 4.4.1.  suit-parameter-version Semantic Versioning encoding guidelines
 
-   The encoded versions SHOULD be semantic versions (See [semver]).  For
-   example,
+   The encoded versions use the constrained semantic-versioning encoding
+   summarized in Section 2.  Manifest Authors SHOULD keep their encoding
+   aligned with semantic versioning so that Recipients can compare
+   versions deterministically; if another numbering scheme is required,
+   the sequence of integers encoded here MUST still preserve release
+   ordering (for example, [2025,12,6] for a calendar-based release).
+
+   Versions are composed of:
+
+   1.  A release version encoded as a sequence of 1 to 3 non-negative
+       integers (allowing zero values)
+
+   2.  An optional pre-release indicator encoded as a negative integer,
+       followed by zero or more non-negative integers
+
+   Semantic Versioning permits arbitrary pre-release identifiers and
+   build metadata.  This specification only defines encodings for alpha,
+   beta, and release-candidate pre-release classes.  Because suit-
+   parameter-version exists solely to enable the Manifest Processor to
+   make a decision about version compatibility, and because build
+   metadata is ignored for semantic-version precedence, build metadata
+   MUST NOT be included.
+
+   In semantic versioning terminology:
+
+   1.  The first integer represents the major number.  This indicates
+       breaking changes to the component.
+
+   2.  The second integer represents the minor number.  This is
+       typically reserved for new features or large, non-breaking
+       changes.
+
+
+
+
+
+Moran & Takayama         Expires 4 January 2027                 [Page 9]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
+   3.  The third integer is the patch version.  This is typically
+       reserved for bug fixes.
+
+   The pre-release indicator MUST NOT appear as element 0.  The pre-
+   release indicator is encoded as:
+
+   *  -1: Release Candidate (RC)
+
+   *  -2: Beta
+
+   *  -3: Alpha
+
+   This allows these releases to compare correctly with final releases.
+   For example, Version 2.0, RC1 is lower than Version 2.0.0 and higher
+   than any Version 1.x.  By encoding RC as -1, this works correctly:
+   [2,0,-1,1] compares as lower than [2,0,0].  Similarly, beta (-2) is
+   lower than RC and alpha (-3) is lower than RC.
+
+   Pre-release identifiers other than alpha, beta, and release candidate
+   cannot be represented directly in this encoding.  Deployments that
+   need other identifiers MUST either map them to one of the defined
+   classes while preserving the intended ordering or omit the machine-
+   readable version field and convey the identifier as suit-text-
+   current-version (Section 3.4).
+
+   For example:
 
    *  1.2.3 = [1,2,3].
 
@@ -410,53 +542,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    *  1.2-alpha = [1,2,-3].
 
    *  1.2.3-alpha.4 = [1,2,3,-3,4].
-
-   Versions SHOULD be composed of:
-
-   1.  A release version encoded as a sequence of 1 to 3 positive
-       integers
-
-   2.  An optional pre-release indicator encoded as a negative integer,
-       followed by zero or more positive integers
-
-   While [semver] allows a build number, it mandates that the build
-   number is ignored.  Because suit-parameter-version exists solely to
-   enable the Manifest Processor to make a decision about version
-   compatibility, build numbers SHOULD NOT be included.
-
-   In [semver],
-
-   1.  The first integer represents the major number.  This indicates
-       breaking changes to the component.
-
-   2.  The second integer represents the minor number.  This is
-       typically reserved for new features or large, non-breaking
-       changes.
-
-   3.  The third integer is the patch version.  This is typically
-       reserved for bug fixes.
-
-   The pre-release indicator SHOULD NOT appear as element 0.  The pre-
-   release indicator is encoded as:
-
-   *  -1: Release Candidate
-
-   *  -2: Beta
-
-
-
-Moran & Takayama        Expires 18 September 2025               [Page 8]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
-   *  -3: Alpha
-
-   This allows these releases to compare correctly with final releases.
-   For example, Version 2.0, RC1 should be lower than Version 2.0.0 and
-   higher than any Version 1.x.  By encoding RC as -1, this works
-   correctly: [2,0,-1,1] compares as lower than [2,0,0].  Similarly,
-   beta (-2) is lower than RC and alpha (-3) is lower than RC.
 
 4.5.  suit-parameter-wait-info
 
@@ -470,41 +555,17 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    notification, or aborting the update entirely, then restarting when a
    notification is received.
 
-   suit-parameter-wait-info is encoded as a map of wait events.  When
-   ALL wait events are satisfied, the Manifest Processor continues.  The
-   wait events currently defined are described in the following table.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Moran & Takayama        Expires 18 September 2025               [Page 9]
+Moran & Takayama         Expires 4 January 2027                [Page 10]
 
-Internet-Draft      SUIT Update Management Extensions         March 2025
+Internet-Draft      SUIT Update Management Extensions          July 2026
 
+
+   suit-parameter-wait-info is encoded as a map of wait events.  All
+   wait events MUST be satisfied before the Manifest Processor
+   continues.  The wait events currently defined are described in the
+   following table.
 
       +======================+==========+==========================+
       | Name                 | Encoding | Description              |
@@ -539,14 +600,52 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
                                  Table 2
 
-   suit-wait-event-other-device-version reuses the encoding of suit-
-   parameter-version-match.  It is encoded as a sequence that contains
-   an implementation-defined bstr identifier for the other device, and a
-   list of one or more SUIT_Parameter_Version_Match.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 11]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
+   Local Time means the Recipient's configured local civil time zone at
+   the time the wait event is evaluated, including any daylight-saving-
+   time rules available to the Recipient.  If the local time zone
+   changes while a Recipient is waiting, the Recipient reevaluates the
+   wait event using the updated time-zone configuration.  During
+   daylight-saving-time transitions, a skipped local time is treated as
+   satisfied at the first representable local time after the skipped
+   interval, and a repeated local time is satisfied at its first
+   occurrence.  Recipients that do not have configured local-time and
+   daylight-saving-time information MUST treat local-time wait events as
+   unsupported.  Manifest Authors SHOULD use the UTC wait events when a
+   deployment does not have a common local-time policy.
+
+   suit-wait-event-other-device-version reuses the encoding of
+   SUIT_Parameter_Version_Match.  It is encoded as a sequence that
+   contains an implementation-defined bstr identifier for the other
+   device, and a list of one or more SUIT_Parameter_Version_Match.  For
+   interoperable use, the deployment profile or management system MUST
+   define the namespace and byte-string encoding of other-device
+   identifiers, the mechanism by which the Recipient obtains the
+   referenced device's version, and the version encoding used by that
+   referenced device.  A Recipient MUST treat suit-wait-event-other-
+   device-version as unsupported unless those deployment-specific
+   definitions are available.
 
 4.6.  suit-parameter-component-metadata
 
-   In some instances, a system may need to know the file metadata for a
+   In some instances, a system needs to know the file metadata for a
    component.  This metadata can include:
 
    *  creator
@@ -554,13 +653,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    *  creation time
 
    *  modification time
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 10]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
 
    *  default permissions (rwx)
 
@@ -572,9 +664,27 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
    *  file type
 
+
+
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 12]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
+   Unless otherwise stated, all string values in this structure MUST be
+   encoded as UTF-8 without control characters (Unicode general
+   categories Cc or Cf) and SHOULD be limited to human-readable
+   identifiers such as names or POSIX-style paths.  Binary values
+   conveyed via bstr MUST be well-formed for the consuming platform (for
+   example, a UUID or permissions bitmap) and MUST NOT exceed the
+   minimum length required to represent the value canonically.
+
    Component metadata is applied at time of fetch, copy, or write; see
-   [I-D.ietf-suit-manifest], sections 8.4.10.4, 8.4.10.5, 8.4.10.6.
-   Therefore, the component metadata parameter must be set in advance of
+   [I-D.ietf-suit-manifest], Sections 8.4.10.4, 8.4.10.5, and 8.4.10.6.
+   Therefore, the component metadata parameter MUST be set in advance of
    the component being fetched, copied into, or written.
 
 4.6.1.  Creator
@@ -587,7 +697,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
    The creator is defined as follows:
 
-   SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
+   SUIT_meta_actor_id = UUID_Tagged / bstr / tstr / int
    UUID_Tagged = #6.37(bstr)
 
    The actor ID can be whatever is most appropriate for any given
@@ -604,20 +714,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    suit-meta-modification-time => #6.1(uint)
    suit-meta-creation-time => #6.1(uint)
 
-
-
-
-
-
-
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 11]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
 4.6.3.  Component Default Permissions
 
    Typical permissions management systems require read, write, and
@@ -626,9 +722,30 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    for the current component.  Default permissions are described by the
    following CDDL:
 
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 13]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
    SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
    SUIT_meta_permission_bits = &(
-       r: 2, w: 1, x: 0,
+       write_attr_ex: 13,
+       read_attr_ex: 12,
+       sync: 11,
+       delete: 10,
+       recurse_delete: 9,
+       write_attr: 8,
+       change_owner: 7,
+       change_perm: 6,
+       read_perm: 5,
+       read_attr: 4,
+       createdir_append: 3,
+       list_read: 2,
+       create_write: 1,
+       traverse_exec: 0,
        * $$SUIT_meta_permission_bits_extensions
    )
 
@@ -661,18 +778,18 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
       -  Set the Component Index to the Component Identifier of the
          directory to be created
 
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 14]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
       -  Set the Component metadata, including the file type for
          directory
 
       -  Set suit-parameter-content to an empty bstr
-
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 12]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
 
       -  Invoke suit-directive-write
 
@@ -717,18 +834,19 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
       -  set URI = "https://cdn.example/example3.bin"
 
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 15]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
       -  fetch
 
       -  condition image digest
 
    *  Install:
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 13]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
 
       -  set component index = 0
 
@@ -746,6 +864,10 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    this specification in the same way as in the Abstract Machine
    Description, Section 6.4, of [I-D.ietf-suit-manifest].
 
+   All commands defined in this specification are OPTIONAL to implement.
+   A Recipient that encounters a command it does not implement MUST
+   reject the manifest as defined in [I-D.ietf-suit-manifest]
+   Section 8.4.2, ensuring that update behaviour is never ambiguous.
 
 
 
@@ -771,19 +893,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-
-
-
-
-
-
-
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 14]
+Moran & Takayama         Expires 4 January 2027                [Page 16]
 
-Internet-Draft      SUIT Update Management Extensions         March 2025
+Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
      +=============+=================+===============================+
@@ -826,9 +938,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
    Verify that the current time is BEFORE the specified time. suit-
    condition-use-before is used to specify the last time at which an
-   update should be installed.  The recipient evaluates the current time
+   update is to be installed.  The recipient evaluates the current time
    against the suit-parameter-use-before parameter (Section 4.1), which
-   must have already been set as a parameter, encoded as seconds after
+   MUST have already been set as a parameter, encoded as seconds after
    1970-01-01 00:00:00 UTC.  Timestamp conditions MUST be evaluated in
    64 bits, regardless of encoded CBOR size. suit-condition-use-before
    is OPTIONAL to implement.
@@ -837,9 +949,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
 
 
-Moran & Takayama        Expires 18 September 2025              [Page 15]
+Moran & Takayama         Expires 4 January 2027                [Page 17]
 
-Internet-Draft      SUIT Update Management Extensions         March 2025
+Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 5.2.  suit-condition-image-not-match
@@ -853,11 +965,12 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
    suit-condition-minimum-battery provides a mechanism to test a
    Recipient's battery level before installing an update.  This
-   condition is primarily for use in primary-cell applications, where
-   the battery is only ever discharged.  For batteries that are charged,
-   suit-directive-wait is more appropriate, since it defines a "wait"
-   until the battery level is sufficient to install the update. suit-
-   condition-minimum-battery is specified in mWh. suit-condition-
+   condition is primarily for use in primary-cell applications, where a
+   primary cell is a single-use, non-rechargeable battery and energy
+   budgeting is therefore a one-way operation.  For batteries that are
+   charged, suit-directive-wait is more appropriate, since it defines a
+   "wait" until the battery level is sufficient to install the update.
+   suit-condition-minimum-battery is specified in mWh. suit-condition-
    minimum-battery is OPTIONAL to implement. suit-condition-minimum-
    battery consumes suit-parameter-minimum-battery (Section 4.2).
 
@@ -867,8 +980,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    authorized.  This can allow a user to decline an update. suit-
    parameter-update-priority (Section 4.3) provides an integer priority
    level that the application can use to determine whether or not to
-   authorize the update.  Priorities are application defined. suit-
-   condition-update-authorized is OPTIONAL to implement.
+   authorize the update.  Smaller integer values indicate higher
+   priority; deployment policy defines the action taken for a given
+   priority. suit-condition-update-authorized is OPTIONAL to implement.
 
 5.5.  suit-condition-version
 
@@ -889,14 +1003,14 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
    3.  Network availability
 
-   4.  Other device firmware version
 
 
-
-Moran & Takayama        Expires 18 September 2025              [Page 16]
+Moran & Takayama         Expires 4 January 2027                [Page 18]
 
-Internet-Draft      SUIT Update Management Extensions         March 2025
+Internet-Draft      SUIT Update Management Extensions          July 2026
 
+
+   4.  Other device firmware version
 
    5.  Time
 
@@ -928,9 +1042,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    no savings.  For multiple components, there is an encoding savings of
    2 bytes per component.
 
-   Proper structuring of code should ensure that override-multiple
-   follows a code-path nearly identical to set-component-index +
-   override-parameters.
+   Implementations can structure code so that override-multiple follows
+   a code-path nearly identical to set-component-index + override-
+   parameters.
 
    This command is purely an encoding alias for set-component-index and
    override-parameters.  The component index is set to the last
@@ -940,18 +1054,16 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    The following CDDL defines the argument for suit-directive-override-
    multiple:
 
-   CDDL SUIT_Override_Mult_Arg = { uint => {+ $$SUIT_Parameters} }
+   CDDL SUIT_Override_Mult_Arg = { + uint => {+ $$SUIT_Parameters} }
 
 
 
 
 
 
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 17]
+Moran & Takayama         Expires 4 January 2027                [Page 19]
 
-Internet-Draft      SUIT Update Management Extensions         March 2025
+Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 5.8.  suit-directive-copy-params
@@ -974,23 +1086,43 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    The following CDDL defines the argument for suit-directive-copy-
    params:
 
-   CDDL SUIT_Directive_Copy_Params = { uint => [+ int] }
+   CDDL SUIT_Directive_Copy_Params = { + uint => [+ int] }
 
 6.  IANA Considerations
 
-   IANA is requested to:
+   IANA is requested to allocate the commands, parameters, and metadata
+   values shown in the following tables.
 
-   *  allocate key 14 in the SUIT Envelope registry for suit-coswid
+6.1.  SUIT Envelope Elements
 
-   *  allocate key 14 in the SUIT Manifest registry for suit-coswid
+                     +=======+========+=============+
+                     | Label | Name   | Reference   |
+                     +=======+========+=============+
+                     | 14    | CoSWID | Section 3.2 |
+                     +-------+--------+-------------+
 
-   *  allocate key 7 in the SUIT Component Text registry for suit-text-
-      version-required
+                                 Table 4
 
-   *  allocate the commands and parameters as shown in the following
-      tables
+6.2.  SUIT Manifest Elements
 
-6.1.  SUIT Commands
+                   +=======+=============+=============+
+                   | Label | Name        | Reference   |
+                   +=======+=============+=============+
+                   | 6     | Set Version | Section 3.1 |
+                   +-------+-------------+-------------+
+                   | 14    | CoSWID      | Section 3.2 |
+                   +-------+-------------+-------------+
+
+                                  Table 5
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 20]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
+6.3.  SUIT Commands
 
                 +=======+===================+=============+
                 | Label | Name              | Reference   |
@@ -1002,14 +1134,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
                 | 26    | Minimum Battery   | Section 5.3 |
                 +-------+-------------------+-------------+
                 | 27    | Update Authorized | Section 5.4 |
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 18]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
                 +-------+-------------------+-------------+
                 | 28    | Version           | Section 5.5 |
                 +-------+-------------------+-------------+
@@ -1020,33 +1144,95 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
                 | 35    | Copy Params       | Section 5.8 |
                 +-------+-------------------+-------------+
 
-                                  Table 4
+                                  Table 6
 
-6.2.  SUIT Parameters
+6.4.  SUIT Parameters
 
-                 +=======+=================+=============+
-                 | Label | Name            | Reference   |
-                 +=======+=================+=============+
-                 | 4     | Use Before      | Section 4.1 |
-                 +-------+-----------------+-------------+
-                 | 26    | Minimum Battery | Section 4.2 |
-                 +-------+-----------------+-------------+
-                 | 27    | Update Priority | Section 4.3 |
-                 +-------+-----------------+-------------+
-                 | 28    | Version         | Section 4.4 |
-                 +-------+-----------------+-------------+
-                 | 29    | Wait Info       | Section 4.5 |
-                 +-------+-----------------+-------------+
+               +=======+====================+=============+
+               | Label | Name               | Reference   |
+               +=======+====================+=============+
+               | 4     | Use Before         | Section 4.1 |
+               +-------+--------------------+-------------+
+               | 26    | Minimum Battery    | Section 4.2 |
+               +-------+--------------------+-------------+
+               | 27    | Update Priority    | Section 4.3 |
+               +-------+--------------------+-------------+
+               | 28    | Version            | Section 4.4 |
+               +-------+--------------------+-------------+
+               | 29    | Wait Info          | Section 4.5 |
+               +-------+--------------------+-------------+
+               | 30    | Component Metadata | Section 4.6 |
+               +-------+--------------------+-------------+
 
-                                  Table 5
+                                 Table 7
+
+
+
+
+
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 21]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
+6.5.  SUIT Component Text Values
+
+           +=======+============================+=============+
+           | Label | Name                       | Reference   |
+           +=======+============================+=============+
+           | 7     | Component Version Required | Section 3.3 |
+           +-------+----------------------------+-------------+
+           | 8     | Current Version            | Section 3.4 |
+           +-------+----------------------------+-------------+
+
+                                 Table 8
 
 7.  Security Considerations
 
-   This document extends the SUIT manifest specification.  A detailed
-   security treatment can be found in the architecture [RFC9019] and in
-   the information model [I-D.ietf-suit-information-model] documents.
+   This document extends the SUIT manifest specification.  The
+   extensions defined here are optional and do not make support for
+   update-management extensions mandatory for implementations of the
+   base SUIT manifest specification.  A detailed security treatment can
+   be found in the architecture [RFC9019] and in the information model
+   [RFC9124] documents.
+
+   The free-text fields introduced in Sections Section 3.3 and
+   Section 3.4 are intended solely for human consumption.  Recipients
+   MUST treat those values as untrusted input: they MUST NOT evaluate
+   the text, execute embedded markup, or override machine-readable
+   decisions derived from suit-set-version or suit-parameter-version.
+   Implementations SHOULD bound the length of displayed text to mitigate
+   interface flooding and log injection.
+
+   The suit-coswid element can expose detailed software identity and
+   SBOM information.  Such information can help authorized operators
+   assess inventory, vulnerability exposure, and compliance, but the
+   same information can also help an attacker or unauthorized observer
+   quickly identify software components and versions on a device.
+   Deployments SHOULD treat manifests containing suit-coswid as
+   sensitive metadata, limit access to authorized parties, and consider
+   using severable suit-coswid content so that intermediaries and
+   Recipients that do not need this metadata can discard it without
+   invalidating the manifest signature.
+
+   Component metadata (Section 4.6) can expose operator identifiers,
+   file paths, or other locally meaningful strings.  Deployments SHOULD
+   validate these values against local policy before applying them, and
+   MUST handle missing or malformed metadata defensively so that the
+   update agent does not escalate privileges or disclose sensitive
+   information inadvertently.
 
 8.  References
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 22]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
 
 8.1.  Normative References
 
@@ -1055,16 +1241,9 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
               O. Rønningstad, "A Concise Binary Object Representation
               (CBOR)-based Serialization Format for the Software Updates
               for Internet of Things (SUIT) Manifest", Work in Progress,
-              Internet-Draft, draft-ietf-suit-manifest-33, 24 February
-              2025, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              suit-manifest-33>.
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 19]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
+              Internet-Draft, draft-ietf-suit-manifest-37, 18 June 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-suit-
+              manifest-37>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1085,23 +1264,31 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
               RFC 9393, DOI 10.17487/RFC9393, June 2023,
               <https://www.rfc-editor.org/rfc/rfc9393>.
 
-   [semver]   "Semantic Versioning 2.0.0", 18 June 2013,
-              <https://semver.org>.
-
 8.2.  Informative References
-
-   [I-D.ietf-suit-information-model]
-              Moran, B., Tschofenig, H., and H. Birkholz, "A Manifest
-              Information Model for Firmware Updates in Internet of
-              Things (IoT) Devices", Work in Progress, Internet-Draft,
-              draft-ietf-suit-information-model-13, 8 July 2021,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-suit-
-              information-model-13>.
 
    [RFC9019]  Moran, B., Tschofenig, H., Brown, D., and M. Meriac, "A
               Firmware Update Architecture for Internet of Things",
               RFC 9019, DOI 10.17487/RFC9019, April 2021,
               <https://www.rfc-editor.org/rfc/rfc9019>.
+
+   [RFC9124]  Moran, B., Tschofenig, H., and H. Birkholz, "A Manifest
+              Information Model for Firmware Updates in Internet of
+              Things (IoT) Devices", RFC 9124, DOI 10.17487/RFC9124,
+              January 2022, <https://www.rfc-editor.org/rfc/rfc9124>.
+
+   [semver]   "Semantic Versioning 2.0.0", 18 June 2013,
+              <https://semver.org>.
+
+
+
+
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 23]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
 
 Appendix A.  Full CDDL
 
@@ -1109,29 +1296,15 @@ Appendix A.  Full CDDL
    CDDL.  The SUIT CDDL is defined in Appendix A of
    [I-D.ietf-suit-manifest].
 
-
-
-
-
-
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 20]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
    $$unseverable-manifest-member-extensions //= (
-       suit-current-version => \
+       suit-set-version =>
            bstr .cbor SUIT_Condition_Version_Comparison_Value
    )
    $$SUIT_severable-members-extensions //= (
-       suit-coswid => bstr)
-   ;    suit-coswid => bstr .cbor concise-swid-tag)
+       suit-coswid => bstr .cbor concise-swid-tag)
 
    $$severable-manifest-members-choice-extensions //= (
-       suit-coswid => bstr .cbor SUIT_Command_Sequence / SUIT_Digest
+       suit-coswid => bstr .cbor concise-swid-tag / SUIT_Digest
    )
 
    SUIT_Condition //= (
@@ -1165,36 +1338,40 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
    SUIT_Wait_Events //= (suit-wait-event-authorization => int)
    SUIT_Wait_Events //= (suit-wait-event-power => int)
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 24]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
    SUIT_Wait_Events //= (suit-wait-event-network => int)
    SUIT_Wait_Events //= (suit-wait-event-other-device-version
        => SUIT_Wait_Event_Argument_Other_Device_Version)
    SUIT_Wait_Events //= (suit-wait-event-time => uint); Timestamp
    SUIT_Wait_Events //= (suit-wait-event-time-of-day
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 21]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
        => uint); Time of Day (seconds since 00:00:00)
    SUIT_Wait_Events //= (suit-wait-event-day-of-week
        => uint); Days since Sunday
+   SUIT_Wait_Events //= (suit-wait-event-time-of-day-utc
+       => uint); Time of Day UTC (seconds since 00:00:00)
+   SUIT_Wait_Events //= (suit-wait-event-day-of-week-utc
+       => uint); Days since Sunday UTC
 
    SUIT_Wait_Event_Argument_Other_Device_Version = [
        other-device: bstr,
        other-device-version: [ + SUIT_Parameter_Version_Match ]
    ]
 
-   SUIT_Parameters //= (suit-parameter-use-before => uint)
-   SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
-   SUIT_Parameters //= (suit-parameter-update-priority => int)
-   SUIT_Parameters //= (suit-parameter-version =>
+   $$SUIT_Parameters //= (suit-parameter-use-before => uint)
+   $$SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
+   $$SUIT_Parameters //= (suit-parameter-update-priority => int)
+   $$SUIT_Parameters //= (suit-parameter-version =>
        bstr .cbor SUIT_Parameter_Version_Match)
-   SUIT_Parameters //= (suit-parameter-wait-info =>
+   $$SUIT_Parameters //= (suit-parameter-wait-info =>
        bstr .cbor SUIT_Wait_Event)
-   SUIT_Parameters //= (suit-parameter-component-metadata =>
+   $$SUIT_Parameters //= (suit-parameter-component-metadata =>
        bstr .cbor SUIT_Component_Metadata)
 
    SUIT_Parameter_Version_Match = [
@@ -1217,6 +1394,14 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    suit-condition-version-comparison-greater = 1
    suit-condition-version-comparison-greater-equal = 2
    suit-condition-version-comparison-equal = 3
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 25]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
    suit-condition-version-comparison-lesser-equal = 4
    suit-condition-version-comparison-lesser = 5
 
@@ -1226,22 +1411,23 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    SUIT_Component_Metadata = {
        ? suit-meta-default-permissions => SUIT_meta_permissions,
        ? suit-meta-user-permissions => SUIT_meta_permission_map,
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 22]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
        ? suit-meta-group-permissions => SUIT_meta_permission_map,
        ? suit-meta-role-permissions => SUIT_meta_permission_map,
        ? suit-meta-file-type => SUIT_Filetype,
-       ? suit-meta-modification-time => CBOR_Datetime,
-       ? suit-meta-creation-time => CBOR_Datetime,
+       ? suit-meta-modification-time => #6.1(uint),
+       ? suit-meta-creation-time => #6.1(uint),
        ? suit-meta-creator => SUIT_meta_actor_id,
        * $$SUIT_Component_Metadata_Extensions
    }
+
+   suit-meta-default-permissions = 1
+   suit-meta-user-permissions = 2
+   suit-meta-group-permissions = 3
+   suit-meta-role-permissions = 4
+   suit-meta-file-type = 5
+   suit-meta-modification-time = 6
+   suit-meta-creation-time = 7
+   suit-meta-creator = 8
 
    SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
    SUIT_meta_permission_bits = &(
@@ -1255,7 +1441,7 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
        change_perm: 6,
        read_perm: 5,
        read_attr: 4,
-       creatdir_append: 3,
+       createdir_append: 3,
        list_read: 2,
        create_write: 1,
        traverse_exec: 0,
@@ -1264,10 +1450,26 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
 
    SUIT_meta_permission_map = {
        + SUIT_meta_actor_id => SUIT_meta_permissions
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 26]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
+
    }
 
-   SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
+   SUIT_meta_actor_id = UUID_Tagged / bstr / tstr / int
    UUID_Tagged = #6.37(bstr)
+
+   SUIT_Filetype /= suit-filetype-regular
+   SUIT_Filetype /= suit-filetype-directory
+   SUIT_Filetype /= suit-filetype-symlink
+
+   suit-filetype-regular = 1
+   suit-filetype-directory = 2
+   suit-filetype-symlink = 3
 
 
 
@@ -1282,14 +1484,6 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    suit-condition-image-not-match          = 25
    suit-condition-minimum-battery          = 26
    suit-condition-update-authorized        = 27
-
-
-
-Moran & Takayama        Expires 18 September 2025              [Page 23]
-
-Internet-Draft      SUIT Update Management Extensions         March 2025
-
-
    suit-condition-version                  = 28
 
    suit-directive-wait                     = 29
@@ -1303,12 +1497,22 @@ Internet-Draft      SUIT Update Management Extensions         March 2025
    suit-wait-event-time                 = 5
    suit-wait-event-time-of-day          = 6
    suit-wait-event-day-of-week          = 7
+   suit-wait-event-time-of-day-utc      = 8
+   suit-wait-event-day-of-week-utc      = 9
 
-   suit-parameter-use-before        = 4
-   suit-parameter-minimum-battery   = 26
-   suit-parameter-update-priority   = 27
-   suit-parameter-version           = 28
-   suit-parameter-wait-info         = 29
+   suit-parameter-use-before         = 4
+   suit-parameter-minimum-battery    = 26
+   suit-parameter-update-priority    = 27
+   suit-parameter-version            = 28
+   suit-parameter-wait-info          = 29
+   suit-parameter-component-metadata = 30
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 27]
+
+Internet-Draft      SUIT Update Management Extensions          July 2026
+
 
    suit-text-version-required      = 7
    suit-text-current-version       = 8
@@ -1341,4 +1545,24 @@ Authors' Addresses
 
 
 
-Moran & Takayama        Expires 18 September 2025              [Page 24]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Moran & Takayama         Expires 4 January 2027                [Page 28]

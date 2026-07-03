@@ -1,7 +1,7 @@
 ---
 title: Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests
 abbrev: SUIT Update Management Extensions
-docname: draft-ietf-suit-update-management-11
+docname: draft-ietf-suit-update-management-13
 category: std
 stream: IETF
 
@@ -40,15 +40,15 @@ normative:
   RFC9393:
   I-D.ietf-suit-manifest:
   RFC8949:
+
+informative:
+  RFC9124:
+  RFC9019:
   semver:
     title: "Semantic Versioning 2.0.0"
     author:
     date: 2013-06-18
     target: https://semver.org
-
-informative:
-  I-D.ietf-suit-information-model:
-  RFC9019:
 
 --- abstract
 This specification describes extensions to the SUIT manifest format. These extensions allow an update
@@ -66,15 +66,13 @@ Full management of software updates for unattended, connected devices requires a
 
 Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests. A Recipient that encounters a command or parameter it does not implement MUST reject the manifest as defined in {{I-D.ietf-suit-manifest}} Section 8.4.2, ensuring that update behaviour is never ambiguous. Conversely, when a deployment relies on update-management behaviour defined here, the manifest author MUST ensure that targeted recipients advertise support for the required extensions (for example via enablement policy or capability negotiation) before shipping such manifests so that required commands will be honoured rather than rejected.
 
-#  Conventions and Terminology
+#  Conventions and Terminology {#conventions-and-terminology}
 
 {::boilerplate bcp14}
 
 This draft makes use of terminology defined in {{RFC9019}} and {{I-D.ietf-suit-manifest}}.
 
-In addition, this document uses the following term:
-
-* *Primary cell*: a single-use battery chemistry that can be discharged but not recharged, making energy budgeting a one-way operation.
+This document uses semantic versioning terminology from {{semver}}, including major, minor, patch, pre-release, and build metadata. The machine-readable version encoding defined in {{suit-parameter-version}} is a constrained integer encoding based on that terminology: it encodes release versions as one to three non-negative integers, supports only the pre-release classes defined in {{suit-parameter-version}}, and excludes build metadata from machine-readable comparisons.
 
 # Extension Metadata
 
@@ -89,11 +87,11 @@ Some additional metadata makes management of SUIT updates easier:
 
 This metadata encodes a semantic version for the component set that the manifest updates, including any dependencies. This enables version comparisons to be performed on manifests. Non-manifest images encode their versions independently of the manifest.
 
-Manifest Authors SHOULD encode suit-set-version whenever the release can be represented as a semantic version so that Recipients can compare manifests deterministically. The version MUST be encoded as a semantic version, according to {{semver}}, to preserve that deterministic ordering. Deployments that cannot supply a semantic version without loss of fidelity MUST omit suit-set-version and convey any human-facing numbering via text-current-version ({{text-current-version}}). Because suit-set-version is a machine-readable parameter for determining compatibility and because {{semver}} mandates that the build-number is ignored, build numbers MUST NOT be included.
+Manifest Authors SHOULD encode suit-set-version whenever the release can be represented by the constrained version encoding defined in {{suit-parameter-version}} so that Recipients can compare manifests deterministically. Deployments that cannot supply such a version without loss of fidelity MUST omit suit-set-version and convey any human-facing numbering via suit-text-current-version ({{text-current-version}}). Because suit-set-version is a machine-readable parameter for determining compatibility and build metadata is ignored for semantic-version precedence, build metadata MUST NOT be included.
 
 The composition of suit-set-version is the same as suit-parameter-version ({{suit-parameter-version}}).
 
-If a build number is desired, the manifest author MAY include it via text-current-version ({{text-current-version}}).
+If build metadata is desired, the manifest author MAY include it via suit-text-current-version ({{text-current-version}}).
 
 ## suit-coswid {#manifest-digest-coswid}
 
@@ -119,7 +117,7 @@ By way of example only, to express a dependency on a component "\['x', 'y'\]", w
 }
 ~~~
 
-## text-current-version {#text-current-version}
+## suit-text-current-version {#text-current-version}
 
 suit-text-current-version is used to provide human-readable version information equivalent to suit-set-version ({{suit-set-version}}). This metadata MAY have a version listed for each or any component. The Manifest Processor MUST NOT consume this version; it is for human readability only.
 
@@ -152,7 +150,7 @@ This parameter sets the minimum battery level in mWh. This parameter is encoded 
 
 This parameter sets the priority of the update. This parameter is encoded as an integer. It is used along with suit-condition-update-authorized ({{suit-condition-update-authorized}}) to ask an application for permission to initiate an update. This does not constitute a privilege inversion because an explicit request for authorization has been provided by the Update Authority in the form of the suit-condition-update-authorized command.
 
-Applications MAY define their own meanings for the update priority. For example, critical reliability and vulnerability fixes might be given negative numbers, while bug fixes might be given small positive numbers, and feature additions might be given larger positive numbers, which allows an application to make an informed decision about whether and when to allow an update to proceed.
+Numerically smaller values indicate higher update priority. Recipients and applications that compare suit-parameter-update-priority values MUST use this ordering. Local policy MAY assign deployment-specific meanings to particular values or ranges. For example, critical reliability and vulnerability fixes might be given negative numbers, while bug fixes might be given small positive numbers, and feature additions might be given larger positive numbers, which allows an application to make an informed decision about whether and when to allow an update to proceed.
 
 ## suit-parameter-version {#suit-parameter-version}
 
@@ -181,16 +179,16 @@ The version comparison value is encoded as a CBOR list of integers. Comparisons 
 
 ### suit-parameter-version Semantic Versioning encoding guidelines
 
-The encoded versions follow semantic versioning (see {{semver}}). Manifest Authors SHOULD keep their encoding aligned with Semantic Versioning so that Recipients can compare versions deterministically; if another numbering scheme is required, the sequence of integers encoded here MUST still preserve release ordering (for example, `[2025,12,6]` for a calendar-based release).
+The encoded versions use the constrained semantic-versioning encoding summarized in {{conventions-and-terminology}}. Manifest Authors SHOULD keep their encoding aligned with semantic versioning so that Recipients can compare versions deterministically; if another numbering scheme is required, the sequence of integers encoded here MUST still preserve release ordering (for example, `[2025,12,6]` for a calendar-based release).
 
 Versions are composed of:
 
-1. A release version encoded as a sequence of 1 to 3 non-negative integers (allowing zero values as defined by {{semver}})
+1. A release version encoded as a sequence of 1 to 3 non-negative integers (allowing zero values)
 2. An optional pre-release indicator encoded as a negative integer, followed by zero or more non-negative integers
 
-While {{semver}} allows a build number, it mandates that the build number is ignored. Because suit-parameter-version exists solely to enable the Manifest Processor to make a decision about version compatibility, build numbers MUST NOT be included.
+Semantic Versioning permits arbitrary pre-release identifiers and build metadata. This specification only defines encodings for alpha, beta, and release-candidate pre-release classes. Because suit-parameter-version exists solely to enable the Manifest Processor to make a decision about version compatibility, and because build metadata is ignored for semantic-version precedence, build metadata MUST NOT be included.
 
-In {{semver}}, 
+In semantic versioning terminology:
 
 1. The first integer represents the major number. This indicates breaking changes to the component.
 2. The second integer represents the minor number. This is typically reserved for new features or large, non-breaking changes.
@@ -203,6 +201,8 @@ The pre-release indicator MUST NOT appear as element 0. The pre-release indicato
 * -3: Alpha
 
 This allows these releases to compare correctly with final releases. For example, Version 2.0, RC1 is lower than Version 2.0.0 and higher than any Version 1.x. By encoding RC as -1, this works correctly: \[2,0,-1,1\] compares as lower than \[2,0,0\]. Similarly, beta (-2) is lower than RC and alpha (-3) is lower than RC.
+
+Pre-release identifiers other than alpha, beta, and release candidate cannot be represented directly in this encoding. Deployments that need other identifiers MUST either map them to one of the defined classes while preserving the intended ordering or omit the machine-readable version field and convey the identifier as suit-text-current-version ({{text-current-version}}).
 
 For example:
 
@@ -232,7 +232,9 @@ suit-wait-event-time-of-day-utc | uint | Wait until seconds since 00:00:00 UTC
 suit-wait-event-day-of-week | uint | Wait until days since Sunday Local Time
 suit-wait-event-day-of-week-utc | uint | Wait until days since Sunday UTC
 
-suit-wait-event-other-device-version reuses the encoding of SUIT_Parameter_Version_Match. It is encoded as a sequence that contains an implementation-defined bstr identifier for the other device, and a list of one or more SUIT_Parameter_Version_Match.
+Local Time means the Recipient's configured local civil time zone at the time the wait event is evaluated, including any daylight-saving-time rules available to the Recipient. If the local time zone changes while a Recipient is waiting, the Recipient reevaluates the wait event using the updated time-zone configuration. During daylight-saving-time transitions, a skipped local time is treated as satisfied at the first representable local time after the skipped interval, and a repeated local time is satisfied at its first occurrence. Recipients that do not have configured local-time and daylight-saving-time information MUST treat local-time wait events as unsupported. Manifest Authors SHOULD use the UTC wait events when a deployment does not have a common local-time policy.
+
+suit-wait-event-other-device-version reuses the encoding of SUIT_Parameter_Version_Match. It is encoded as a sequence that contains an implementation-defined bstr identifier for the other device, and a list of one or more SUIT_Parameter_Version_Match. For interoperable use, the deployment profile or management system MUST define the namespace and byte-string encoding of other-device identifiers, the mechanism by which the Recipient obtains the referenced device's version, and the version encoding used by that referenced device. A Recipient MUST treat suit-wait-event-other-device-version as unsupported unless those deployment-specific definitions are available.
 
 ## suit-parameter-component-metadata {#suit-parameter-component-metadata}
 
@@ -292,7 +294,7 @@ SUIT_meta_permission_bits = &(
     change_perm: 6,
     read_perm: 5,
     read_attr: 4,
-    creatdir_append: 3,
+    createdir_append: 3,
     list_read: 2,
     create_write: 1,
     traverse_exec: 0,
@@ -393,11 +395,11 @@ Verify that the current component does not match the suit-parameter-image-digest
 
 ## suit-condition-minimum-battery
 
-suit-condition-minimum-battery provides a mechanism to test a Recipient's battery level before installing an update. This condition is primarily for use in primary-cell applications, where the battery is only ever discharged. For batteries that are charged, suit-directive-wait is more appropriate, since it defines a "wait" until the battery level is sufficient to install the update. suit-condition-minimum-battery is specified in mWh. suit-condition-minimum-battery is OPTIONAL to implement. suit-condition-minimum-battery consumes suit-parameter-minimum-battery ({{suit-parameter-minimum-battery}}).
+suit-condition-minimum-battery provides a mechanism to test a Recipient's battery level before installing an update. This condition is primarily for use in primary-cell applications, where a primary cell is a single-use, non-rechargeable battery and energy budgeting is therefore a one-way operation. For batteries that are charged, suit-directive-wait is more appropriate, since it defines a "wait" until the battery level is sufficient to install the update. suit-condition-minimum-battery is specified in mWh. suit-condition-minimum-battery is OPTIONAL to implement. suit-condition-minimum-battery consumes suit-parameter-minimum-battery ({{suit-parameter-minimum-battery}}).
 
 ## suit-condition-update-authorized
 
-Request authorization from the application and fail if not authorized. This can allow a user to decline an update. suit-parameter-update-priority ({{suit-parameter-update-priority}}) provides an integer priority level that the application can use to determine whether or not to authorize the update. Priorities are application defined. suit-condition-update-authorized is OPTIONAL to implement.
+Request authorization from the application and fail if not authorized. This can allow a user to decline an update. suit-parameter-update-priority ({{suit-parameter-update-priority}}) provides an integer priority level that the application can use to determine whether or not to authorize the update. Smaller integer values indicate higher priority; deployment policy defines the action taken for a given priority. suit-condition-update-authorized is OPTIONAL to implement.
 
 ## suit-condition-version
 
@@ -509,9 +511,11 @@ Label | Name | Reference
 
 #  Security Considerations
 
-This document extends the SUIT manifest specification. A detailed security treatment can be found in the architecture {{RFC9019}} and in the information model {{I-D.ietf-suit-information-model}} documents.
+This document extends the SUIT manifest specification. The extensions defined here are optional and do not make support for update-management extensions mandatory for implementations of the base SUIT manifest specification. A detailed security treatment can be found in the architecture {{RFC9019}} and in the information model {{RFC9124}} documents.
 
 The free-text fields introduced in Sections {{text-version-required}} and {{text-current-version}} are intended solely for human consumption. Recipients MUST treat those values as untrusted input: they MUST NOT evaluate the text, execute embedded markup, or override machine-readable decisions derived from suit-set-version or suit-parameter-version. Implementations SHOULD bound the length of displayed text to mitigate interface flooding and log injection.
+
+The suit-coswid element can expose detailed software identity and SBOM information. Such information can help authorized operators assess inventory, vulnerability exposure, and compliance, but the same information can also help an attacker or unauthorized observer quickly identify software components and versions on a device. Deployments SHOULD treat manifests containing suit-coswid as sensitive metadata, limit access to authorized parties, and consider using severable suit-coswid content so that intermediaries and Recipients that do not need this metadata can discard it without invalidating the manifest signature.
 
 Component metadata ({{suit-parameter-component-metadata}}) can expose operator identifiers, file paths, or other locally meaningful strings. Deployments SHOULD validate these values against local policy before applying them, and MUST handle missing or malformed metadata defensively so that the update agent does not escalate privileges or disclose sensitive information inadvertently.
 
