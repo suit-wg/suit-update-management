@@ -1,13 +1,12 @@
 $$unseverable-manifest-member-extensions //= (
-    suit-current-version => \
+    suit-set-version =>
         bstr .cbor SUIT_Condition_Version_Comparison_Value
 )
 $$SUIT_severable-members-extensions //= (
-    suit-coswid => bstr)
-;    suit-coswid => bstr .cbor concise-swid-tag)
+    suit-coswid => bstr .cbor concise-swid-tag)
 
 $$severable-manifest-members-choice-extensions //= (
-    suit-coswid => bstr .cbor SUIT_Command_Sequence / SUIT_Digest
+    suit-coswid => bstr .cbor concise-swid-tag / SUIT_Digest
 )
 
 SUIT_Condition //= (
@@ -49,20 +48,24 @@ SUIT_Wait_Events //= (suit-wait-event-time-of-day
     => uint); Time of Day (seconds since 00:00:00)
 SUIT_Wait_Events //= (suit-wait-event-day-of-week
     => uint); Days since Sunday
+SUIT_Wait_Events //= (suit-wait-event-time-of-day-utc
+    => uint); Time of Day UTC (seconds since 00:00:00)
+SUIT_Wait_Events //= (suit-wait-event-day-of-week-utc
+    => uint); Days since Sunday UTC
 
 SUIT_Wait_Event_Argument_Other_Device_Version = [
     other-device: bstr,
     other-device-version: [ + SUIT_Parameter_Version_Match ]
 ]
 
-SUIT_Parameters //= (suit-parameter-use-before => uint)
-SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
-SUIT_Parameters //= (suit-parameter-update-priority => int)
-SUIT_Parameters //= (suit-parameter-version =>
+$$SUIT_Parameters //= (suit-parameter-use-before => uint)
+$$SUIT_Parameters //= (suit-parameter-minimum-battery => uint)
+$$SUIT_Parameters //= (suit-parameter-update-priority => int)
+$$SUIT_Parameters //= (suit-parameter-version =>
     bstr .cbor SUIT_Parameter_Version_Match)
-SUIT_Parameters //= (suit-parameter-wait-info =>
+$$SUIT_Parameters //= (suit-parameter-wait-info =>
     bstr .cbor SUIT_Wait_Event)
-SUIT_Parameters //= (suit-parameter-component-metadata =>
+$$SUIT_Parameters //= (suit-parameter-component-metadata =>
     bstr .cbor SUIT_Component_Metadata)
 
 SUIT_Parameter_Version_Match = [
@@ -97,8 +100,8 @@ SUIT_Component_Metadata = {
     ? suit-meta-group-permissions => SUIT_meta_permission_map,
     ? suit-meta-role-permissions => SUIT_meta_permission_map,
     ? suit-meta-file-type => SUIT_Filetype,
-    ? suit-meta-modification-time => CBOR_Datetime,
-    ? suit-meta-creation-time => CBOR_Datetime,
+    ? suit-meta-modification-time => #6.1(uint),
+    ? suit-meta-creation-time => #6.1(uint),
     ? suit-meta-creator => SUIT_meta_actor_id,
     * $$SUIT_Component_Metadata_Extensions
 }
@@ -124,7 +127,7 @@ SUIT_meta_permission_bits = &(
     change_perm: 6,
     read_perm: 5,
     read_attr: 4,
-    creatdir_append: 3,
+    createdir_append: 3,
     list_read: 2,
     create_write: 1,
     traverse_exec: 0,
@@ -135,7 +138,7 @@ SUIT_meta_permission_map = {
     + SUIT_meta_actor_id => SUIT_meta_permissions
 }
 
-SUIT_meta_actor_id = UUID_Tagged / bstr / str / int
+SUIT_meta_actor_id = UUID_Tagged / bstr / tstr / int
 UUID_Tagged = #6.37(bstr)
 
 SUIT_Filetype /= suit-filetype-regular
@@ -145,6 +148,7 @@ SUIT_Filetype /= suit-filetype-symlink
 suit-filetype-regular = 1
 suit-filetype-directory = 2
 suit-filetype-symlink = 3
+
 
 
 $$suit-text-component-key-extensions //= (
@@ -171,6 +175,8 @@ suit-wait-event-other-device-version = 4
 suit-wait-event-time                 = 5
 suit-wait-event-time-of-day          = 6
 suit-wait-event-day-of-week          = 7
+suit-wait-event-time-of-day-utc      = 8
+suit-wait-event-day-of-week-utc      = 9
 
 suit-parameter-use-before         = 4
 suit-parameter-minimum-battery    = 26
