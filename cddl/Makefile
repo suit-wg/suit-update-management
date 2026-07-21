@@ -46,3 +46,12 @@ ${COSE_CDDL}: ${COSE_XML} cose_cddl.py
 .PHONY: ${CDDL}
 ${CDDL}: ${SUIT_CDDL} ${UPDATE_CDDL} ${COSE_CDDL} ${COSWID_CDDL}
 	cat $^ > $@
+	cddl $@ generate
+
+.PHONY: cddl-syntax-check
+cddl-syntax-check: ${CDDL}
+	cddl ${CDDL} generate
+
+.PHONY: clean
+clean:
+	rm -f ${CDDL} ${COSWID_CDDL} ${SUIT_CDDL} ${COSE_CDDL} ${COSE_XML}
