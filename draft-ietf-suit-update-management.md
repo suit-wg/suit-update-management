@@ -538,6 +538,11 @@ Component metadata ({{suit-parameter-component-metadata}}) can expose operator i
 
 Recipients that map Component Identifiers to file-system paths MUST defend against path traversal and symbolic-link races. Before a fetch, copy, or write, the Recipient MUST ensure that the resolved destination remains within storage authorized for the current component and manifest authority. This requirement applies both to pre-existing links and to links created by an earlier command or dependency manifest. Path validation and the file-system operation MUST be performed atomically with respect to namespace changes, or using descriptor-relative or non-link-following operations that provide an equivalent guarantee. A Recipient MUST NOT follow a symbolic link across component or authority boundaries unless local policy explicitly authorizes both the resolved target and that use of the link.
 
+# Acknowledgements
+
+The authors would like to thank Roman Danyliw, Mohamed Boucadair, Mahesh Jethanandani, Andy Newton, and Éric Vyncke for their detailed IESG reviews and constructive suggestions.
+
+The authors also thank Hannes Tschofenig for the IoT Directorate review, Roni Even for the GEN-ART review, Niclas Comstedt for the Operations Directorate review, and Russ Housley for the ARTART review. Their comments substantially improved the clarity, interoperability, operational guidance, and security considerations of this document.
 
 --- back
 
