@@ -5,22 +5,22 @@
 SUIT                                                            B. Moran
 Internet-Draft                                               Arm Limited
 Intended status: Standards Track                             K. Takayama
-Expires: 22 January 2027                                 SECOM CO., LTD.
-                                                            21 July 2026
+Expires: 8 February 2027                                 SECOM CO., LTD.
+                                                           7 August 2026
 
 
 Update Management Extensions for Software Updates for Internet of Things
                             (SUIT) Manifests
-                  draft-ietf-suit-update-management-14
+                  draft-ietf-suit-update-management-15
 
 Abstract
 
    This document specifies extensions to the SUIT manifest format.
-   These extensions allow an update author, update distributor or device
-   operator to more precisely control the distribution and installation
-   of updates to devices.  These extensions also provide a mechanism to
-   inform a management system of Software Identifier and Software Bill
-   Of Materials information about an updated device.
+   These extensions allow a Manifest Author, update distributor, or
+   device operator to more precisely control the distribution and
+   installation of updates to devices.  These extensions also provide a
+   mechanism to inform a management system of Software Identifier and
+   Software Bill Of Materials information about an updated device.
 
 Status of This Memo
 
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 January 2027.
+   This Internet-Draft will expire on 8 February 2027.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Moran & Takayama         Expires 22 January 2027                [Page 1]
+Moran & Takayama         Expires 8 February 2027                [Page 1]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Moran & Takayama         Expires 22 January 2027                [Page 2]
+Moran & Takayama         Expires 8 February 2027                [Page 2]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
@@ -124,15 +124,15 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 1.  Introduction
 
    Full management of software updates for unattended, connected devices
-   requires a cooperation between the update author(s) and management,
+   requires cooperation between Manifest Authors and management,
    distribution, policy enforcement, and auditing systems.  This
-   specification provides the extensions to the SUIT manifest
-   [I-D.ietf-suit-manifest] that enable an author to coordinate with
-   these other systems.  These extensions enable authors to instruct
-   devices to examine update priority, local update authorisation,
-   update lifetime, and system properties.  They also enable devices to
-   report and distributors to collect Software Bill of Materials (SBOM)
-   information.
+   specification provides extensions to the SUIT manifest
+   [I-D.ietf-suit-manifest] that enable Manifest Authors to coordinate
+   with these other systems.  These extensions enable Manifest Authors
+   to instruct devices to examine update priority, local update
+   authorisation, update lifetime, and system properties.  They also
+   enable devices to report and distributors to collect Software Bill of
+   Materials (SBOM) information.
 
    Extensions in this specification are OPTIONAL to implement and
    OPTIONAL to include in manifests.  A Recipient that encounters a
@@ -140,8 +140,8 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
    consistent with the manifest-exclusion conditions in
    [I-D.ietf-suit-manifest] Section 6.1, ensuring that update behaviour
    is never ambiguous.  Conversely, when a deployment relies on update-
-   management behaviour defined here, the manifest author MUST ensure
-   that targeted recipients advertise support for the required
+   management behaviour defined here, the Manifest Author MUST ensure
+   that targeted Recipients advertise support for the required
    extensions (for example via enablement policy or capability
    negotiation) before shipping such manifests so that required commands
    will be honoured rather than rejected.
@@ -154,8 +154,8 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-   This draft makes use of terminology defined in [RFC9019] and
-   [I-D.ietf-suit-manifest].
+   This document uses SUIT terminology, including Manifest Author and
+   Recipient, as defined in [I-D.ietf-suit-manifest].
 
 
 
@@ -165,9 +165,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027                [Page 3]
+Moran & Takayama         Expires 8 February 2027                [Page 3]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    This document uses semantic versioning terminology from [semver],
@@ -221,9 +221,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027                [Page 4]
+Moran & Takayama         Expires 8 February 2027                [Page 4]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    suit-set-version encodes a version using
@@ -232,7 +232,7 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
    include a SUIT_Condition_Version_Comparison_Types comparison
    operator.
 
-   If build metadata is desired, the manifest author MAY include it via
+   If build metadata is desired, the Manifest Author MAY include it via
    suit-text-current-version (Section 3.4).
 
 3.2.  suit-coswid
@@ -277,9 +277,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027                [Page 5]
+Moran & Takayama         Expires 8 February 2027                [Page 5]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    Recipients that use or validate suit-coswid MAY still fail or reject
@@ -295,15 +295,15 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
    suit-text-version-required is used to represent a version-based
    dependency on suit-parameter-version as described in Section 4.4 and
    Section 5.5.  When a Manifest Author communicates such a dependency
-   to operators through the manifest, the author MUST populate the suit-
-   text map with a SUIT_Component_Identifier key for the dependency
-   component and place a suit-text-version-required key with a free-text
-   expression in the corresponding map.  Deployments that provide
-   operator guidance exclusively through other channels MAY omit this
-   field.  The expression is intended to provide enough context for a
-   device operator to understand and validate the dependency; predefined
-   tokens can be used when supporting documentation provides equivalent
-   clarity.
+   to operators through the manifest, the Manifest Author MUST populate
+   the suit-text map with a SUIT_Component_Identifier key for the
+   dependency component and place a suit-text-version-required key with
+   a free-text expression in the corresponding map.  Deployments that
+   provide operator guidance exclusively through other channels MAY omit
+   this field.  The expression is intended to provide enough context for
+   a device operator to understand and validate the dependency;
+   predefined tokens can be used when supporting documentation provides
+   equivalent clarity.
 
    Expressions in this field MUST be encoded as UTF-8 text containing
    only characters in Unicode general categories L, M, N, P, S, or Zs.
@@ -312,17 +312,18 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
    >= (Greater or Equal), = (Equal), <= (Lesser or Equal), and <
    (Lesser).  No other comparison-operator syntax is defined by this
    document.  When a Manifest Author uses comparison-operator syntax in
-   this field, the author MUST use these strings.  All other content is
-   free text, and there are no additional formatting rules.  A Manifest
-   Processor MUST NOT interpret or otherwise process the content of this
-   field.  An implementation that renders this text MUST do so in a
-   manner that prevents markup, control-code, log, or user-interface
-   injection.
+   this field, the Manifest Author MUST use these strings.  All other
+   content is free text, and there are no additional formatting rules.
+   A Manifest Processor MUST NOT interpret or otherwise process the
+   content of this field.  An implementation that renders this text MUST
+   do so in a manner that prevents markup, control-code, log, or user-
+   interface injection.
 
    By way of example only, to express a dependency on a component "['x',
    'y']", where the intended version is any v1.x later than v1.2.5, but
-   not v2.0 or above, the author would add the following structure to
-   the suit-text element.  Note that this text is in cbor-diag notation.
+   not v2.0 or above, the Manifest Author would add the following
+   structure to the suit-text element.  Note that this text is in cbor-
+   diag notation.
 
    ['x','y'] : {
        7 : ">=1.2.5,<2"
@@ -332,10 +333,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-
-Moran & Takayama         Expires 22 January 2027                [Page 6]
+Moran & Takayama         Expires 8 February 2027                [Page 6]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
 3.4.  suit-text-current-version
@@ -347,7 +347,7 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
    readability only.
 
    When a Manifest Author describes a version through the manifest, the
-   author MUST populate the suit-text map with a
+   Manifest Author MUST populate the suit-text map with a
    SUIT_Component_Identifier key for the component and place a suit-
    text-current-version key with a free-text version in the
    corresponding map.  Deployments that provide human-facing version
@@ -389,9 +389,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027                [Page 7]
+Moran & Takayama         Expires 8 February 2027                [Page 7]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    +=================+===================================+=============+
@@ -445,9 +445,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027                [Page 8]
+Moran & Takayama         Expires 8 February 2027                [Page 8]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    example, critical reliability and vulnerability fixes might be given
@@ -501,9 +501,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027                [Page 9]
+Moran & Takayama         Expires 8 February 2027                [Page 9]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
 4.4.1.  suit-parameter-version Semantic Versioning encoding guidelines
@@ -557,9 +557,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 10]
+Moran & Takayama         Expires 8 February 2027               [Page 10]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    This allows these releases to compare correctly with final releases.
@@ -613,9 +613,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 11]
+Moran & Takayama         Expires 8 February 2027               [Page 11]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
       +======================+==========+==========================+
@@ -669,9 +669,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 12]
+Moran & Takayama         Expires 8 February 2027               [Page 12]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    suit-wait-event-other-device-version reuses the encoding of
@@ -725,9 +725,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 13]
+Moran & Takayama         Expires 8 February 2027               [Page 13]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    Component metadata is applied at time of fetch, copy, or write; see
@@ -781,9 +781,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 14]
+Moran & Takayama         Expires 8 February 2027               [Page 14]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
@@ -837,9 +837,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 15]
+Moran & Takayama         Expires 8 February 2027               [Page 15]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
       -  Set the Component metadata, including the file type for
@@ -893,9 +893,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 16]
+Moran & Takayama         Expires 8 February 2027               [Page 16]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
       -  write
@@ -949,9 +949,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 17]
+Moran & Takayama         Expires 8 February 2027               [Page 17]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
      +=============+=================+===============================+
@@ -1005,9 +1005,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 18]
+Moran & Takayama         Expires 8 February 2027               [Page 18]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
 5.2.  suit-condition-image-not-match
@@ -1061,9 +1061,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 19]
+Moran & Takayama         Expires 8 February 2027               [Page 19]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    4.  Other device firmware version
@@ -1117,14 +1117,14 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 20]
+Moran & Takayama         Expires 8 February 2027               [Page 20]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
 5.8.  suit-directive-copy-params
 
-   suit-directive-copy-params enables a manifest author to specify one
+   suit-directive-copy-params enables a Manifest Author to specify one
    or more components to copy parameters from, and a list of parameters
    to copy from each specified source component.
 
@@ -1173,9 +1173,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 21]
+Moran & Takayama         Expires 8 February 2027               [Page 21]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
 7.  IANA Considerations
@@ -1229,9 +1229,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 22]
+Moran & Takayama         Expires 8 February 2027               [Page 22]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
                 | 35    | Copy Params       | Section 5.8 |
@@ -1285,9 +1285,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 23]
+Moran & Takayama         Expires 8 February 2027               [Page 23]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    The free-text fields introduced by Section 3.3 and Section 3.4 are
@@ -1341,9 +1341,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 24]
+Moran & Takayama         Expires 8 February 2027               [Page 24]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
               for Internet of Things (SUIT) Manifest", Work in Progress,
@@ -1397,9 +1397,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 25]
+Moran & Takayama         Expires 8 February 2027               [Page 25]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
 Appendix A.  Full CDDL
@@ -1453,9 +1453,9 @@ Appendix A.  Full CDDL
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 26]
+Moran & Takayama         Expires 8 February 2027               [Page 26]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    SUIT_Wait_Events //= (suit-wait-event-network => int)
@@ -1509,9 +1509,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 27]
+Moran & Takayama         Expires 8 February 2027               [Page 27]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    suit-condition-version-comparison-lesser-equal = 4
@@ -1565,9 +1565,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 28]
+Moran & Takayama         Expires 8 February 2027               [Page 28]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    }
@@ -1621,9 +1621,9 @@ Internet-Draft      SUIT Update Management Extensions          July 2026
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 29]
+Moran & Takayama         Expires 8 February 2027               [Page 29]
 
-Internet-Draft      SUIT Update Management Extensions          July 2026
+Internet-Draft      SUIT Update Management Extensions        August 2026
 
 
    suit-text-version-required      = 7
@@ -1677,4 +1677,4 @@ Authors' Addresses
 
 
 
-Moran & Takayama         Expires 22 January 2027               [Page 30]
+Moran & Takayama         Expires 8 February 2027               [Page 30]

@@ -1,7 +1,7 @@
 ---
 title: Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests
 abbrev: SUIT Update Management Extensions
-docname: draft-ietf-suit-update-management-14
+docname: draft-ietf-suit-update-management-15
 category: std
 stream: IETF
 
@@ -56,8 +56,8 @@ informative:
     target: https://www.iana.org/assignments/suit/suit.xhtml
 
 --- abstract
-This document specifies extensions to the SUIT manifest format. These extensions allow an update
-author, update distributor or device operator to more precisely control
+This document specifies extensions to the SUIT manifest format. These extensions allow a Manifest
+Author, update distributor, or device operator to more precisely control
 the distribution and installation of updates to devices. These
 extensions also provide a mechanism to inform a management system of
 Software Identifier and Software Bill Of Materials information about an
@@ -67,15 +67,15 @@ updated device.
 
 #  Introduction
 
-Full management of software updates for unattended, connected devices requires a cooperation between the update author(s) and management, distribution, policy enforcement, and auditing systems. This specification provides the extensions to the SUIT manifest {{I-D.ietf-suit-manifest}} that enable an author to coordinate with these other systems. These extensions enable authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials (SBOM) information.
+Full management of software updates for unattended, connected devices requires cooperation between Manifest Authors and management, distribution, policy enforcement, and auditing systems. This specification provides extensions to the SUIT manifest {{I-D.ietf-suit-manifest}} that enable Manifest Authors to coordinate with these other systems. These extensions enable Manifest Authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials (SBOM) information.
 
-Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests. A Recipient that encounters a command or parameter it does not implement MUST reject the manifest, consistent with the manifest-exclusion conditions in {{I-D.ietf-suit-manifest}} Section 6.1, ensuring that update behaviour is never ambiguous. Conversely, when a deployment relies on update-management behaviour defined here, the manifest author MUST ensure that targeted recipients advertise support for the required extensions (for example via enablement policy or capability negotiation) before shipping such manifests so that required commands will be honoured rather than rejected.
+Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests. A Recipient that encounters a command or parameter it does not implement MUST reject the manifest, consistent with the manifest-exclusion conditions in {{I-D.ietf-suit-manifest}} Section 6.1, ensuring that update behaviour is never ambiguous. Conversely, when a deployment relies on update-management behaviour defined here, the Manifest Author MUST ensure that targeted Recipients advertise support for the required extensions (for example via enablement policy or capability negotiation) before shipping such manifests so that required commands will be honoured rather than rejected.
 
 #  Conventions and Terminology {#conventions-and-terminology}
 
 {::boilerplate bcp14}
 
-This draft makes use of terminology defined in {{RFC9019}} and {{I-D.ietf-suit-manifest}}.
+This document uses SUIT terminology, including Manifest Author and Recipient, as defined in {{I-D.ietf-suit-manifest}}.
 
 This document uses semantic versioning terminology from {{semver}}, including major, minor, patch, pre-release, and build metadata. The machine-readable version encoding defined in {{suit-parameter-version}} is a constrained integer encoding based on that terminology: it encodes release versions as one to three non-negative integers, supports only the pre-release classes defined in {{suit-parameter-version}}, and excludes build metadata from machine-readable comparisons.
 
@@ -98,7 +98,7 @@ Manifest Authors SHOULD encode suit-set-version whenever the release can be repr
 
 suit-set-version encodes a version using SUIT_Condition_Version_Comparison_Value, the version-value array defined for suit-parameter-version in {{suit-parameter-version}}. It does not include a SUIT_Condition_Version_Comparison_Types comparison operator.
 
-If build metadata is desired, the manifest author MAY include it via suit-text-current-version ({{text-current-version}}).
+If build metadata is desired, the Manifest Author MAY include it via suit-text-current-version ({{text-current-version}}).
 
 ## suit-coswid {#manifest-digest-coswid}
 
@@ -114,11 +114,11 @@ Recipients that use or validate suit-coswid MAY still fail or reject the manifes
 
 ## suit-text-version-required {#text-version-required}
 
-suit-text-version-required is used to represent a version-based dependency on suit-parameter-version as described in {{suit-parameter-version}} and {{suit-condition-version}}. When a Manifest Author communicates such a dependency to operators through the manifest, the author MUST populate the suit-text map with a SUIT_Component_Identifier key for the dependency component and place a suit-text-version-required key with a free-text expression in the corresponding map. Deployments that provide operator guidance exclusively through other channels MAY omit this field. The expression is intended to provide enough context for a device operator to understand and validate the dependency; predefined tokens can be used when supporting documentation provides equivalent clarity.
+suit-text-version-required is used to represent a version-based dependency on suit-parameter-version as described in {{suit-parameter-version}} and {{suit-condition-version}}. When a Manifest Author communicates such a dependency to operators through the manifest, the Manifest Author MUST populate the suit-text map with a SUIT_Component_Identifier key for the dependency component and place a suit-text-version-required key with a free-text expression in the corresponding map. Deployments that provide operator guidance exclusively through other channels MAY omit this field. The expression is intended to provide enough context for a device operator to understand and validate the dependency; predefined tokens can be used when supporting documentation provides equivalent clarity.
 
-Expressions in this field MUST be encoded as UTF-8 text containing only characters in Unicode general categories L, M, N, P, S, or Zs. The following ASCII strings are defined to represent the five comparison operators defined by suit-parameter-version: `>` (Greater), `>=` (Greater or Equal), `=` (Equal), `<=` (Lesser or Equal), and `<` (Lesser). No other comparison-operator syntax is defined by this document. When a Manifest Author uses comparison-operator syntax in this field, the author MUST use these strings. All other content is free text, and there are no additional formatting rules. A Manifest Processor MUST NOT interpret or otherwise process the content of this field. An implementation that renders this text MUST do so in a manner that prevents markup, control-code, log, or user-interface injection.
+Expressions in this field MUST be encoded as UTF-8 text containing only characters in Unicode general categories L, M, N, P, S, or Zs. The following ASCII strings are defined to represent the five comparison operators defined by suit-parameter-version: `>` (Greater), `>=` (Greater or Equal), `=` (Equal), `<=` (Lesser or Equal), and `<` (Lesser). No other comparison-operator syntax is defined by this document. When a Manifest Author uses comparison-operator syntax in this field, the Manifest Author MUST use these strings. All other content is free text, and there are no additional formatting rules. A Manifest Processor MUST NOT interpret or otherwise process the content of this field. An implementation that renders this text MUST do so in a manner that prevents markup, control-code, log, or user-interface injection.
 
-By way of example only, to express a dependency on a component "\['x', 'y'\]", where the intended version is any v1.x later than v1.2.5, but not v2.0 or above, the author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
+By way of example only, to express a dependency on a component "\['x', 'y'\]", where the intended version is any v1.x later than v1.2.5, but not v2.0 or above, the Manifest Author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
 
 ~~~CDDL
 ['x','y'] : {
@@ -130,7 +130,7 @@ By way of example only, to express a dependency on a component "\['x', 'y'\]", w
 
 suit-text-current-version is used to provide human-readable version information equivalent to suit-set-version ({{suit-set-version}}). This metadata MAY have a version listed for each or any component. The Manifest Processor MUST NOT consume this version; it is for human readability only.
 
-When a Manifest Author describes a version through the manifest, the author MUST populate the suit-text map with a SUIT_Component_Identifier key for the component and place a suit-text-current-version key with a free-text version in the corresponding map. Deployments that provide human-facing version information exclusively through other channels MAY omit this field. The text is intended to provide enough context for a device operator to understand the version and reconcile machine-readable and human-readable records; environments that rely on catalog identifiers can use those identifiers when supporting documentation provides the necessary context. Values in this field MUST be encoded as UTF-8 text containing only characters in Unicode general categories L, M, N, P, S, or Zs. Implementations MUST treat suit-set-version and suit-parameter-version as authoritative when a discrepancy exists. A Manifest Processor MUST NOT interpret or otherwise process the content of this field and MUST treat it as display-only information. An implementation that renders this text MUST do so in a manner that prevents markup, control-code, log, or user-interface injection. This is a free-text field, and there are no additional formatting rules beyond the character restrictions above.
+When a Manifest Author describes a version through the manifest, the Manifest Author MUST populate the suit-text map with a SUIT_Component_Identifier key for the component and place a suit-text-current-version key with a free-text version in the corresponding map. Deployments that provide human-facing version information exclusively through other channels MAY omit this field. The text is intended to provide enough context for a device operator to understand the version and reconcile machine-readable and human-readable records; environments that rely on catalog identifiers can use those identifiers when supporting documentation provides the necessary context. Values in this field MUST be encoded as UTF-8 text containing only characters in Unicode general categories L, M, N, P, S, or Zs. Implementations MUST treat suit-set-version and suit-parameter-version as authoritative when a discrepancy exists. A Manifest Processor MUST NOT interpret or otherwise process the content of this field and MUST treat it as display-only information. An implementation that renders this text MUST do so in a manner that prevents markup, control-code, log, or user-interface injection. This is a free-text field, and there are no additional formatting rules beyond the character restrictions above.
 
 When the component uses Semantic Versioning, the Manifest Author SHOULD use the component's full Semantic Version in this field so that human-readable and machine-readable records remain aligned. A deployment that uses another versioning scheme MAY instead use its customary human-readable form. Unlike suit-set-version ({{suit-set-version}}), the full Semantic Versioning specification {{semver}} can be used in this field.
 
@@ -458,7 +458,7 @@ SUIT_Override_Mult_Arg = {
 
 ## suit-directive-copy-params
 
-suit-directive-copy-params enables a manifest author to specify one or more components to copy parameters from, and a list of parameters to copy from each specified source component.
+suit-directive-copy-params enables a Manifest Author to specify one or more components to copy parameters from, and a list of parameters to copy from each specified source component.
 
 The behaviour is exactly the same as override parameters, but with parameter values defined in existing components. Parameters are only copied between identical keys (no copying from URI to digest, for example).
 
