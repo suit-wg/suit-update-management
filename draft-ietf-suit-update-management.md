@@ -69,7 +69,7 @@ updated device.
 
 Full management of software updates for unattended, connected devices requires cooperation between Manifest Authors and management, distribution, policy enforcement, and auditing systems. This specification provides extensions to the SUIT manifest {{I-D.ietf-suit-manifest}} that enable Manifest Authors to coordinate with these other systems. These extensions enable Manifest Authors to instruct devices to examine update priority, local update authorisation, update lifetime, and system properties. They also enable devices to report and distributors to collect Software Bill of Materials (SBOM) information.
 
-Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests. A Recipient that encounters a command or parameter it does not implement MUST reject the manifest, consistent with the manifest-exclusion conditions in {{I-D.ietf-suit-manifest}} Section 6.1, ensuring that update behaviour is never ambiguous. Conversely, when a deployment relies on update-management behaviour defined here, the Manifest Author MUST ensure that targeted Recipients advertise support for the required extensions (for example via enablement policy or capability negotiation) before shipping such manifests so that required commands will be honoured rather than rejected.
+Extensions in this specification are OPTIONAL to implement and OPTIONAL to include in manifests. Knowledge of Recipient support for update-management extensions is deployment-specific and may be established out of band.
 
 #  Conventions and Terminology {#conventions-and-terminology}
 
@@ -382,7 +382,7 @@ For example, the following Payload Fetch & Install sequences will create a new /
 
 The following table defines the semantics of the commands defined in this specification in the same way as in the Abstract Machine Description, Section 6.4, of {{I-D.ietf-suit-manifest}}.
 
-All commands defined in this specification are OPTIONAL to implement. A Recipient that encounters a command it does not implement MUST reject the manifest, consistent with the manifest-exclusion conditions in {{I-D.ietf-suit-manifest}} Section 6.1, ensuring that update behaviour is never ambiguous.
+All commands defined in this specification are OPTIONAL to implement.
 
 | Command Name | CDDL Identifier | Semantic of the Operation
 |------|---|----
@@ -476,7 +476,7 @@ SUIT_Directive_Copy_Params = {
 
 Deployments that enable these extensions need to define the mappings and local information sources on which their processing depends. These include mappings from actor identifiers and permissions to local access-control mechanisms; the source and accuracy of battery telemetry; the meanings assigned to update-priority values and the associated authorization policy; the time, network, power, and other event sources used by suit-directive-wait; and the other-device identifier and version mappings described in {{suit-parameter-wait-info}}.
 
-Management interfaces SHOULD expose the update-management extensions supported by a Recipient and the reason that an update is waiting or was rejected so that operators can diagnose stalled and failed updates. Deployment policy SHOULD also define whether waits survive a reboot and how an operator can cancel a wait or apply a deployment-specific timeout. Without this information, protocol processing remains well-defined, but diagnosing or recovering from an indefinitely waiting update can require implementation-specific procedures.
+Management interfaces SHOULD expose the update-management extensions supported by a Recipient and the reason that an update is waiting or has failed so that operators can diagnose stalled and failed updates. Deployment policy SHOULD also define whether waits survive a reboot and how an operator can cancel a wait or apply a deployment-specific timeout. Without this information, protocol processing remains well-defined, but diagnosing or recovering from an indefinitely waiting update can require implementation-specific procedures.
 
 #  IANA Considerations {#iana}
 
