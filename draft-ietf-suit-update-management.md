@@ -472,11 +472,49 @@ SUIT_Directive_Copy_Params = {
 }
 ```
 
-# Operational and Deployment Considerations
+# Operational Considerations
 
-Deployments that enable these extensions need to define the mappings and local information sources on which their processing depends. These include mappings from actor identifiers and permissions to local access-control mechanisms; the source and accuracy of battery telemetry; the meanings assigned to update-priority values and the associated authorization policy; the time, network, power, and other event sources used by suit-directive-wait; and the other-device identifier and version mappings described in {{suit-parameter-wait-info}}.
+This document defines how update-management information is encoded in a
+SUIT manifest. Some of that information depends on local device
+configuration and therefore cannot be fully defined by the manifest
+itself. For each extension used by a deployment, the deployment
+profile MUST define the applicable local interpretation and the
+source of any information needed to evaluate it.
 
-Management interfaces SHOULD expose the update-management extensions supported by a Recipient and the reason that an update is waiting or was rejected so that operators can diagnose stalled and failed updates. Deployment policy SHOULD also define whether waits survive a reboot and how an operator can cancel a wait or apply a deployment-specific timeout. Without this information, protocol processing remains well-defined, but diagnosing or recovering from an indefinitely waiting update can require implementation-specific procedures.
+For example, a deployment profile may indicate:
+
+* how actor identifiers and permission values are mapped to the
+  Recipient's local access-control mechanisms;
+* where battery-level information is obtained, the required accuracy and
+  freshness of that information, and the behaviour when it is
+  unavailable;
+* the meanings assigned to update-priority values and the authorization
+  policy associated with those values;
+* which local events indicate that time, network, power, authorization,
+  and other wait conditions have been satisfied; and
+* the identifier namespace, version-information source, and version
+  encoding used for other-device version conditions, as described in
+  {{suit-parameter-wait-info}}.
+
+A management interface SHOULD report which update-management extensions a
+Recipient supports. It SHOULD also report whether an update was rejected
+or is waiting, together with the command, parameter, or event responsible
+for that state. Without such information, an operator might be unable
+to distinguish an unsupported manifest from a failed or
+indefinitely waiting update.
+
+For updates that can enter a waiting state, the deployment specification
+MUST define whether that state persists across a Recipient restart and
+how an operator can cancel the wait. It MUST also define whether a
+deployment-specific timeout applies. A deployment MAY permit an
+indefinite wait, but that choice needs to be explicit so that management
+systems and operators can distinguish intended behaviour from a stalled
+update.
+
+These deployment requirements do not introduce additional fields or
+change the SUIT wire format. They define the local configuration and
+management behaviour needed to use the extensions in this document
+interoperably.
 
 #  IANA Considerations {#iana}
 
