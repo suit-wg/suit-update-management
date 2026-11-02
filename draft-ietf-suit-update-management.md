@@ -1,7 +1,7 @@
 ---
 title: Update Management Extensions for Software Updates for Internet of Things (SUIT) Manifests
 abbrev: SUIT Update Management Extensions
-docname: draft-ietf-suit-update-management-16
+docname: draft-ietf-suit-update-management-17
 category: std
 stream: IETF
 
@@ -45,7 +45,7 @@ normative:
     title: "Semantic Versioning 2.0.0"
     author:
     date: 2013-06-18
-    target: https://semver.org
+    target: https://semver.org/spec/v2.0.0.html
 
 informative:
   RFC9124:
@@ -77,7 +77,7 @@ Extensions in this specification are OPTIONAL to implement and OPTIONAL to inclu
 
 This document uses SUIT terminology, including Manifest Author and Recipient, as defined in {{I-D.ietf-suit-manifest}}.
 
-This document uses semantic versioning terminology from {{semver}}, including major, minor, patch, pre-release, and build metadata. The machine-readable version encoding defined in {{suit-parameter-version}} is a constrained integer encoding based on that terminology: it encodes release versions as one to three non-negative integers, supports only the pre-release classes defined in {{suit-parameter-version}}, and excludes build metadata from machine-readable comparisons.
+This document uses semantic versioning terminology from {{semver}}, including major, minor, patch, pre-release, and build metadata. The constrained integer encoding in {{version-encoding}} uses three non-negative release-number integers, a mandatory release-stage integer, and a pre-release end marker when applicable. It supports only the pre-release classes defined there and excludes build metadata from machine-readable comparisons. The integer-array comparison in {{suit-parameter-version}} also supports other version-numbering schemes and prefix selectors.
 
 Deployment profile: A specification or agreement for a particular SUIT deployment that selects options left open by this document and defines their local mappings. A deployment profile can be a published specification or configuration agreed among Manifest Authors, Recipients, and the management system; it is not a new wire-format object defined by this document.
 
@@ -96,7 +96,7 @@ This metadata encodes a semantic version for the component set that the manifest
 
 Manifest Authors SHOULD encode suit-set-version whenever the release can be represented by the constrained version encoding defined in {{suit-parameter-version}} so that Recipients can compare manifests deterministically. Deployments that cannot supply such a version without loss of fidelity MUST omit suit-set-version and convey any human-facing numbering via suit-text-current-version ({{text-current-version}}). Because suit-set-version is a machine-readable parameter for determining compatibility and build metadata is ignored for semantic-version precedence, build metadata MUST NOT be included.
 
-suit-set-version encodes a version using SUIT_Condition_Version_Comparison_Value, the version-value array defined for suit-parameter-version in {{suit-parameter-version}}. It does not include a SUIT_Condition_Version_Comparison_Types comparison operator.
+suit-set-version encodes a version using SUIT_Condition_Version_Comparison_Value, the version-value array defined for suit-parameter-version in {{suit-parameter-version}}. It does not include a SUIT_Condition_Version_Comparison_Types comparison operator. When using the constrained Semantic Versioning mapping, suit-set-version MUST contain a complete version encoding as defined in {{version-encoding}}, rather than a prefix selector.
 
 If build metadata is desired, the Manifest Author MAY include it via suit-text-current-version ({{text-current-version}}).
 
@@ -118,9 +118,9 @@ suit-text-version-required is used to represent a version-based dependency on su
 
 Expressions in this field MUST be encoded as UTF-8 text containing only characters in Unicode general categories L, M, N, P, S, or Zs. The following ASCII strings are defined to represent the five comparison operators defined by suit-parameter-version: `>` (Greater), `>=` (Greater or Equal), `=` (Equal), `<=` (Lesser or Equal), and `<` (Lesser). No other comparison-operator syntax is defined by this document. When a Manifest Author uses comparison-operator syntax in this field, the Manifest Author MUST use these strings. All other content is free text, and there are no additional formatting rules. A Manifest Processor MUST NOT interpret or otherwise process the content of this field. An implementation that renders this text MUST do so in a manner that prevents markup, control-code, log, or user-interface injection.
 
-By way of example only, to express a dependency on a component "\['x', 'y'\]", where the intended version is any v1.x later than v1.2.5, but not v2.0 or above, the Manifest Author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
+By way of example only, to express a dependency on a component "\['x', 'y'\]", where the intended version is v1.2.5 or later, but not v2.0 or above, the Manifest Author would add the following structure to the suit-text element. Note that this text is in cbor-diag notation.
 
-~~~CDDL
+~~~ cbor-diag
 ['x','y'] : {
     7 : ">=1.2.5,<2"
 }
@@ -167,7 +167,7 @@ Indicates allowable versions for the specified component. One version comparison
 
 Each suit-parameter-version contains a comparison operator and a version, according to the following CDDL:
 
-~~~CDDL
+~~~ cddl
 SUIT_Parameter_Version_Match = [
     suit-condition-version-comparison-type:
         SUIT_Condition_Version_Comparison_Types,
@@ -184,16 +184,20 @@ The comparison type can be:
 * Lesser or Equal.
 * Lesser.
 
-The version comparison value is encoded as a CBOR {{RFC8949}} array of integers. Comparisons are done on each integer in sequence. Comparison stops after all integers in the array defined by the manifest have been consumed OR after a non-equal comparison has occurred. For example, if the manifest defines a comparison, "Equal \[1\]", then this will match all version sequences starting with 1. If a manifest defines both "Greater or Equal \[1,0\]" and "Lesser \[1,10\]", then it will match versions 1.0.x up to, but not including 1.10.
+The version comparison value is encoded as a CBOR {{RFC8949}} array of integers. Comparisons are done on each integer in sequence. Comparison stops after all integers in the array defined by the manifest have been consumed OR after a non-equal comparison has occurred. For example, if the manifest defines a comparison, "Equal \[1\]", then this will match all version sequences starting with 1. If all compared integers are equal, the comparison result is Equal. If a manifest defines both "Greater or Equal \[1,0\]" and "Lesser \[1,10\]", then it will match versions 1.0.x up to, but not including 1.10.
 
-### suit-parameter-version Semantic Versioning encoding guidelines
+If the component's version array is exhausted before comparison stops, the Manifest Processor MUST use zero for each subsequent component integer required by the comparison.
+
+### suit-parameter-version Semantic Versioning encoding guidelines {#version-encoding}
 
 Manifest Authors MUST use the constrained Semantic Versioning encoding summarized in {{conventions-and-terminology}} unless the component uses another numbering scheme that cannot be represented faithfully. When another numbering scheme is used, the sequence of integers encoded here MUST preserve release ordering (for example, `[2025,12,6]` for a calendar-based release).
 
-Versions are composed of:
+The following rules define a complete version encoding for this mapping. They apply both to the version asserted by a component for comparison and to complete versions encoded in a manifest:
 
-1. A release version encoded as a sequence of 1 to 3 non-negative integers (allowing zero values)
-2. An optional pre-release indicator encoded as a negative integer, followed by zero or more non-negative integers
+1. The first three integers MUST encode the major, minor, and patch numbers, in that order. All three integers MUST be present and non-negative, including when their values are zero. If a deployment accepts abbreviated human-readable versions, omitted minor or patch numbers MUST be filled with zero before encoding. For example, 1.2 and 1.2.0 both encode the release-number portion as \[1,2,0\].
+2. The fourth integer MUST encode the release stage, using the values below. It MUST be present for both final releases and pre-releases.
+3. A final release MUST end immediately after its release-stage integer, which is zero.
+4. A pre-release MUST encode zero or more non-negative numeric suffix integers after its release-stage integer, followed by the end marker -24. Numeric suffix integers MUST be preserved in order, including trailing zero values. The end marker MUST be the final integer in the complete encoding and MUST NOT be used as a release-stage integer or a suffix integer.
 
 Semantic Versioning permits arbitrary pre-release identifiers and build metadata. This specification only defines encodings for alpha, beta, and release-candidate pre-release classes. Because suit-parameter-version exists solely to enable the Manifest Processor to make a decision about version compatibility, and because build metadata is ignored for semantic-version precedence, build metadata MUST NOT be included.
 
@@ -203,23 +207,37 @@ In semantic versioning terminology:
 2. The second integer represents the minor number. This is typically reserved for new features or large, non-breaking changes.
 3. The third integer is the patch version. This is typically reserved for bug fixes.
 
-The pre-release indicator MUST NOT appear as element 0. The pre-release indicator is encoded as:
+The release-stage integer is encoded as:
 
+* 0: Final Release
 * -1: Release Candidate (RC)
 * -2: Beta
 * -3: Alpha
 
-This allows these releases to compare correctly with final releases. For example, Version 2.0, RC1 is lower than Version 2.0.0 and higher than any Version 1.x. By encoding RC as -1, this works correctly: \[2,0,-1,1\] compares as lower than \[2,0,0\]. Similarly, beta (-2) is lower than RC and alpha (-3) is lower than RC.
+The mandatory release-stage integer allows pre-releases to compare correctly with final releases without changing the integer-array comparison. For example, Version 2.0, RC1 is lower than Version 2.0.0 and higher than any Version 1.x: \[2,0,0,-1,1,-24\] compares as lower than \[2,0,0,0\]. Similarly, beta (-2) is lower than RC, and alpha (-3) is lower than beta for the same release-number portion.
+
+The end marker -24 sorts before every permitted numeric suffix integer. Consequently, a pre-release with no numeric suffix sorts before the same pre-release with a numeric suffix, including zero. For example, \[1,2,0,-2,-24\] (1.2.0-beta) compares as lower than \[1,2,0,-2,0,-24\] (1.2.0-beta.0). The end marker has a one-byte CBOR encoding and leaves the values -4 through -23 available for future release-stage assignments; this document does not define those assignments.
 
 Pre-release identifiers other than alpha, beta, and release candidate cannot be represented directly in this encoding. Deployments that need other identifiers MUST either map them to one of the defined classes while preserving the intended ordering or omit the machine-readable version field and convey the identifier as suit-text-current-version ({{text-current-version}}).
 
 For example:
 
-* 1.2.3 = \[1,2,3\].
-* 1.2-rc.3 = \[1,2,-1,3\].
-* 1.2-beta = \[1,2,-2\].
-* 1.2-alpha = \[1,2,-3\].
-* 1.2.3-alpha.4 = \[1,2,3,-3,4\].
+* 1.2 and 1.2.0 = \[1,2,0,0\].
+* 1.2.3 = \[1,2,3,0\].
+* 1.2-rc.3 and 1.2.0-rc.3 = \[1,2,0,-1,3,-24\].
+* 1.2-beta and 1.2.0-beta = \[1,2,0,-2,-24\].
+* 1.2.0-beta.0 = \[1,2,0,-2,0,-24\].
+* 1.2-alpha and 1.2.0-alpha = \[1,2,0,-3,-24\].
+* 1.2.3-alpha.4 = \[1,2,3,-3,4,-24\].
+
+A manifest comparison value using this mapping MUST be either a complete version encoding or a non-empty prefix of a complete version encoding. A prefix selector intentionally omits subsequent integers; it does not omit zero values from within the selected prefix. The comparison rule in {{suit-parameter-version}} is unchanged: an Equal comparison against a complete encoding selects that exact version, while an Equal comparison against a shorter prefix selects all complete encodings with that prefix. For example:
+
+* Equal \[1\] selects all versions with major number 1, including pre-releases.
+* Equal \[1,2\] selects all versions with major number 1 and minor number 2, including pre-releases.
+* Equal \[1,2,0\] selects the 1.2.0 release and all its pre-releases.
+* Equal \[1,2,0,-2\] selects the 1.2.0 beta family, with or without numeric suffixes.
+* Equal \[1,2,0,-2,-24\] selects only 1.2.0-beta.
+* Equal \[1,2,3,0\] selects only the final release 1.2.3. A Greater or Equal comparison against this encoding excludes 1.2.3-alpha.4 because its release-stage integer is lower.
 
 ## suit-parameter-wait-info
 
@@ -269,7 +287,7 @@ Sometimes, management of file systems requires that the creator of each file is 
 
 The creator is defined as follows:
 
-~~~ CDDL
+~~~ cddl
 SUIT_meta_actor_id = UUID_Tagged / bstr / tstr / int
 UUID_Tagged = #6.37(bstr)
 ~~~
@@ -281,16 +299,18 @@ The actor ID can be whatever is most appropriate for any given system. For examp
 
 The creation and modification times are defined by CBOR time types. These are defined in {{RFC8949}}, Section 3.4.2. The CBOR tag is REQUIRED when either creation or modification time are provided.
 
-~~~ CDDL
-suit-meta-modification-time => #6.1(uint)
-suit-meta-creation-time => #6.1(uint)
+The following map entries are excerpted from SUIT_Component_Metadata:
+
+~~~ cddl
+? suit-meta-modification-time => #6.1(uint),
+? suit-meta-creation-time => #6.1(uint),
 ~~~
 
 ### Component Default Permissions
 
 Typical permissions management systems require read, write, and execute permissions that are applied to all users who do not have their own explicit permissions. These are the default permissions for the current component. Default permissions are described by the following CDDL:
 
-~~~ CDDL
+~~~ cddl
 SUIT_meta_permissions = uint .bits SUIT_meta_permission_bits
 SUIT_meta_permission_bits = &(
     write_attr_ex: 13,
@@ -315,7 +335,7 @@ SUIT_meta_permission_bits = &(
 
 Many filesystems have users and groups. Additionally some have roles. Actors that have these associations can have specific permissions associated with them for each component. Each of these sets of permissions is defined the same way: with a map of actor identifiers to permissions.
 
-~~~CDDL
+~~~ cddl
 SUIT_meta_permission_map = {
     + SUIT_meta_actor_id => SUIT_meta_permissions
 }
@@ -450,11 +470,11 @@ This command is purely an encoding alias for set-component-index and override-pa
 
 The following CDDL defines the argument for suit-directive-override-multiple:
 
-```CDDL
+~~~ cddl
 SUIT_Override_Mult_Arg = {
     + uint => {+ $$SUIT_Parameters}
 }
-```
+~~~
 
 ## suit-directive-copy-params
 
@@ -466,17 +486,55 @@ For each entry in the map, the manifest processor sets the source component to b
 
 The following CDDL defines the argument for suit-directive-copy-params:
 
-```CDDL
+~~~ cddl
 SUIT_Directive_Copy_Params = {
     + uint => [+ int]
 }
-```
+~~~
 
 # Operational and Deployment Considerations
 
-Deployments that enable these extensions need to define the mappings and local information sources on which their processing depends. These include mappings from actor identifiers and permissions to local access-control mechanisms; the source and accuracy of battery telemetry; the meanings assigned to update-priority values and the associated authorization policy; the time, network, power, and other event sources used by suit-directive-wait; and the other-device identifier and version mappings described in {{suit-parameter-wait-info}}.
+This document defines how update-management information is encoded in a
+SUIT manifest. Some of that information depends on local device
+configuration and therefore cannot be fully defined by the manifest
+itself. For each extension used by a deployment, the deployment
+profile MUST define the applicable local interpretation and the
+source of any information needed to evaluate it.
 
-Management interfaces SHOULD expose the update-management extensions supported by a Recipient and the reason that an update is waiting or has failed so that operators can diagnose stalled and failed updates. Deployment policy SHOULD also define whether waits survive a reboot and how an operator can cancel a wait or apply a deployment-specific timeout. Without this information, protocol processing remains well-defined, but diagnosing or recovering from an indefinitely waiting update can require implementation-specific procedures.
+For example, a deployment profile may indicate:
+
+* how actor identifiers and permission values are mapped to the
+  Recipient's local access-control mechanisms;
+* where battery-level information is obtained, the required accuracy and
+  freshness of that information, and the behaviour when it is
+  unavailable;
+* the meanings assigned to update-priority values and the authorization
+  policy associated with those values;
+* which local events indicate that time, network, power, authorization,
+  and other wait conditions have been satisfied; and
+* the identifier namespace, version-information source, and version
+  encoding used for other-device version conditions, as described in
+  {{suit-parameter-wait-info}}.
+
+A management interface SHOULD report which update-management extensions a
+Recipient supports. It SHOULD also report whether an update was rejected, has failed, or is
+waiting, together with the command, parameter, or event responsible for
+that state. Without such information, an operator might be unable
+to distinguish an unsupported manifest from a failed or
+indefinitely waiting update.
+
+For updates that can enter a waiting state, the deployment specification
+MUST define whether that state persists across a Recipient restart and
+how an operator can cancel the wait. It MUST also define whether a
+deployment-specific timeout applies. A deployment MAY permit an
+indefinite wait, but that choice needs to be explicit so that management
+systems and operators can distinguish intended behaviour from a stalled
+update.
+
+These deployment requirements do not introduce additional fields or
+change the SUIT wire format. They define the local configuration and
+management behaviour needed to use the extensions in this document
+interoperably.
 
 #  IANA Considerations {#iana}
 
@@ -538,6 +596,10 @@ Component metadata ({{suit-parameter-component-metadata}}) can expose operator i
 
 Recipients that map Component Identifiers to file-system paths MUST defend against path traversal and symbolic-link races. Before a fetch, copy, or write, the Recipient MUST ensure that the resolved destination remains within storage authorized for the current component and manifest authority. This requirement applies both to pre-existing links and to links created by an earlier command or dependency manifest. Path validation and the file-system operation MUST be performed atomically with respect to namespace changes, or using descriptor-relative or non-link-following operations that provide an equivalent guarantee. A Recipient MUST NOT follow a symbolic link across component or authority boundaries unless local policy explicitly authorizes both the resolved target and that use of the link.
 
+# Contributors
+
+Hannes Tschofenig contributed the operational and deployment considerations in this document.
+
 # Acknowledgements
 
 The authors would like to thank Roman Danyliw, Mohamed Boucadair, Mahesh Jethanandani, Andy Newton, and Éric Vyncke for their detailed IESG reviews and constructive suggestions.
@@ -548,8 +610,10 @@ The authors also thank Hannes Tschofenig for the IoT Directorate review, Roni Ev
 
 #  Full CDDL {#full-cddl}
 
-The following definitions use the CDDL notation specified in {{RFC8610}} and MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of {{I-D.ietf-suit-manifest}}.
+The following definitions use the CDDL notation specified in {{RFC8610}} and MUST be appended to the SUIT Manifest CDDL. The SUIT CDDL is defined in Appendix A of {{I-D.ietf-suit-manifest}}. The combined schema also requires the COSE CDDL definitions used by the SUIT Manifest and the CoSWID CDDL definitions in Section 2.10 of {{RFC9393}}, which define concise-swid-tag.
 
-~~~ CDDL
+When assembling these definitions into a single CDDL schema, rename the CoSWID-local rule named label and all references to that rule within the CoSWID definitions to coswid-label, to avoid a rule-name collision with COSE. This local rule-name change does not change the encoded data.
+
+~~~ cddl
 {::include draft-ietf-suit-update-management.cddl}
 ~~~
