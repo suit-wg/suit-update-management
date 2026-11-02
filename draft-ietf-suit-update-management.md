@@ -184,7 +184,9 @@ The comparison type can be:
 * Lesser or Equal.
 * Lesser.
 
-The version comparison value is encoded as a CBOR {{RFC8949}} array of integers. Comparisons are done on each integer in sequence. Comparison stops after all integers in the array defined by the manifest have been consumed OR after a non-equal comparison has occurred. For example, if the manifest defines a comparison, "Equal \[1\]", then this will match all version sequences starting with 1. If a manifest defines both "Greater or Equal \[1,0\]" and "Lesser \[1,10\]", then it will match versions 1.0.x up to, but not including 1.10.
+The version comparison value is encoded as a CBOR {{RFC8949}} array of integers. Comparisons are done on each integer in sequence. Comparison stops after all integers in the array defined by the manifest have been consumed OR after a non-equal comparison has occurred. For example, if the manifest defines a comparison, "Equal \[1\]", then this will match all version sequences starting with 1. If all compared integers are equal, the comparison result is Equal. If a manifest defines both "Greater or Equal \[1,0\]" and "Lesser \[1,10\]", then it will match versions 1.0.x up to, but not including 1.10.
+
+If the component's version array is exhausted before comparison stops, the Manifest Processor MUST use zero for each subsequent component integer required by the comparison.
 
 ### suit-parameter-version Semantic Versioning encoding guidelines {#version-encoding}
 
